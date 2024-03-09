@@ -1,0 +1,72 @@
+{% extends 'welcome.html' %} {% load static%} 
+{%block title%} | Login to Account {%endblock%} 
+
+{%block content%}
+<section id="login" class="login-section h-100">
+  <div class="container">
+    <div class="row">
+     <div class="col-md-6 mx-auto">
+        <div class="card">
+<div class="card-body">
+                            <img src="{% static 'img/e_marketing_logo2.jpg' %}" id="image" style="margin: 0px 0%;" height="90" alt="Card image cap">
+                            <p class="text-center"><b>{{ selected_language.welcome.login.title }}</b></p>
+                            <form class="mt-2" autocomplete="off" action="{%url 'login'%}"  method="POST" autocomplete="off">
+              {% csrf_token%}
+
+            {% include 'partials/_alerts.html'%}
+              <div class="form-group">
+                <input
+                  type="text"
+                  name="username"
+                  placeholder="Username or Email"
+                 class="form-control form-control-sm"
+                  required
+                  value="{% if values.username %}{{ values.username }}{% else %}{{ values.email }}{% endif %}"
+                />
+              </div>
+              <div class="form-group">
+              </div>
+              <div class="form-group">
+                <input
+                  type="password"
+                  placeholder="Password"
+                  name="password"
+                 class="form-control form-control-sm"
+                  required
+                  value="{{ values.password }}"
+
+                >
+                </input>
+              </div>
+              <input
+                type="submit"
+                value="{{ selected_language.welcome.login.boton_login }}"
+                class="btn btn-block btn-primary submit-btn"
+              />
+                 <div class="lower my-3 pl-3 pr-3">
+                                    <div class="row">
+                                        <div class="col-md-5">
+                                            <hr class="ml-1">
+                                        </div>
+                                        <div class="col-md-2">
+                                            <small class="text-muted">OR</small>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <hr class="mr-1">
+                                        </div>
+                                    </div>
+                                    <a href="{% url 'register'%}" class="btn btn-block btn-sm">{{ selected_language.welcome.login.boton_create_account }}</a>
+
+                                    <a href="{% url 'request-password' %}" class="btn btn-block btn-sm">{{ selected_language.welcome.login.boton_forgot_password }}</a>
+
+                                </div>
+            </form>
+
+                        </div>
+          </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{%endblock%}

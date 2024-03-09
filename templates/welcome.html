@@ -1,0 +1,82 @@
+
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title> TITULO {% block title %} {% endblock %}</title>
+
+    <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet">
+    <link href="{% static 'css/mont_rainer.css' %}" rel="stylesheet">
+
+  </head>
+
+  <body class="text-center flex-column justify-content: start">
+    <header class="d-flex flex-column">
+      <div class="row">
+        <div class="col-md-4 text-md-left text-center d-flex">
+          <a href="{% if request.user.is_authenticated %}{% url 'home' %}{% else %}{% url 'welcome' %}{% endif %}">
+            
+            <img src="{% static 'img/e_marketing_back.png' %}" id="image" class="container-fluid" style="width: 75%; height: auto;">
+
+          </a>
+        </div>
+
+
+        <div class="col-md-6 text-md-right text-right">
+          <nav class="nav nav-masthead justify-content-end">
+              <a class="nav-link active" id="login-link" href="/authentication/login">{{ selected_language.welcome.header_welcome.login }}</a>
+              <a class="nav-link active" id="register-link" href="/authentication/register">{{ selected_language.welcome.header_welcome.register }}</a>
+              <a class="nav-link active" id="forgot-password-link" href="/authentication/request-password">{{ selected_language.welcome.header_welcome.forgot_password }}</a>
+          </nav>
+      </div>
+        <div class="col-md-2 text-md-right text-center">
+          {% include 'partials/_choose_language.html' %}
+
+        </div>
+    </div>
+
+      </header>
+
+      {% block content %} {% endblock %}
+
+      <footer class="mastfoot mt-auto">
+        <div class="inner">
+          <p class="bigger-text" style="font-size: 20px; color: white;">Copyright © 2024 Your Business Experience.</p>
+        </div>
+      </footer>
+
+
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
+
+    <!-- Graphs -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
+
+
+      <script src="static/js/typewriter.js"></script>
+      <script src="static/js/choose_language.js"></script>
+      <script>
+          // Seleccionar el idioma guardado en la sesión, si existe
+          const savedLanguage = '{{ request.session.language|default:"English" }}';
+                  document.getElementById('language' + savedLanguage).checked = true;
+                </script>
+                <script>
+                  window.onload = function() {
+              var path = window.location.pathname;
+              if (path.includes('/authentication/login')) {
+                  document.getElementById('login-link').style.color = '#ff561e';
+              } else if (path.includes('/authentication/register')) {
+                  document.getElementById('register-link').style.color = '#ff561e';
+              } else if (path.includes('/authentication/request-password')) {
+                  document.getElementById('forgot-password-link').style.color = '#ff561e';
+              }
+          };
+      </script>
+
+
+  </body>
+</html>

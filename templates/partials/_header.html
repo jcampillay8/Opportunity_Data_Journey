@@ -1,0 +1,81 @@
+{% load static %}
+<!-- <style>
+  .navbar-container > div {
+  margin-bottom: 10px; /* Espacio entre los elementos */
+}
+
+.language-selection {
+  display: flex;
+  justify-content: space-between;
+}
+
+@media (max-width: 970px) {
+  .navbar-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+}
+</style> -->
+
+<header id="masthead" >
+    <div class="inner-wrap">
+   
+      <nav class="navbar">
+        <div class="navbar-container">
+
+          <div class="col-md-4 text-md-left text-center d-flex">
+            <a href="{% url 'welcome' %}" class="site-title">
+              
+              <img src="{% static 'img/signature_experience.png' %}" id="image" class="container-fluid">
+            </a>
+          </div>
+
+
+          <div class="col-lg-2 col-md-12 text-center p-3">
+            <!-- Bloque 2 vacío -->
+        </div>
+        <div class="col-md-2 text-md-right text-right">
+          <div class="navbar-user d-flex flex-column align-items-start">
+            {% if request.user.email %}
+              <span class="username">{{ request.user.username }}</span>
+              <small class="user-email">({{ request.user.email }})</small>
+            {% else %}
+              <span class="username">Usuario Invitado</span>
+            {% endif %}
+          </div>
+        </div>       
+        
+
+        <div class="col-lg-2 col-md-12 p-3 d-flex justify-content-end">
+          <div class="language-selection">
+            {% include 'partials/_choose_language.html' %}
+          </div>
+      </div>
+
+      <div class="col-lg-2 col-md-12 p-3 d-flex justify-content-end">
+        {% if request.user.email %}
+          <div class="logout-button">
+            <form action="{% url 'logout' %}" method="POST" class="logout-form">
+              
+              {% csrf_token %}
+              <button type="submit" class="logout-button">
+                <i class="fas icon fa-sign-out-alt"></i> Logout
+              </button>
+              {% else %}
+              <div></div>
+              {% endif %}
+            </form>
+            </div>
+      </div>
+        </div>
+
+
+        </div>
+      </nav>
+      
+    </div>
+  </header>
+  
+
+  
