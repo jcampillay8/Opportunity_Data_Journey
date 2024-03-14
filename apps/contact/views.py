@@ -3,10 +3,11 @@ from django.urls import reverse
 from django.core.mail import EmailMessage
 from .forms import ContactForm
 from django.views.generic import (View, TemplateView)
+from django.views.decorators.csrf import csrf_exempt
 from apps.utils import get_context
 import traceback
 
-
+@csrf_exempt
 def contact(request):
     contact_form = ContactForm()
 
@@ -24,7 +25,7 @@ def contact(request):
                 "The Jaime Campillay Experience: Nuevo mensaje de contacto",
                 "De {} <{}>\n\nEscribió:\n\n{}".format(name, email, phone, content),
                 "no-contestar@inbox.mailtrap.io",
-                ["thejaimecampillayexperience@gmail.com"],
+                ["opportunitydatajourney@gmail.com"],
                 reply_to=[email]
             )
 

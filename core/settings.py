@@ -99,6 +99,8 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'livereload.middleware.LiveReloadScript',
     'core.languagemiddleware.LanguageMiddleware',
+    'django_plotly_dash.middleware.BaseMiddleware',
+    'django_plotly_dash.middleware.ExternalRedirectionMiddleware',
 ]
 
 ROOT_URLCONF = "core.urls"
@@ -166,6 +168,7 @@ STATICFILES_FINDERS = [
     'django_plotly_dash.finders.DashAppDirectoryFinder',
 ]
 
+X_FRAME_OPTIONS = 'SAMEORIGIN'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
@@ -177,45 +180,45 @@ STATICFILES_DIRS = [
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'django_gcp/staticfiles/dash/component/dash_bootstrap_components/_components/dash_bootstrap_components.min.js')
 
-# PLOTLY_DASH = {
+PLOTLY_DASH = {
 
-#     # Route used for the message pipe websocket connection
-#     "ws_route" :   "dpd/ws/channel",
+    # Route used for the message pipe websocket connection
+    "ws_route" :   "dpd/ws/channel",
 
-#     # Route used for direct http insertion of pipe messages
-#     "http_route" : "dpd/views",
+    # Route used for direct http insertion of pipe messages
+    "http_route" : "dpd/views",
 
-#     # Flag controlling existince of http poke endpoint
-#     "http_poke_enabled" : True,
+    # Flag controlling existince of http poke endpoint
+    "http_poke_enabled" : True,
 
-#     # Insert data for the demo when migrating
-#     "insert_demo_migrations" : False,
+    # Insert data for the demo when migrating
+    "insert_demo_migrations" : False,
 
-#     # Timeout for caching of initial arguments in seconds
-#     "cache_timeout_initial_arguments": 60,
+    # Timeout for caching of initial arguments in seconds
+    "cache_timeout_initial_arguments": 60,
 
-#     # Name of view wrapping function
-#     "view_decorator": None,
+    # Name of view wrapping function
+    "view_decorator": None,
 
-#     # Flag to control location of initial argument storage
-#     "cache_arguments": True,
+    # Flag to control location of initial argument storage
+    "cache_arguments": True,
 
-#     # Flag controlling local serving of assets
-#     "serve_locally": False,
-#     # Name of view wrapping function
-#     "view_decorator": "django_plotly_dash.access.login_required",
-# }
+    # Flag controlling local serving of assets
+    "serve_locally": False,
+    # Name of view wrapping function
+    "view_decorator": "django_plotly_dash.access.login_required",
+}
 
-# PLOTLY_COMPONENTS = [
-#     # core components required for use of most plotly dash components
-#     'dash_core_components',
-#     'dash_html_components',
-#     'dash_renderer',
-#     'dash_bootstrap_components',
-#     # django-plotly-dash components
-#     'dpd_components',
-#     'dpd_static_support',
-# ]
+PLOTLY_COMPONENTS = [
+    # core components required for use of most plotly dash components
+    'dash_core_components',
+    'dash_html_components',
+    'dash_renderer',
+    'dash_bootstrap_components',
+    # django-plotly-dash components
+    'dpd_components',
+    'dpd_static_support',
+]
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
@@ -232,11 +235,10 @@ MESSAGE_TAGS = {
 EMAIL_HOST = os.environ.get('EMAIL_HOST')
 EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
 EMAIL_USE_TLS = True
-EMAIL_USE_SSL = False
 DEFAULT_FROM_EMAIL = os.environ.get('EMAIL_HOST_USER')
 EMAIL_PORT = 587
-#EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
-EMAIL_HOST_PASSWORD = 'miwlpscsgkrjplpw'
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+
 
 
 print("EMAIL_HOST:", EMAIL_HOST)
