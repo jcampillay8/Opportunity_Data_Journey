@@ -48,6 +48,7 @@ PROJECT_APPS = [
     'apps.home',
     'apps.contact',
     'apps.request',
+    'apps.client_management',
 
 ]
 
@@ -127,16 +128,28 @@ WSGI_APPLICATION = "core.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": BASE_DIR / "db.sqlite3",
+#     }
+# }
+
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': env('DB_NAME'),
+        'USER': env('DB_USER'),
+        'PASSWORD': env('DB_PASSWORD'),
+        'HOST': env('DB_HOST'),
+        'PORT': env('DB_PORT'),
     }
 }
-
-
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
+
+
+
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -238,13 +251,6 @@ EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = os.environ.get('EMAIL_HOST_USER')
 EMAIL_PORT = 587
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
-
-
-
-print("EMAIL_HOST:", EMAIL_HOST)
-print("EMAIL_HOST_USER:", EMAIL_HOST_USER)
-print("DEFAULT_FROM_EMAIL:", DEFAULT_FROM_EMAIL)
-print("EMAIL_HOST_PASSWORD:", EMAIL_HOST_PASSWORD)
 
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

@@ -1,72 +1,131 @@
-{% extends 'welcome.html' %} {% load static%} 
-{% block title%} | Register Account {%endblock%} 
+{% extends 'welcome.html' %} 
+
+{% load static%} {%block title%} | Login to Account
+
+{%endblock%} 
+
 {%block content%}
+<style>
+  .center-card {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Ajusta esto según tus necesidades */
+  }
+  a {
+  color: #FC2F2F;
+}
+.btn-primary {
+  background-color: #FC2F2F;
+  border: 1px solid black; /* Ajusta el grosor del borde según tus necesidades */
+  
+}
+.image_register{
+    height:125px;
+    padding-top: 25px;
+    padding-right: 200px;
+    padding-left: 175px;
 
-<section class="register-section h-100" id="register">
-  <div class="container">
-    <div class="row">
-      <div class="col-md-6 mx-auto login-section">
-        <div class="card">
-          <div class="card-body">
-
-
-  <div class="card-body">
-                            <img src="{% static 'img/e_marketing_logo2.jpg' %}" id="image" style="margin: 0px 0%;" height="90" alt="Card image cap">
-                            <p class="text-center"><b>{{ selected_language.welcome.register.title }}</b></p>
-                            <form class="mt-2" autocomplete="off" action="{%url 'register'%}" method="POST" autocomplete="off">
-              {% csrf_token%}
-                <!-- Alerts -->
+}
+  </style>
+    <!-- Banner Starts Here -->
+    <div class="main-banner header-text" id="top">
+      <div class="Modern-Slider">
+        <!-- Item -->
+        <div class="item item-3">
+          <div class="img-fill">
+            <section class="register-section h-100" id="register">
+              <div class="container">
+                <div class="row">
+                  <div class="col-md-6 mx-auto login-section">
+                    <div class="center-card">
+                    <div class="card">
+                      <div class="card-body">
+            
+            
+              <div class="card-body">
+                                        <img src="{% static 'img/register_users.png' %}" class="image_register" style="margin: 0px 0%" alt="Card image cap">
+                                        <p class="text-center" style="color: black;"><b>{{ selected_language.welcome.register.title }}</b></p>
+          <form class="mt-2" action="{%url 'register'%}" method="POST" autocomplete="off">
+            {% csrf_token%}
+            <!-- Alerts -->
             {% include 'partials/_alerts.html'%}
+            <div class="form-group">
+              <input
+                list="company-names"
+                name="company_name"
+                placeholder="Company Name"
+                class="form-control form-control-sm"
+                required
+                value="{{ values.company_name }}"
+              />
+              <datalist id="company-names">
+                {% for company in companies %}
+                  <option value="{{ company.company_name }}">
+                {% endfor %}
+              </datalist>
+            </div>
+            <div class="form-group">
+              <input
+                type="text"
+                name="first_name"
+                placeholder="First Name"
+                class="form-control form-control-sm"
+                required
+                value="{{ values.first_name }}"
+              />
+            </div>
+            <div class="form-group">
+              <input
+                type="text"
+                name="last_name"
+                placeholder="Last Name"
+                class="form-control form-control-sm"
+                required
+                value="{{ values.last_name }}"
+              />
+            </div>
               <div class="form-group">
-
-
-   <div class="form-group">
-    <input
-                  type="text"
-                  name="username"
-                  placeholder="Username"
-                  id="validationServerUsername"
-                 class="form-control   username form-control-sm"
-                  required
-                  value="{{ values.username }}"
-                />
-
-      </div>
-<div class="spinner-border username_spinner  spinner-border-sm" style="display:none;"></div>
-<div class="valid-feedback username-check-done">
-       <i class="fa fa-check" color="green"></i><span>Available</span>
-      </div>
- <div class="invalid-feedback" style="display:none;">
-
-        </div>
+            <div class="form-group">            
+               <div class="form-group">
+                <input
+                    type="text"
+                    name="username"
+                    placeholder="Username"
+                    id="validationServerUsername"
+                    class="form-control   username form-control-sm"
+                    required
+                    value="{{ values.username }}"
+                  />
+            
               </div>
+                  <div class="spinner-border username_spinner  spinner-border-sm" style="display:none;"></div>
+                  <div class="valid-feedback username-check-done">
+                    <i class="fa fa-check" color="green"></i><span>Available</span>
+                  </div>
+                  <div class="invalid-feedback" style="display:none;"></div>
+                  </div>
               <div class="form-group">
-
                 <input
                   type="email"
                   name="email"
                   placeholder="Email"
-                 class="form-control form-control-sm user-email"
+                  class="form-control form-control-sm user-email"
                   required
                   value="{{ values.email }}"
                 />
-
-
-
               </div>
-
-<div class="spinner-border email_spinner  spinner-border-sm" style="display:none;"></div>
-<div class="valid-feedback email-check-done" style="display:none;">
-       <i class="fa fa-check" color="green"></i><span>Email Looks good !</span>
-      </div>
- <div class="email-invalid-feedback invalid-feedback" style="display:none;">
-              </div>
+                  <div class="spinner-border email_spinner  spinner-border-sm" style="display:none;"></div>
+                  <div class="valid-feedback email-check-done" style="display:none;">
+                    <i class="fa fa-check" color="green"></i><span>Email Looks good !</span>
+                  </div>
+                  <div class="email-invalid-feedback invalid-feedback" style="display:none;"></div>
               <div class="form-group">
                 <input
                   type="password"
                   placeholder="Password"
                   name="password"
-                   class="form-control form-control-sm passwordField"
+                    class="form-control form-control-sm passwordField"
                   required
                   value="{{ values.password }}"
                 >
@@ -74,48 +133,55 @@
 
                 <small class="float-right py-2  show-toggler">{{ selected_language.welcome.register.show }}</small>
               </div>
-              <input
-                type="submit"
-                value="{{ selected_language.welcome.register.boton_register }}"
-                class="btn btn-primary submit-btn btn-block btn-sm btn-block"
-              />
-                 <div class="lower my-3 pl-3 pr-3">
-                                    <div class="row">
-                                        <div class="col-md-5">
-                                            <hr class="ml-1">
-                                        </div>
-                                        <div class="col-md-2">
-                                            <small class="text-muted">OR</small>
-                                        </div>
-                                        <div class="col-md-5">
-                                            <hr class="mr-1">
-                                        </div>
-                                    </div>
-                                    <a href="{% url 'request-password'%}" class="btn btn-block btn-sm">{{ selected_language.welcome.register.reset_password }}</a>
-
-                                    <a href="{% url 'login' %}" class="btn btn-block btn-sm">{{ selected_language.welcome.register.back_login }}</a>
-
-                                </div>
-            </form>
-
+                <input
+                  type="submit"
+                  value="{{ selected_language.welcome.register.boton_register }}"
+                  class="btn btn-primary submit-btn btn-block btn-sm btn-block"
+                />
+                    <div class="lower my-3 pl-3 pr-3">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <hr class="ml-1">
+                            </div>
+                            <div class="col-md-2">
+                                <small class="text-muted">OR</small>
+                            </div>
+                            <div class="col-md-5">
+                                <hr class="mr-1">
+                            </div>
                         </div>
+                        <a href="{% url 'request-password'%}" class="btn btn-block btn-sm">{{ selected_language.welcome.register.reset_password }}</a>
+
+                        <a href="{% url 'login' %}" class="btn btn-block btn-sm">{{ selected_language.welcome.register.back_login }}</a>
+
+                    </div>
+                </form>
+            
+                                    </div>
+                      </div>
+                    </div>
+                  </div>
+                  </div>
+                </div>
+            
+            
+            <script src={% static 'js/register.js' %}>
+            
+            
+            </script>
+            
+              </div>
+            </section>
+        <!-- // Item -->
+
           </div>
         </div>
+        <!-- // Item -->
       </div>
-    </div>
-
-
-<script src={% static 'js/register.js' %}>
-
-
-</script>
-
   </div>
-</section>
+  <!-- Banner Ends Here -->
+
+
+
 
 {%endblock%}
-
-
-
-
-

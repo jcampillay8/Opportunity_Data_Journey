@@ -1,7 +1,5 @@
-from django.shortcuts import render
-
-# Create your views here.
 from django.shortcuts import render, redirect
+from django.contrib.auth.models import Group
 from django.views import View
 import json
 from django.views.generic import (View, TemplateView)
@@ -21,6 +19,7 @@ from django.urls import reverse
 from django.contrib import auth
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from apps.utils import get_context
+from apps.client_management.models import ClientData
 
 import threading
 # Create your views here.
@@ -58,31 +57,41 @@ class UsernameValidationView(View):
         return JsonResponse({'username_valid': True})
 
 
+
+
 class RegistrationView(View):
     def get(self, request):
-        return render(request, 'authentication/register.html', get_context(request))
+        context = get_context(request)
+        context['companies'] = ClientData.objects.all()
+        return render(request, 'authentication/register.html', context)
 
     def post(self, request):
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
         username = request.POST.get('username')
         email = request.POST.get('email')
         password = request.POST.get('password')
 
-        # Actualizar el idioma seleccionado en la sesión
-        request.session['language'] = request.POST.get('language', 'English')
-
         context = get_context(request)
 
-        if username and email and password:
+        if first_name and last_name and username and email and password:
             if not User.objects.filter(username=username).exists():
                 if not User.objects.filter(email=email).exists():
                     if len(password) < 6:
                         messages.error(request, 'Password too short')
                         return render(request, 'authentication/register.html', context)
 
-                    user = User.objects.create_user(username=username, email=email)
+                    # Crea el usuario e incluye first_name y last_name
+                    user = User.objects.create_user(username=username, email=email, first_name=first_name, last_name=last_name)
                     user.set_password(password)
                     user.is_active = False
+                    user.is_staff = False
                     user.save()
+
+                    # Asignar al usuario al grupo "Empresa_Cliente"
+                    group = Group.objects.get(name='Empresa_Cliente')
+                    group.user_set.add(user)
+
                     current_site = get_current_site(request)
                     email_body = {
                         'user': user,
@@ -110,6 +119,7 @@ class RegistrationView(View):
         else:
             messages.error(request, 'Please fill all fields')
             return render(request, 'authentication/register.html',context)
+
 
 
 

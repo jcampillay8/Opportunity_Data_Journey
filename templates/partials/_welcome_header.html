@@ -1,0 +1,54 @@
+{% load static%} 
+
+
+
+{%block content%}
+
+<style>
+
+  @media (max-width: 768px) {
+    .content-container {
+      flex-direction: column;
+      justify-content: center; /* Añadido para centrar el contenido */
+    }
+  }
+</style>
+
+<header class="">
+    <nav class="navbar navbar-expand-lg">
+      <div class="container">
+        
+        <a href="{% url 'welcome' %}" class="navbar-brand">
+          <span style="color:red; font-size: 2em; text-shadow: 0px 0px 0.1px white;">S&P</span>
+          <span style="color:red; font-size: 2em; text-shadow: 0px 0px 0.1px white;"> GLOBAL</span>
+      </a>
+      
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item {% if request.path == '/' %}active{% endif %}">
+              <a class="nav-link" href="{% url 'welcome' %}">Home
+                <span class="sr-only">(current)</span>
+              </a>
+            </li>
+            <li class="nav-item {% if request.path == '/authentication/login' %}active{% endif %}">
+                <a class="nav-link" id="login-link" href="/authentication/login">{{ selected_language.welcome.header_welcome.login }}</a>
+            </li>
+            <li class="nav-item {% if request.path == '/authentication/register' %}active{% endif %}">
+                <a class="nav-link" id="register-link" href="/authentication/register">{{ selected_language.welcome.header_welcome.register }}</a>
+            </li>
+            <li class="nav-item {% if request.path == '/authentication/request-password' %}active{% endif %}">
+                <a class="nav-link" id="forgot-password-link" href="/authentication/request-password">{{ selected_language.welcome.header_welcome.forgot_password }}</a>
+            </li>
+          </ul>
+        </div>
+        
+      </div>
+    </nav>
+  </header>
+
+
+{%endblock%}

@@ -1,0 +1,37 @@
+{% extends 'welcome.html' %} 
+
+{% load static%} {%block title%} | Login to Account
+
+{%endblock%} 
+
+{%block content%}
+
+<style>
+  @media (max-width: 768px) {
+    .content-container {
+      flex-direction: column;
+      justify-content: center; /* Añadido para centrar el contenido */
+    }
+  }
+</style>
+
+<h1 style="font-size: 3.5em; font-weight: bold; color: white; text-align: center;">Welcome to E-Marketing Business</h1>
+
+<div class="cover-container h-100 d-flex mx-auto flex-column" style="padding-top: -10px; width: 100%; padding-bottom: 200px; text-align: center;">      
+  <main role="main" class="inner cover d-flex flex-column" style="background-color: rgba(255, 255, 255, 0.7); border-radius: 15px; padding: 20px 20px; margin-left: 20px;">
+      
+          <h1 class="cover-heading" id="typewriter" style="padding: 20px;"></h1>
+      
+      
+      <p class="lead" style="font-size: 1.5em; font-weight: bold;">fortune favors the brave</p>
+      
+      <p class="lead mt-auto">
+          <a href="/authentication/login" class="btn btn-lg btn-secondary" style="background-color: #007bff;">{{selected_language.welcome.welcome_content.button_authenticated }}</a>
+      </p>
+  </main>
+</div>
+
+
+
+
+{%endblock%}
