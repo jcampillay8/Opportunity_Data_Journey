@@ -4,6 +4,7 @@ from dash import Dash, html, dcc, callback, Input, Output, State, callback
 from dash.dependencies import Input, Output, State
 from django_plotly_dash import DjangoDash  
 from django.core.exceptions import ObjectDoesNotExist
+from apps.request.models import CotizacionRealizada, CotizacionRealizada_Productos, CotizacionRealizada_Archivos, Estado_Solicitudes
 import dash_daq as daq
 from datetime import date
 from apps.request.forms_content.cotizacion_realizada import form_cotizacion_realizada, save_button2
@@ -209,6 +210,35 @@ def update_output2(submit_n_clicks, table_producto, table_data, nombre_proveedor
             "Nombre de Quién Autoriza": [nombre_autoriza],
         })
         df_cotizacion_realizada_productos = pd.DataFrame(table_producto)
+        cotizacion_realizada = CotizacionRealizada.objects.create(
+            User_Id=user_id,
+            User_Name=username,
+            Formulario="Cotización Realizada",
+            Nombre_Proveedor=nombre_proveedor,
+            Rut_Proveedor=rut_proveedor,
+            Empresa=empresa_value,
+            Area=area_value,
+            Centro_Costo=centro_costo,
+            Nombre_Solicitante=nombre_solicitante,
+            Nombre_Autoriza=nombre_autoriza,
+        )
+        for producto in table_producto:
+            CotizacionRealizada_Productos.objects.create(
+                ID_OC=cotizacion_realizada,
+                Nombre_Producto=producto['Nombre Producto'],
+                Cantidad=producto['Cantidad'],
+                Descripcion_Producto=producto['Descripción Producto'],
+            )
+        for archivo in table_data:
+            CotizacionRealizada_Archivos.objects.create(
+                ID_OC=cotizacion_realizada,
+                File_Number=archivo['File Number'],
+                File_Name=archivo['File Name'],
+                File_Type=archivo['File Type'],
+            )
+        Estado_Solicitudes.objects.create(
+            ID_OC=cotizacion_realizada,
+        )
         return save_button2("Valores Cargados Correctamente", df_cotizacion_realizada.to_dict('records'), df_cotizacion_realizada_productos.to_dict('records'), table_data, file_data) 
     elif submit_n_clicks == 0:
         return ''
