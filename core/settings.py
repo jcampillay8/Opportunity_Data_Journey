@@ -240,7 +240,7 @@ MESSAGE_TAGS = {
 }
 
 
-
+DATA_UPLOAD_MAX_MEMORY_SIZE = 5242880  # Aumenta el límite a 5MB
 
 
 # email stuff

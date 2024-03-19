@@ -40,7 +40,7 @@
     <div class="container">
       
       
-      <a href="index.html" class="navbar-brand"><span style="color:red;">S&P</span><span style="color:red"> Global</span></a>
+      <a href="{% url 'welcome' %}" class="navbar-brand"><span style="color:red;">SP</span><span style="color:red"> Global</span></a>
 
 
       <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -50,15 +50,15 @@
       <div class="navbar-collapse collapse" id="navbarContent">
         <ul class="navbar-nav ml-auto pt-3 pt-lg-0">
           <li class="nav-item active">
-            <a href="index.html" class="nav-link">Home</a>
+            <a href="{% url 'welcome' %}" class="nav-link">Hogar</a>
           </li>
 
           <li class="nav-item">
-            <a href="{% url 'request_home' %}" class="nav-link">Services</a>
+            <a href="{% url 'request_home' %}" class="nav-link">Servicios</a>
           </li>
           
           <li class="nav-item">
-            <a href="contact.html" class="nav-link">Contact</a>
+            <a href="{% url 'contact' %}" class="nav-link">Contacto</a>
           </li>
         </ul>
       </div>
@@ -70,7 +70,7 @@
               
               {% csrf_token %}
               <button type="submit" class="logout-button">
-                <i class="fas icon fa-sign-out-alt"></i> Logout
+                <i class="fas icon fa-sign-out-alt"></i> Cerrar Sesión
               </button>
               {% else %}
               <div></div>

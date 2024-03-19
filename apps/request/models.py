@@ -1,20 +1,18 @@
-# from django.db import models
+from django.db import models
+from django.contrib.auth.models import User
 
-# class Request(models.Model):
-#     DROPDOWN_CHOICES = [
-#         ('option1', 'Opción 1'),
-#         ('option2', 'Opción 2'),
-#         # Agrega más opciones aquí
-#     ]
-
-#     text = models.CharField(max_length=200)
-#     number = models.IntegerField()
-#     date = models.DateField()
-#     dropdown = models.CharField(max_length=200, choices=DROPDOWN_CHOICES)
-#     checkbox1 = models.BooleanField()
-#     checkbox2 = models.BooleanField()
-#     checkbox3 = models.BooleanField()
-#     radios = models.CharField(max_length=200)
-#     range = models.IntegerField()
-#     file = models.FileField(upload_to='uploads/')
-#     textarea = models.TextField()
+class CotizacionRealizada(models.Model):
+    auth_user = models.ForeignKey(User, on_delete=models.CASCADE)
+    formulario = models.CharField(max_length=200)
+    nombre_proveedor = models.CharField(max_length=200)
+    rut_proveedor = models.CharField(max_length=200)
+    empresa = models.CharField(max_length=200)
+    area = models.CharField(max_length=200)
+    centro_costo = models.CharField(max_length=200)
+    nombre_solicitante = models.CharField(max_length=200)
+    nombre_autoriza = models.CharField(max_length=200)
+    nombre_producto = models.CharField(max_length=200)
+    cantidad = models.IntegerField()
+    descripcion_producto = models.TextField()
+    hora_solicitud = models.DateTimeField(auto_now_add=True)
+    fecha_solicitud = models.DateField(auto_now_add=True)
