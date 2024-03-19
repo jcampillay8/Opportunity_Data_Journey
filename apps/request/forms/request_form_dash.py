@@ -112,8 +112,8 @@ def update_area_dropdown(selected_company):
      Output('input_cantidad', 'value'),
      Output('input_descripcion_producto', 'value')],
     Input('editing-rows-button', 'n_clicks'),
-    State('table', 'data'),
-    State('table', 'columns'),
+    State('table_producto', 'data'),
+    State('table_producto', 'columns'),
     State('input_nombre_producto', 'value'),
     State('input_cantidad', 'value'),
     State('input_descripcion_producto', 'value')
@@ -139,72 +139,6 @@ def open_confirm_dialog(n_clicks):
     if n_clicks is not None and n_clicks > 0:
         return True, "¿Está seguro de guardar la información?"
     return False, ""
-
-@app.callback(
-    Output('output-container2', 'children'),
-    [Input('confirm', "submit_n_clicks")],
-    [State('input_nombre_proveedor', 'value'),
-     State('input_rut_proveedor', 'value'),
-     State('empresa-dropdown', 'value'),
-     State('area-dropdown', 'value'),
-     State('input_centro_costo', 'value'),
-     State('input_nombre_solicitante', 'value'),
-     State('input_nombre_autoriza', 'value'),
-     State('user_id', 'children'),
-     State('username', 'children'),
-     State('confirm', 'displayed')],
-    prevent_initial_call=True
-)
-def update_output2(submit_n_clicks, nombre_proveedor, rut_proveedor, empresa_value, area_value, centro_costo, nombre_solicitante, nombre_autoriza, user_id, username, is_confirm_open,request):
-    if submit_n_clicks is not None and submit_n_clicks > 0 and nombre_proveedor and rut_proveedor and empresa_value and area_value and centro_costo and nombre_solicitante and nombre_autoriza:
-        user = request.user
-        user_id = user.id
-        username = user.username
-        df_cotizacion_realizada = pd.DataFrame({
-            "User_Id": [user_id],
-            "User_Name": [username],
-            "Formulario": ["Cotización Realizada"],
-            "Nombre Proveedor": [nombre_proveedor],
-            "Rut_Proveedor": [rut_proveedor],
-            "Empresa": [empresa_value],
-            "Area": [area_value],
-            "Centro Costo": [centro_costo],
-            "Nombre Solicitante": [nombre_solicitante],
-            "Nombre de Quién Autoriza": [nombre_autoriza],
-        })
-        return save_button2("Valores Cargados Correctamente", df_cotizacion_realizada.to_dict('records'))
-    elif submit_n_clicks == 0:
-        return ''
-    else:
-        return 'Error botón'
-
-
-
-# @app.callback(
-#     Output('output-container2', 'children'),
-#     Input('save-button', 'n_clicks'),
-#     State('empresa-dropdown', 'value'),
-#     State('area-dropdown', 'value'),
-#     State('input_nombre_proveedor', 'value'),
-#     prevent_initial_call=True
-# )
-# def update_output2(n_clicks, empresa_value, area_value, input_value):
-#     if n_clicks > 0 and empresa_value and area_value and input_value:
-#         df_solicitud_cotizacion = pd.DataFrame({
-#             "Nombre Proveedor": [input_value],
-#             "Empresa": [empresa_value],
-#             "Area": [area_value]
-#         })
-#         return save_button("Valores Cargados Correctamente", df_solicitud_cotizacion.to_dict('records'))
-#     else:
-#         return save_button('Error botón', [])
-
-
-
-
-
-
-
 
 
 def parse_contents(contents, filename, date):
@@ -238,26 +172,99 @@ def update_table(data):
     if data is not None:
         df = pd.DataFrame(data)
         return df.to_dict('records')
+        
+@app.callback(
+    Output('output-container2', 'children'),
+    [Input('confirm', "submit_n_clicks"),
+     Input('table_producto', 'data'),
+     Input('data-table', 'data')],  # Agrega 'data-table' como Input
+    [State('input_nombre_proveedor', 'value'),
+     State('input_rut_proveedor', 'value'),
+     State('empresa-dropdown', 'value'),
+     State('area-dropdown', 'value'),
+     State('input_centro_costo', 'value'),
+     State('input_nombre_solicitante', 'value'),
+     State('input_nombre_autoriza', 'value'),
+     State('user_id', 'children'),
+     State('username', 'children'),
+     State('confirm', 'displayed')],
+    prevent_initial_call=True
+)
+def update_output2(submit_n_clicks, table_producto, table_data, nombre_proveedor, rut_proveedor, empresa_value, area_value, centro_costo, nombre_solicitante, nombre_autoriza, user_id, username, is_confirm_open,request):
+    global file_data
+    if submit_n_clicks is not None and submit_n_clicks > 0 and nombre_proveedor and rut_proveedor and empresa_value and area_value and centro_costo and nombre_solicitante and nombre_autoriza:
+        user = request.user
+        user_id = user.id
+        username = user.username
+        df_cotizacion_realizada = pd.DataFrame({
+            "User_Id": [user_id],
+            "User_Name": [username],
+            "Formulario": ["Cotización Realizada"],
+            "Nombre Proveedor": [nombre_proveedor],
+            "Rut_Proveedor": [rut_proveedor],
+            "Empresa": [empresa_value],
+            "Area": [area_value],
+            "Centro Costo": [centro_costo],
+            "Nombre Solicitante": [nombre_solicitante],
+            "Nombre de Quién Autoriza": [nombre_autoriza],
+        })
+        df_cotizacion_realizada_productos = pd.DataFrame(table_producto)
+        return save_button2("Valores Cargados Correctamente", df_cotizacion_realizada.to_dict('records'), df_cotizacion_realizada_productos.to_dict('records'), table_data, file_data) 
+    elif submit_n_clicks == 0:
+        return ''
+    else:
+        return ''
 
-@app.callback([Output('save-button', 'n_clicks'),
-            Output('output-message', 'children')],
-            Input('save-button', 'n_clicks'),
-            State('data-table', 'data'),
-            prevent_initial_call=True  )
-def save_files(n_clicks, table_data):
 
-    if n_clicks is not None:
-        try:
-            if not os.path.exists('uploaded_document_forms'):
-                os.makedirs('uploaded_document_forms')
-            for file in table_data:
-                matching_files = [f for f in file_data if f['File Name'] == file['File Name']]
-                if matching_files:
-                    with open(f'uploaded_document_forms/{matching_files[0]["File Name"]}', 'wb') as f:
-                        f.write(matching_files[0]['Content'])
-            return n_clicks, 'Archivos cargados exitosamente'
-        except Exception as e:
-            return n_clicks, f'Error en cargar archivos: {str(e)}'
+
+
+# @app.callback(
+#     Output('output-container2', 'children'),
+#     Input('save-button', 'n_clicks'),
+#     State('empresa-dropdown', 'value'),
+#     State('area-dropdown', 'value'),
+#     State('input_nombre_proveedor', 'value'),
+#     prevent_initial_call=True
+# )
+# def update_output2(n_clicks, empresa_value, area_value, input_value):
+#     if n_clicks > 0 and empresa_value and area_value and input_value:
+#         df_solicitud_cotizacion = pd.DataFrame({
+#             "Nombre Proveedor": [input_value],
+#             "Empresa": [empresa_value],
+#             "Area": [area_value]
+#         })
+#         return save_button("Valores Cargados Correctamente", df_solicitud_cotizacion.to_dict('records'))
+#     else:
+#         return save_button('Error botón', [])
+
+
+
+
+
+
+
+
+
+
+# @app.callback([Output('save-button', 'n_clicks'),
+#             Output('output-message', 'children')],
+#             Input('save-button', 'n_clicks'),
+#             State('data-table', 'data'),
+#             prevent_initial_call=True  )
+# def save_files(n_clicks, table_data):
+
+#     if n_clicks is not None:
+#         try:
+#             if not os.path.exists('uploaded_document_forms'):
+#                 os.makedirs('uploaded_document_forms')
+#             for file in table_data:
+#                 matching_files = [f for f in file_data if f['File Name'] == file['File Name']]
+#                 if matching_files:
+#                     with open(f'uploaded_document_forms/{matching_files[0]["File Name"]}', 'wb') as f:
+#                         f.write(matching_files[0]['Content'])
+#             return n_clicks, 'Archivos cargados exitosamente'
+#         except Exception as e:
+#             return n_clicks, f'Error en cargar archivos: {str(e)}'
 
 
 

@@ -9,6 +9,8 @@ import dash_daq as daq
 from datetime import date
 import dash_table
 import pandas as pd
+import os
+
 
 # df_cotizacion_realizada = pd.DataFrame(columns=['User_Id', 'User_Name','Formulario', 'Nombre Proveedor', 'Rut_Proveedor', 'Empresa', 'Area', 'Centro Costo', 'Nombre Solicitante', 'Nombre de Quién Autoriza', 'Nombre Producto', 'Cantidad', 'Descripción Producto'])
 df_cotizacion_realizada = pd.DataFrame(columns=['User_Id', 'User_Name','Formulario', 'Nombre Proveedor', 'Rut_Proveedor', 'Empresa', 'Area', 'Centro Costo', 'Nombre Solicitante', 'Nombre de Quién Autoriza'])
@@ -331,7 +333,18 @@ def form_cotizacion_realizada():
 
     ]
 
-def save_button2(message, table_data):
+def save_button2(message, table_data, table_producto, data_table, file_data):  # Agrega file_data como un argumento
+    try:
+        if not os.path.exists('uploaded_document_forms'):
+            os.makedirs('uploaded_document_forms')
+        for file in data_table:
+            matching_files = [f for f in file_data if f['File Name'] == file['File Name']]
+            if matching_files:
+                with open(f'uploaded_document_forms/{matching_files[0]["File Name"]}', 'wb') as f:
+                    f.write(matching_files[0]['Content'])
+        message = 'Archivos cargados exitosamente'
+    except Exception as e:
+        message = f'Error en cargar archivos: {str(e)}'
     return [
         dbc.Row([
             dbc.Col((),width=1),
@@ -344,11 +357,37 @@ def save_button2(message, table_data):
             dbc.Col((),width=1),
             dbc.Col((dash_table.DataTable(
                 id='table',
-                columns=[{"name": i, "id": i} for i in df_cotizacion_realizada.columns],
+                columns=[{"name": i, "id": i} for i in pd.DataFrame(table_data).columns],
                 data=table_data,
             )),width=10),
             dbc.Col((),width=1),
-        ])
+        ]),
+        html.Div(style={'height': '40px'}),
+        dbc.Row([
+        dbc.Col((), width=1),
+        dbc.Col((
+            dash_table.DataTable(
+                id='table_productos',
+                columns=[{"name": i, "id": i} for i in pd.DataFrame(table_producto).columns],
+                data=table_producto,
+            )
+        ), width=10),
+        dbc.Col((), width=1),
+    ]),
+    html.Div(style={'height': '40px'}),
+    dbc.Row([
+        dbc.Col((), width=1),
+        dbc.Col((
+            dash_table.DataTable(
+                id='data_table',
+                columns=[{"name": i, "id": i} for i in pd.DataFrame(data_table).columns],
+                data=data_table,
+            )
+        ), width=10),
+        dbc.Col((), width=1),
+    ])
     ]
+
+
 
 
