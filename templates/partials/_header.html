@@ -6,7 +6,7 @@
 }
 
 .top-bar a, .navbar a, .navbar {
-    color: white;
+    color: white ;
 }
 
 </style>
@@ -16,14 +16,25 @@
     <div class="container">
       <div class="row align-items-center">
         
-          <div class="col-md-8">
-            <div class="d-inline-block">
-              <span class="mai-mail fg-primary"></span> <a href="mailto:contact@mail.com">{{ request.user.email }}</a>
-            </div>
-            <div class="d-inline-block ml-2">
-              <span class="mai-person fg-primary" ></span> <a href="username:username:">{{ request.user.username }}</a>
-            </div>
+        <div class="col-md-8">
+          <div class="d-inline-block">
+            <span class="mai-mail fg-primary"></span> <a href="mailto:contact@mail.com">{{ request.user.email }}</a>
           </div>
+          <div class="d-inline-block ml-2">
+            <span class="mai-person fg-primary"></span> 
+            <a href="username:username:">
+              {{ request.user.username }}
+              {% if request.user.is_superuser %}
+                (Usuario Administrador)
+              {% elif request.user.is_staff %}
+                (Usuario Empleado)
+              {% else %}
+                (Usuario Cliente)
+              {% endif %}
+            </a>
+          </div>
+        </div>
+        
         <div class="col-md-4 text-right d-none d-md-block">
           <div class="social-mini-button">
             <a href="#"><span class="mai-logo-facebook-f"></span></a>

@@ -19,7 +19,7 @@ from django.urls import reverse
 from django.contrib import auth
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from apps.utils import get_context
-from apps.client_management.models import ClientData
+from apps.client_management.models import ClientData, UserCompany 
 
 import threading
 # Create your views here.
@@ -45,19 +45,34 @@ class EmailValidationView(View):
             return JsonResponse({'email_error': 'sorry email in use,choose another one '}, status=409)
         return JsonResponse({'email_valid': True})
 
-
 class UsernameValidationView(View):
     def post(self, request):
         data = json.loads(request.body)
-        username = data['username']
+        username = data.get('username', '')
         if not str(username).isalnum():
-            return JsonResponse({'username_error': 'username should only contain alphanumeric characters'}, status=400)
+            return JsonResponse({'error': 'username can  only contain letters and numbers'})
         if User.objects.filter(username=username).exists():
-            return JsonResponse({'username_error': 'sorry username in use,choose another one '}, status=409)
-        return JsonResponse({'username_valid': True})
+            return JsonResponse({'error': 'username is taken,please choose a new one'})
+        return JsonResponse({'is_available': 'true'})
 
 
 
+class CredentialsValidationView(View):
+    def post(self, request):
+        data = json.loads(request.body)
+        email = data.get('email', '')
+        if not email:
+            return JsonResponse({'error': 'Please enter an email'})
+        is_valid = validate_email(email)
+        if not is_valid:
+            return JsonResponse({'error': 'Please enter a valid email'})
+        if User.objects.filter(email=email).exists():
+            return JsonResponse({'error': 'Email is taken,please choose a new one'})
+        # if not validate_email(email, check_mx=True):
+        #     return JsonResponse({'error': 'The email domain server does not exist'})
+        # if not validate_email(email, verify=True):
+        #     return JsonResponse({'error': 'The email does not exist on the domain server'})
+        return JsonResponse({'valid': True})
 
 class RegistrationView(View):
     def get(self, request):
@@ -71,10 +86,11 @@ class RegistrationView(View):
         username = request.POST.get('username')
         email = request.POST.get('email')
         password = request.POST.get('password')
+        company_name = request.POST.get('company_name')  # Obtiene el nombre de la compañía del formulario
 
         context = get_context(request)
 
-        if first_name and last_name and username and email and password:
+        if first_name and last_name and username and email and password and company_name:  # Asegúrate de que también se proporcionó el nombre de la compañía
             if not User.objects.filter(username=username).exists():
                 if not User.objects.filter(email=email).exists():
                     if len(password) < 6:
@@ -91,6 +107,14 @@ class RegistrationView(View):
                     # Asignar al usuario al grupo "Empresa_Cliente"
                     group = Group.objects.get(name='Empresa_Cliente')
                     group.user_set.add(user)
+
+                    # Crea una entrada en UserCompany
+                    if ClientData.objects.filter(company_name=company_name).exists():
+                        company = ClientData.objects.get(company_name=company_name)
+                        UserCompany.objects.create(user=user, company=company)
+                    else:
+                        messages.error(request, 'The company does not exist')
+                        return render(request, 'authentication/register.html', context)
 
                     current_site = get_current_site(request)
                     email_body = {
@@ -116,6 +140,7 @@ class RegistrationView(View):
                     EmailThread(email).start()
                     messages.success(request, 'Account successfully created')
                     return render(request, 'authentication/register.html',context)
+
         else:
             messages.error(request, 'Please fill all fields')
             return render(request, 'authentication/register.html',context)

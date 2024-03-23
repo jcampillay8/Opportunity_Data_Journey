@@ -5,6 +5,8 @@ from dash.dependencies import Input, Output, State
 from django.contrib.auth.models import User
 from django_plotly_dash import DjangoDash  
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.mail import EmailMessage
+import traceback
 import dash_daq as daq
 from datetime import date
 import dash_table
@@ -16,7 +18,7 @@ import os
 df_cotizacion_realizada = pd.DataFrame(columns=['User_Id', 'User_Name','Formulario', 'Nombre Proveedor', 'Rut_Proveedor', 'Empresa', 'Area', 'Centro Costo', 'Nombre Solicitante', 'Nombre de Quién Autoriza'])
 df_cotizacion_realizada_productos = pd.DataFrame(columns=['Nombre Producto', 'Cantidad', 'Descripción Producto'])
 
-def form_cotizacion_realizada():
+def form_cotizacion_realizada(selected_company):
     return[
     html.Br(),
     dbc.Row([
@@ -35,7 +37,7 @@ def form_cotizacion_realizada():
             dbc.Col(html.Div([
                 html.Br(),
                 dcc.Markdown(''' ### NOMBRE PROVEEDOR: '''),
-            ]), width=3),
+            ]), md=12, width=3, lg=3),
             dbc.Col(html.Div([
                 html.Br(),
                 dcc.Input(
@@ -45,7 +47,8 @@ def form_cotizacion_realizada():
                     value='',
                     style={'width': '100%'}
                 ),
-            ], className='pl-0'), width=9),
+            ], className='pl-0'), md=12, width=9, lg=9),
+
                 ])
             ),width=10),
             dbc.Col(width=1),
@@ -57,7 +60,7 @@ def form_cotizacion_realizada():
                                 dbc.Col(html.Div([
                 html.Br(),
                 dcc.Markdown(''' ### RUT PROVEEDOR: '''),
-            ]), width=3),
+            ]), md=12, width=3, lg=3),
             dbc.Col(html.Div([
                 html.Br(),
                 dcc.Input(
@@ -67,7 +70,7 @@ def form_cotizacion_realizada():
                     value='',
                     style={'width': '100%'}
                 ),
-            ], className='pl-0'), width=9),
+            ], className='pl-0'), md=12, width=9, lg=9),
                 ])
             ),width=10),
             dbc.Col(width=1),
@@ -79,15 +82,15 @@ def form_cotizacion_realizada():
         dbc.Col((html.Div([
             html.Div(style={'height': '20px'}),  # Add a space
     
-            html.Div(style={'height': 'form0px'}),  # Add a space
-            dbc.Row([
-                dbc.Col(dcc.Markdown(''' ### EMPRESA: '''), width=3),
-                dbc.Col(dcc.Dropdown(id='empresa-dropdown', options=[{'label': i, 'value': i} for i in ['ETICSA', 'DTS']]), width=9),
-            ]),
+            # dbc.Row([
+            #     dbc.Col(dcc.Markdown(''' ### EMPRESA: '''), md=12, width=3, lg=3),
+            #     dbc.Col(dcc.Dropdown(id='empresa-dropdown', options=[{'label': i, 'value': i} for i in ['ETICSA', 'DTS']]), md=12, width=9, lg=9),
+            # ]),
             html.Div(style={'height': '20px'}),  # Add a space between the dropdowns
             dbc.Row([
-                dbc.Col(dcc.Markdown(''' ### ÁREA: '''), width=3),
-                dbc.Col(dcc.Dropdown(id='area-dropdown'), width=9),
+                dbc.Col(dcc.Markdown(''' ### ÁREA: '''), md=12, width=3, lg=3),
+                #dbc.Col(dcc.Dropdown(id='area-dropdown'), md=12, width=9, lg=9),
+                dbc.Col(dcc.Dropdown(selected_company, id='area-dropdown'), md=12, width=9, lg=9),
             ]),
             ])),width=10),
         dbc.Col(width=1)
@@ -99,7 +102,7 @@ def form_cotizacion_realizada():
                                 dbc.Col(html.Div([
                 html.Br(),
                 dcc.Markdown(''' ### CENTRO COSTO: '''),
-            ]), width=3),
+            ]), md=12, width=3, lg=3),
             dbc.Col(html.Div([
                 html.Br(),
                 dcc.Input(
@@ -109,7 +112,7 @@ def form_cotizacion_realizada():
                     value='',
                     style={'width': '100%'}
                 ),
-            ], className='pl-0'), width=9),
+            ], className='pl-0'), md=12, width=9, lg=9),
                 ])
             ),width=10),
             dbc.Col(width=1),
@@ -122,7 +125,7 @@ def form_cotizacion_realizada():
                                 dbc.Col(html.Div([
                 html.Br(),
                 dcc.Markdown(''' ### NOMBRE SOLICITANTE: '''),
-            ]), width=3),
+            ]), md=12, width=3, lg=3),
             dbc.Col(html.Div([
                 html.Br(),
                 dcc.Input(
@@ -132,7 +135,7 @@ def form_cotizacion_realizada():
                     value='',
                     style={'width': '100%'}
                 ),
-            ], className='pl-0'), width=9),
+            ], className='pl-0'), md=12, width=9, lg=9),
                 ])
             ),width=10),
             dbc.Col(width=1),
@@ -145,7 +148,7 @@ def form_cotizacion_realizada():
                                 dbc.Col(html.Div([
                 html.Br(),
                 dcc.Markdown(''' ### NOMBRE DE QUIÉN AUTORIZA: '''),
-            ]), width=3),
+            ]), md=12, width=3, lg=3),
             dbc.Col(html.Div([
                 html.Br(),
                 dcc.Input(
@@ -155,7 +158,7 @@ def form_cotizacion_realizada():
                     value='',
                     style={'width': '100%'}
                 ),
-            ], className='pl-0'), width=9),
+            ], className='pl-0'), md=12, width=9, lg=9),
                 ])
             ),width=10),
             dbc.Col(width=1),
@@ -177,7 +180,7 @@ def form_cotizacion_realizada():
             dbc.Col(html.Div([
                 html.Br(),
                 dcc.Markdown(''' ### NOMBRE PRODUCTO: '''),
-            ]), width=2),
+            ]), md=12, width=2, lg=2),
             dbc.Col(html.Div([
                 html.Br(),
                 dcc.Input(
@@ -187,11 +190,11 @@ def form_cotizacion_realizada():
                     value='',
                     style={'width': '100%'}
                 ),
-            ], className='pl-0'), width=6),
+            ], className='pl-0'), md=12, width=6, lg=6),
             dbc.Col(html.Div([
                 html.Br(),
                 dcc.Markdown(''' ### CANTIDAD: '''),
-            ]), width=2),
+            ]), md=12, width=2, lg=2),
             dbc.Col(html.Div([
                 html.Br(),
                 dcc.Input(
@@ -201,7 +204,7 @@ def form_cotizacion_realizada():
                     value='',
                     style={'width': '100%'}
                 ),
-            ], className='pl-0'), width=2),
+            ], className='pl-0'), md=12, width=2, lg=2),
             
                 ])
             ),width=10),
@@ -333,7 +336,36 @@ def form_cotizacion_realizada():
 
     ]
 
-def save_button2(message, table_data, table_producto, data_table, file_data):  # Agrega file_data como un argumento
+
+
+def send_email(user_email):
+    subject = "Solicitud 'Cotización Realizada' ha sido correctamente generada y enviada"
+    message = """
+    Estimado cliente,
+
+    Nos complace informarle que su solicitud de cotización ha sido generada y enviada con éxito. Agradecemos su confianza en nuestros servicios y nos esforzamos por cumplir con sus expectativas.
+
+    Si tiene alguna pregunta o necesita más información, no dude en ponerse en contacto con nosotros. Estamos a su disposición para ayudarle.
+
+    Saludos cordiales,
+
+    SP Global
+    """
+    email = EmailMessage(
+        subject,
+        message,
+        "no-contestar@inbox.mailtrap.io",
+        [user_email],
+        reply_to=[user_email]
+    )
+    try:
+        email.send()
+    except Exception as e:
+        print(traceback.format_exc())
+
+
+
+def save_button2(message, table_data, table_producto, data_table, file_data, user_email):  # Agrega file_data como un argumento
     try:
         if not os.path.exists('uploaded_document_forms'):
             os.makedirs('uploaded_document_forms')
@@ -342,14 +374,18 @@ def save_button2(message, table_data, table_producto, data_table, file_data):  #
             if matching_files:
                 with open(f'uploaded_document_forms/{matching_files[0]["File Name"]}', 'wb') as f:
                     f.write(matching_files[0]['Content'])
-        message = 'Archivos cargados exitosamente'
+        message = dbc.Alert( [ html.I(className="bi bi-check-circle-fill me-2"), "Archivos cargados exitosamente", ], color="success", className="d-flex align-items-center", ),
+        file_data.clear()
+        send_email(user_email)
     except Exception as e:
-        message = f'Error en cargar archivos: {str(e)}'
+        message = dbc.Alert( [ html.I(className="bi bi-x-octagon-fill me-2"), f'Error en cargar archivos: {str(e)}', ], color="danger", className="d-flex align-items-center", ),
     return [
         dbc.Row([
             dbc.Col((),width=1),
             dbc.Col((
-                html.Div(message, id='output-message')
+                html.Div(style={'height': '20px'}),
+                html.Div(message, id='output-message', className="text-center"),
+                html.Div(style={'height': '20px'}),
             ),width=10),
             dbc.Col((),width=1),
         ]),
@@ -385,9 +421,21 @@ def save_button2(message, table_data, table_producto, data_table, file_data):  #
             )
         ), width=10),
         dbc.Col((), width=1),
-    ])
+    ]),
+    html.Div(style={'height': '40px'}),
     ]
 
 
 
-
+def message_alert(message_alert):
+    print(message_alert),
+    return[
+            dbc.Row([
+            dbc.Col((),width=1),
+            dbc.Col((
+                html.Div(style={'height': '20px'}),
+                dbc.Alert( [ html.I(className="bi bi-x-octagon-fill me-2"), message_alert, ], color="danger", className="d-flex align-items-center", ),
+                html.Div(style={'height': '20px'}),
+            ),width=10),
+        ]),
+        ]

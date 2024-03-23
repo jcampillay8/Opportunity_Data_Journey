@@ -7,7 +7,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from apps.request.models import CotizacionRealizada, CotizacionRealizada_Productos, CotizacionRealizada_Archivos, Estado_Solicitudes
 import dash_daq as daq
 from datetime import date
-from apps.request.forms_content.cotizacion_realizada import form_cotizacion_realizada, save_button2
+from apps.request.forms_content.cotizacion_realizada import form_cotizacion_realizada, save_button2, message_alert
 from apps.request.forms_content.solicitud_cotizacion import form_solicitud_cotizacion, save_button
 from django.contrib.auth.decorators import login_required
 
@@ -22,7 +22,7 @@ external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 theme = dbc.themes.BOOTSTRAP
 
-app = DjangoDash('Request_DashApp', add_bootstrap_links=True, external_stylesheets=[theme, dbc.icons.BOOTSTRAP], meta_tags = None)
+app = DjangoDash('Request_DashApp', add_bootstrap_links=True, external_stylesheets=[theme, dbc.icons.BOOTSTRAP], meta_tags=[ { "name": "viewport", "content": "width=device-width, initial-scale=1, maximum-scale=1", }, ],)
 
 file_data = []
 
@@ -46,7 +46,18 @@ def serve_layout():
     dbc.Row([
         dbc.Col(html.Div(style={'height': '20px'}), width=12)
     ]),
-    
+
+    dbc.Row([    
+        dbc.Col(width=2),
+        dbc.Col((html.Div([
+            html.Div(style={'height': '20px'}),  # Add a space
+            dcc.Markdown(''' # EMPRESA: '''),
+            html.Div(style={'height': '40px'}),  # Add a space
+            dcc.Dropdown(id='empresa-dropdown', options=[{'label': i, 'value': i} for i in ['ETICSA', 'DTS']]),
+            
+            ])),width=8),
+        dbc.Col(width=2)
+    ]), 
     dbc.Row([    
         dbc.Col(width=2),
         dbc.Col((html.Div([
@@ -74,10 +85,13 @@ def serve_layout():
         
         dbc.Col(width=1),
     ]),    
+
     html.Div(id='user_id', style={'display': 'none'}),
     html.Div(id='username', style={'display': 'none'}),
+    html.Div(id='email', style={'display' : 'none'})    
     ],
     fluid=True,
+    style={'padding-bottom':'200px'}
 )
 
 app.layout = serve_layout
@@ -87,25 +101,27 @@ app.layout = serve_layout
     Output('output-container', 'children'),
     Input('submit-button', 'n_clicks'),
     State('dropdown', 'value'),
+    State('empresa-dropdown', 'value'),
     prevent_initial_call=True
 )
-def update_output(n_clicks, value):
+def update_output(n_clicks, value, selected_company):
     if n_clicks > 0:
+        selected_company = [{'label': i, 'value': i} for i in area_options[selected_company]]
         if value == 'Cotización Realizada':
-            return form_cotizacion_realizada()
+            return form_cotizacion_realizada(selected_company)
         elif value == 'Solicitud de Cotización':
             return form_solicitud_cotizacion(app, file_data)
     else:
         return []
 
 
-@app.callback(
-    Output('area-dropdown', 'options'),
-    Input('empresa-dropdown', 'value'),
-    prevent_initial_call=True
-)
-def update_area_dropdown(selected_company):
-    return [{'label': i, 'value': i} for i in area_options[selected_company]]
+# @app.callback(
+#     Output('area-dropdown', 'options'),
+#     Input('empresa-dropdown', 'value'),
+#     prevent_initial_call=True
+# )
+# def update_area_dropdown(selected_company):
+#     return [{'label': i, 'value': i} for i in area_options[selected_company]]
 
 @app.callback(
     [Output('table_producto', 'data'),
@@ -173,12 +189,13 @@ def update_table(data):
     if data is not None:
         df = pd.DataFrame(data)
         return df.to_dict('records')
-        
+
+
 @app.callback(
     Output('output-container2', 'children'),
     [Input('confirm', "submit_n_clicks"),
      Input('table_producto', 'data'),
-     Input('data-table', 'data')],  # Agrega 'data-table' como Input
+     Input('data-table', 'data')], 
     [State('input_nombre_proveedor', 'value'),
      State('input_rut_proveedor', 'value'),
      State('empresa-dropdown', 'value'),
@@ -193,57 +210,156 @@ def update_table(data):
 )
 def update_output2(submit_n_clicks, table_producto, table_data, nombre_proveedor, rut_proveedor, empresa_value, area_value, centro_costo, nombre_solicitante, nombre_autoriza, user_id, username, is_confirm_open,request):
     global file_data
-    if submit_n_clicks is not None and submit_n_clicks > 0 and nombre_proveedor and rut_proveedor and empresa_value and area_value and centro_costo and nombre_solicitante and nombre_autoriza:
-        user = request.user
-        user_id = user.id
-        username = user.username
-        df_cotizacion_realizada = pd.DataFrame({
-            "User_Id": [user_id],
-            "User_Name": [username],
-            "Formulario": ["Cotización Realizada"],
-            "Nombre Proveedor": [nombre_proveedor],
-            "Rut_Proveedor": [rut_proveedor],
-            "Empresa": [empresa_value],
-            "Area": [area_value],
-            "Centro Costo": [centro_costo],
-            "Nombre Solicitante": [nombre_solicitante],
-            "Nombre de Quién Autoriza": [nombre_autoriza],
-        })
-        df_cotizacion_realizada_productos = pd.DataFrame(table_producto)
-        cotizacion_realizada = CotizacionRealizada.objects.create(
-            User_Id=user_id,
-            User_Name=username,
-            Formulario="Cotización Realizada",
-            Nombre_Proveedor=nombre_proveedor,
-            Rut_Proveedor=rut_proveedor,
-            Empresa=empresa_value,
-            Area=area_value,
-            Centro_Costo=centro_costo,
-            Nombre_Solicitante=nombre_solicitante,
-            Nombre_Autoriza=nombre_autoriza,
-        )
-        for producto in table_producto:
-            CotizacionRealizada_Productos.objects.create(
-                ID_OC=cotizacion_realizada,
-                Nombre_Producto=producto['Nombre Producto'],
-                Cantidad=producto['Cantidad'],
-                Descripcion_Producto=producto['Descripción Producto'],
+    # if submit_n_clicks is not None and submit_n_clicks > 0 and nombre_proveedor and rut_proveedor and empresa_value and area_value and centro_costo and nombre_solicitante and nombre_autoriza:
+    if submit_n_clicks is not None and submit_n_clicks > 0:
+        if not area_value:
+            return message_alert('Información incompleta - Agregar Valor Área')
+        elif not centro_costo:
+            return message_alert('Información incompleta - Agregar Valor Centro de Costo')
+        elif not nombre_solicitante:
+            return message_alert('Información incompleta - Agregar Valor Nombre Solicitante')
+        elif not nombre_autoriza:
+            return message_alert('Información incompleta - Agregar Valor Nombre de Quién Autoriza')
+        elif not table_producto or len(table_producto) == 0:
+            return message_alert('Información incompleta - Agregar valores en Tabla Productos')
+        elif not table_data or len(table_data) == 0:
+            return message_alert('Información incompleta - Agregar Documentos')
+        elif nombre_proveedor and rut_proveedor and empresa_value and area_value and centro_costo and nombre_solicitante and nombre_autoriza:
+            user = request.user
+            user_id = user.id
+            username = user.username
+            user_email = user.email
+            df_cotizacion_realizada = pd.DataFrame({
+                "User_Id": [user_id],
+                "User_Name": [username],
+                "Formulario": ["Cotización Realizada"],
+                "Nombre Proveedor": [nombre_proveedor],
+                "Rut_Proveedor": [rut_proveedor],
+                "Empresa": [empresa_value],
+                "Area": [area_value],
+                "Centro Costo": [centro_costo],
+                "Nombre Solicitante": [nombre_solicitante],
+                "Nombre de Quién Autoriza": [nombre_autoriza],
+            })
+            df_cotizacion_realizada_productos = pd.DataFrame(table_producto)
+            cotizacion_realizada = CotizacionRealizada.objects.create(
+                User_Id=user_id,
+                User_Name=username,
+                Formulario="Cotización Realizada",
+                Nombre_Proveedor=nombre_proveedor,
+                Rut_Proveedor=rut_proveedor,
+                Empresa=empresa_value,
+                Area=area_value,
+                Centro_Costo=centro_costo,
+                Nombre_Solicitante=nombre_solicitante,
+                Nombre_Autoriza=nombre_autoriza,
             )
-        for archivo in table_data:
-            CotizacionRealizada_Archivos.objects.create(
+            for producto in table_producto:
+                CotizacionRealizada_Productos.objects.create(
+                    ID_OC=cotizacion_realizada,
+                    Nombre_Producto=producto['Nombre Producto'],
+                    Cantidad=producto['Cantidad'],
+                    Descripcion_Producto=producto['Descripción Producto'],
+                )
+            for archivo in table_data:
+                CotizacionRealizada_Archivos.objects.create(
+                    ID_OC=cotizacion_realizada,
+                    File_Number=archivo['File Number'],
+                    File_Name=archivo['File Name'],
+                    File_Type=archivo['File Type'],
+                )
+            Estado_Solicitudes.objects.create(
                 ID_OC=cotizacion_realizada,
-                File_Number=archivo['File Number'],
-                File_Name=archivo['File Name'],
-                File_Type=archivo['File Type'],
             )
-        Estado_Solicitudes.objects.create(
-            ID_OC=cotizacion_realizada,
-        )
-        return save_button2("Valores Cargados Correctamente", df_cotizacion_realizada.to_dict('records'), df_cotizacion_realizada_productos.to_dict('records'), table_data, file_data) 
-    elif submit_n_clicks == 0:
-        return ''
+            return save_button2("Valores Cargados Correctamente", df_cotizacion_realizada.to_dict('records'), df_cotizacion_realizada_productos.to_dict('records'), table_data, file_data, user_email) 
+        elif submit_n_clicks == 0:
+            return ''
     else:
         return ''
+
+# @app.callback(
+#     Output('output-container2', 'children'),
+#     [Input('confirm', "submit_n_clicks"),
+#     Input('data-table', 'data')],  # Agrega 'data-table' como Input
+#     [State('table_producto', 'data'),     
+#      State('input_nombre_proveedor', 'value'),
+#      State('input_rut_proveedor', 'value'),
+#      State('empresa-dropdown', 'value'),
+#      State('area-dropdown', 'value'),
+#      State('input_centro_costo', 'value'),
+#      State('input_nombre_solicitante', 'value'),
+#      State('input_nombre_autoriza', 'value'),
+#      State('user_id', 'children'),
+#      State('username', 'children'),
+#      State('confirm', 'displayed')],
+#     prevent_initial_call=True
+# )
+# def update_output2(submit_n_clicks, nombre_proveedor, rut_proveedor, table_producto, data_table, empresa_value, area_value, centro_costo, nombre_solicitante, nombre_autoriza, user_id, username, is_confirm_open,request):
+#     print('Hola')
+#     global file_data
+#     if submit_n_clicks is not None and submit_n_clicks > 0 and nombre_proveedor and rut_proveedor and table_producto and data_table and empresa_value and area_value and centro_costo and nombre_solicitante and nombre_autoriza:
+#     #if submit_n_clicks is not None and submit_n_clicks > 0 nombre_proveedor and nomand table_producto and data_table and empresa_value and area_value and centro_costo and nombre_solicitante and nombre_autoriza:
+#         user = request.user
+#         user_id = user.id
+#         username = user.username
+#         user_email = user.email
+#         df_cotizacion_realizada = pd.DataFrame({
+#             "User_Id": [user_id],
+#             "User_Name": [username],
+#             "Formulario": ["Cotización Realizada"],
+#             "Nombre Proveedor": [nombre_proveedor],
+#             "Rut_Proveedor": [rut_proveedor],
+#             "Empresa": [empresa_value],
+#             "Area": [area_value],
+#             "Centro Costo": [centro_costo],
+#             "Nombre Solicitante": [nombre_solicitante],
+#             "Nombre de Quién Autoriza": [nombre_autoriza],
+#         })
+#         df_cotizacion_realizada_productos = pd.DataFrame(table_producto)
+#         cotizacion_realizada = CotizacionRealizada.objects.create(
+#             User_Id=user_id,
+#             User_Name=username,
+#             Formulario="Cotización Realizada",
+#             Nombre_Proveedor=nombre_proveedor,
+#             Rut_Proveedor=rut_proveedor,
+#             Empresa=empresa_value,
+#             Area=area_value,
+#             Centro_Costo=centro_costo,
+#             Nombre_Solicitante=nombre_solicitante,
+#             Nombre_Autoriza=nombre_autoriza,
+#         )
+#         for producto in table_producto:
+#             CotizacionRealizada_Productos.objects.create(
+#                 ID_OC=cotizacion_realizada,
+#                 Nombre_Producto=producto['Nombre Producto'],
+#                 Cantidad=producto['Cantidad'],
+#                 Descripcion_Producto=producto['Descripción Producto'],
+#             )
+#         for archivo in table_data:
+#             CotizacionRealizada_Archivos.objects.create(
+#                 ID_OC=cotizacion_realizada,
+#                 File_Number=archivo['File Number'],
+#                 File_Name=archivo['File Name'],
+#                 File_Type=archivo['File Type'],
+#             )
+#         Estado_Solicitudes.objects.create(
+#             ID_OC=cotizacion_realizada,
+#         )
+#         return save_button2("Valores Cargados Correctamente", df_cotizacion_realizada.to_dict('records'), df_cotizacion_realizada_productos.to_dict('records'), table_data, file_data,user_email) 
+#     elif submit_n_clicks == 1:
+#         return ''
+#     else:
+#         print(area_value)
+#         if not area_value:
+#             return message_alert('Información incompleta - Agregar Valor Área')
+#         elif not centro_costo:
+#             return message_alert('Información incompleta - Agregar Valor Centro de Costo')
+#         elif not nombre_solicitante:
+#             return message_alert('Información incompleta - Agregar Valor Nombre Solicitante')
+#         elif not nombre_autoriza:
+#             return message_alert('Información incompleta - Agregar Valor Nombre Autoriza')
+#         elif not table_producto:
+#             return message_alert('Información incompleta - Agregar valores en Tabla Productos')
 
 
 
