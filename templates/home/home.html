@@ -7,173 +7,334 @@
 
     <title> TITULO {% block title %} {% endblock %}</title>
     
-  <div class="page-banner home-banner mb-5">
-    <div class="slider-wrapper">
-      <div class="owl-carousel hero-carousel">
-        <div class="hero-carousel-item">
-          <img src="{% static 'img/bg_image_1.jpg' %}" alt="">
-          <div class="img-caption">
-            <div class="subhead">We're design studio believe in ideas</div>
-            <h1 class="mb-4">Creative Design</h1>
-            <a href="#services" class="btn btn-outline-light">Get Started</a>
-          </div>
-        </div>
-        <div class="hero-carousel-item">
-          <img src="{% static 'img/bg_image_2.jpg' %}" alt="">
-          <div class="img-caption">
-            <h1 class="mb-4">We combine Design, Thinking, and Technical</h1>
-            <a href="#services" class="btn btn-outline-light">Get Started</a>
-            <a href="#services" class="btn btn-primary">See Pricing</a>
-          </div>
-        </div>
-        <div class="hero-carousel-item">
-          <img src="{% static 'img/bg_image_3.jpg' %}" alt="">
-          <div class="img-caption">
-            <div class="subhead">Easy way to build perfect website</div>
-            <h1 class="mb-4">Beautify handcrafted templates for your website</h1>
-            <a href="#services" class="btn btn-primary">Read More</a>
-          </div>
-        </div>
-      </div>
-    </div> <!-- .slider-wrapper -->
-  </div> <!-- .page-banner -->
-    <main>
-      <div class="page-section">
-        <div class="container">
-          <div class="row align-items-center">
-            <div class="col-lg-6 py-3">
-              <div class="subhead">About Us</div>
-              <h2 class="title-section">We are <span class="fg-primary">Professional Teams</span> to Growth your Business</h2>
+<!-- header-slider-area start -->
+<section class="header-slider-area">
+  <div id="carousel-example-generic" class="carousel slide carousel-fade" data-ride="carousel">
   
-              <p>But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of</p>
-  
-              <a href="#" class="btn btn-primary mt-4">Read More</a>
-            </div>
-            <div class="col-lg-6 py-3">
-              <div class="about-img">
-                <img src="{% static 'img/about.jpg' %}" alt="">
-              </div>
-            </div>
-          </div>
-        </div>
-      </div> <!-- .page-section -->
-  
-      <div class="page-section">
-        <div class="container">
-          <div class="text-center">
-            <div class="subhead">Our Services</div>
-            <h2 class="title-section">See what can we do for your Projects</h2>
-          </div>
-  
-          <div class="row justify-content-center">
-            
-            <div class="col-md-6 col-lg-4 col-xl-3 py-3 mb-3">
-              <div class="text-center">
-                <div class="img-fluid mb-4">
-                  <img src="{% static 'img/icons/graphics_design.svg' %}" alt="">
-                </div>
-                <h5>Generar una Nueva Solicitud</h5>
-              </div>
-            </div>
-  
-  
-            <div class="col-md-6 col-lg-4 col-xl-3 py-3 mb-3">
-              <div class="text-center">
-                <div class="img-fluid mb-4">
-                  <img src="{% static 'img/icons/app_development.svg' %}" alt="">
-                </div>
-                <h5>Revisar Estado Solicitud</h5>
-              </div>
-            </div>
-  
-            
-  
-            <div class="col-md-6 col-lg-4 col-xl-3 py-3 mb-3">
-              <div class="text-center">
-                <div class="img-fluid mb-4">
-                  <img src="{% static 'img/icons/data_analyst.svg' %}" alt="">
-                </div>
-                <h5>Revisar Historial Solicitudes</h5>
-              </div>
-            </div>
-  
-          </div>
-        </div> <!-- .container -->
-      </div> <!-- .page-section -->
-  
-  
-      <div class="page-section">
-        <div class="container">
-          <div class="text-center">
-            <h2 class="title-section mb-3">Stay in touch</h2>
-            <p>Just say hello or drop us a line. You can manualy send us email on <a href="mailto:example@mail.com">example@mail.com</a></p>
-          </div>
-          <div class="row justify-content-center mt-5">
-            <div class="col-lg-8">
-              <form action="#" class="form-contact">
-                <div class="row">
-                  <div class="col-sm-6 py-2">
-                    <label for="name" class="fg-grey">Name</label>
-                    <input type="text" class="form-control" id="name" placeholder="Enter name..">
-                  </div>
-                  <div class="col-sm-6 py-2">
-                    <label for="email" class="fg-grey">Email</label>
-                    <input type="text" class="form-control" id="email" placeholder="Email address..">
-                  </div>
-                  <div class="col-12 py-2">
-                    <label for="subject" class="fg-grey">Subject</label>
-                    <input type="text" class="form-control" id="subject" placeholder="Subject..">
-                  </div>
-                  <div class="col-12 py-2">
-                    <label for="message" class="fg-grey">Message</label>
-                    <textarea id="message" rows="8" class="form-control" placeholder="Enter message.."></textarea>
-                  </div>
-                  <div class="col-12 mt-3">
-                    <button type="submit" class="btn btn-primary px-5">Submit</button>
-                  </div>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div> <!-- .container -->
-      </div> <!-- .page-section -->
-  
-      <div class="page-section">
-        <div class="container-fluid">
-          <div class="row row-cols-md-3 row-cols-lg-5 justify-content-center text-center">
-            <div class="py-3 px-5">
-              <img src="{% static 'img/clients/airbnb.png' %}" alt="">
-            </div>
-            <div class="py-3 px-5">
-              <img src="{% static 'img/clients/google.png' %}" alt="">
-            </div>
-            <div class="py-3 px-5">
-              <img src="{% static 'img/clients/mailchimp.png' %}" alt="">
-            </div>
-            <div class="py-3 px-5">
-              <img src="{% static 'img/clients/paypal.png' %}" alt="">
-            </div>
-            <div class="py-3 px-5">
-              <img src="{% static 'img/clients/stripe.png' %}" alt="">
-            </div>
-          </div>
-        </div> <!-- .container-fluid -->
-      </div> <!-- .page-section -->
-  
-    </main>
- 
+    <!-- Indicators -->
+    <ol class="carousel-indicators">
+      <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+      <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+    </ol>
 
- <!-- Footer -->
+    <!-- Wrapper for slides -->
+    <div class="carousel-inner" role="listbox">
+      <div class="item active">
+        <div class="single-slide-item slide-1">
+          <div class="container">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="single-slide-item-content">
+                  <h2>Consult Your <br> Business With Us</h2>
+                  <p>
+                    We are the unique Consultancy Farm for your business solution, That is ready to take challenge and knockout your business problems. 
+                  </p>
+                  <button type="button" class="slide-btn">
+                  get started
+                  </button>
+                  <button type="button"  class="slide-btn">
+                    explore more
+                  </button>
+                  
+                </div><!-- /.single-slide-item-content-->
+              </div><!-- /.col-->
+            </div><!-- /.row-->
+          </div><!-- /.container-->
+        </div><!-- /.single-slide-item-->
+      </div><!-- /.item .active-->
+      <div class="item">
+        <div class="single-slide-item slide-2">
+          <div class="container">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="single-slide-item-content">
+                  <h2>
+                    Consult Your <br> Business
+                  </h2>
+                  <p>
+                    We are the unique Consultancy Farm for your business solution, That is ready to take challenge and knockout your business problems.  
+                  </p>
+                  <button type="button"  class="slide-btn">
+                    get started
+                  </button>
+                  <button type="button"  class="slide-btn
+                  ">
+                    explore more
+                  </button>
+                </div><!-- /.single-slide-item-content-->
+              
+              </div><!-- /.col-->
+            </div><!-- /.row-->
+          </div><!-- /.container-->
+        </div><!-- /.single-slide-item-->
+      </div><!-- /.item .active-->
+    </div><!-- /.carousel-inner-->
 
- <!-- </footer> -->
+    <!-- Controls -->
+    <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+      <span class="lnr lnr-chevron-left"></span>
+    </a>
+    <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+      <span class="lnr lnr-chevron-right"></span>
+    </a>
+  </div><!-- /.carousel-->
 
- <!-- Bootstrap script link -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+</section><!-- /.header-slider-area-->
+<!-- header-slider-area end -->
+
+<!--we-do start -->
+<section  class="we-do">
+  <div class="container">
+    <div class="we-do-details">
+      <div class="section-header text-center">
+        <h2>Servicios</h2>
+        <p>
+          Pallamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
+        </p>
+      </div><!--/.section-header-->
+      <div class="we-do-carousel">
+        <div class="row">
+          <div class="col-sm-4 col-xs-12">
+            <div class="single-we-do-box text-center">
+              <div class="we-do-description">
+                <div class="we-do-info">
+                  <div class="we-do-img">
+                    <img src="{% static 'images/home/consultency.png' %}" alt="image of consultency" />
+                  </div><!--/.we-do-img-->
+                  <div class="we-do-topics">
+                    <h2>
+                      <a href="#">
+                        Generar una Nueva Solicitud
+                      </a>
+                    </h2>
+                  </div><!--/.we-do-topics-->
+                </div><!--/.we-do-info-->
+                <div class="we-do-comment">
+                  <p>
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ul.
+                  </p>
+                </div><!--/.we-do-comment-->
+              </div><!--/.we-do-description-->
+            </div><!--/.single-we-do-box-->
+          </div><!--/.col-->
+          <div class="col-sm-4 col-xs-12">
+            <div class="single-we-do-box text-center">
+              <div class="we-do-description">
+                <div class="we-do-info">
+                  <div class="we-do-img">
+                    <img src="{% static 'images/home/busisness_grow.png' %}" alt="image of business" />
+                  </div><!--/.we-do-img-->
+                  <div class="we-do-topics">
+                    <h2>
+                      <a href="#">
+                        Revisar Estado Solicitud
+                      </a>
+                    </h2>
+                  </div><!--/.we-do-topics-->
+                </div><!--/.we-do-info-->
+                <div class="we-do-comment">
+                  <p>
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ul.
+                  </p>
+                </div><!--/.we-do-comment-->
+              </div><!--/.we-do-description-->
+            </div><!--/.single-we-do-box-->
+          </div><!--/.col-->
+          <div class="col-sm-4 col-xs-12">
+            <div class="single-we-do-box text-center">
+              <div class="we-do-description">
+                <div class="we-do-info">
+                  <div class="we-do-img">
+                    <img src="{% static 'images/home/support-logo.png' %}" alt="image of support" />
+                  </div><!--/.we-do-img-->
+                  <div class="we-do-topics">
+                    <h2>
+                      <a href="#">
+                        Revisar Historial Solicitudes
+                      </a>
+
+                    </h2>
+                  </div><!--/.we-do-topics-->
+                </div><!--/.we-do-info-->
+                <div class="we-do-comment">
+                  <p>
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ul.
+                  </p>
+                </div><!--/.we-do-comment-->
+              </div><!--/.we-do-description-->
+            </div><!--/.single-we-do-box-->
+          </div><!--/.col-->
+        </div><!--/.row-->
+      </div><!--/.we-do-carousel-->
+    </div><!--/.we-do-details-->
+  </div><!--/.container-->
+
+</section><!--/.we-do-->
+<!--we-do end-->
+
+<!--about-us start -->
+<section class="about-us">
+  <div class="container">
+    <div class="about-us-content">
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="single-about-us">
+            <div class="about-us-txt">
+              <h2>about us</h2>
+              <p>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse.
+              </p>
+              <div class="project-btn">
+                <a href="#"  class="project-view">learn more
+                </a>
+              </div><!--/.project-btn-->
+            </div><!--/.about-us-txt-->
+          </div><!--/.single-about-us-->
+        </div><!--/.col-->
+        <div class="col-sm-6">
+          <div class="single-about-us">
+            <div class="about-us-img">
+              <img src="{% static 'images/about/about-part.jpg' %}" alt="about images">
+            </div><!--/.about-us-img-->
+          </div><!--/.single-about-us-->
+        </div><!--/.col-->
+      </div><!--/.row-->
+    </div><!--/.about-us-content-->
+  </div><!--/.container-->
+
+</section><!--/.about-us-->
+<!--about-us end -->
 
 
 
+<!--contact start-->
+<section  class="contact">
+  <div class="container">
+    <div class="contact-details">
+      <div class="section-header contact-head  text-center">
+        <h2>contact us</h2>
+        <p>
+          Pallamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
+        </p>
+      </div><!--/.section-header-->
+      <div class="contact-content">
+        <div class="row">
+          <div class="col-sm-offset-1 col-sm-5">
+            <div class="single-contact-box">
+              <div class="contact-right">
+                <div class="contact-adress">
+                  <div class="contact-office-address">
+                    <h3>contact info</h3>
+                    <p>
+                      125, Park street avenue, Brocklyn, Newyork.
+                    </p>
+                    <div class="contact-online-address">
+                      <div class="single-online-address">
+                        <i class="fa fa-phone"></i>
+                        +11253678958
+                      </div><!--/.single-online-address-->
+                      
+                      <div class="single-online-address">
+                        <i class="fa fa-envelope-o"></i>
+                        <span>info@mail.com</span>
+                      </div><!--/.single-online-address-->
+                    </div><!--/.contact-online-address-->
+                  </div><!--/.contact-office-address-->
+                  <div class="contact-office-address">
+                    <h3>social partner</h3>
+                    <div class="contact-icon">
+                      <ul>
+                        <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li><!--/li-->
+                        <li><a href="#"><i class="fa fa-google-plus" aria-hidden="true"></i></a></li><!--/li-->
+                        <li><a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li><!--/li-->
+                        <li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li><!--/li-->
+                      </ul><!--/ul-->
+                    </div><!--/.contact-icon-->
+                  </div><!--/.contact-office-address-->
+                  
+                </div><!--/.contact-address-->
+              </div><!--/.contact-right-->
+            </div><!--/.single-contact-box-->
+          </div><!--/.col-->
+          <div class="col-sm-5">
+            <div class="single-contact-box">
+              <div class="contact-form">
+                <h3>Leave us a Massage Here</h3>
+                <form>
+                  <div class="row">
+                    <div class="col-sm-6 col-xs-12">
+                      <div class="form-group">
+                        <input type="text" class="form-control" id="firstname" placeholder="First Name" name="firstname">
+                      </div><!--/.form-group-->
+                    </div><!--/.col-->
+                    <div class="col-sm-6 col-xs-12">
+                      <div class="form-group">
+                        <input type="text" class="form-control" id="lastname" placeholder="Last Name" name="laststname">
+                      </div><!--/.form-group-->
+                    </div><!--/.col-->
+                  </div><!--/.row-->
+                  <div class="row">
+                    <div class="col-sm-6 col-xs-12">
+                      <div class="form-group">
+                        <input type="email" class="form-control" id="email" placeholder="Email" name="email">
+                      </div><!--/.form-group-->
+                    </div><!--/.col-->
+                    <div class="col-sm-6 col-xs-12">
+                      <div class="form-group">
+                        <input type="text" class="form-control" id="phone" placeholder="Phone" name="phone">
+                      </div><!--/.form-group-->
+                    </div><!--/.col-->
+                  </div><!--/.row-->
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <div class="form-group">
+                        <textarea class="form-control" rows="7" id="comment" placeholder="Message" ></textarea>
+                      </div><!--/.form-group-->
+                    </div><!--/.col-->
+                  </div><!--/.row-->
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <div class="single-contact-btn pull-right">
+                        <button class="contact-btn" type="button">send message</button>
+                      </div><!--/.single-single-contact-btn-->
+                    </div><!--/.col-->
+                  </div><!--/.row-->
+                </form><!--/form-->
+              </div><!--/.contact-form-->
+            </div><!--/.single-contact-box-->
+          </div><!--/.col-->
+        </div><!--/.row-->
+      </div><!--/.contact-content-->
+    </div><!--/.contact-details-->
+  </div><!--/.container-->
 
-</body>
+</section><!--/.contact-->
+
+<!-- new-project start -->
+<section  id="new-project" class="new-project">
+    <div class="container">
+      <div class="new-project-details">
+        <div class="row">
+          <div class="col-md-10 col-sm-8">
+            <div class="single-new-project">
+              <h3>
+                Want to start a new project with us? Let’s Start!
+              </h3>
+            </div><!-- /.single-new-project-->	
+          </div><!-- /.col-->	
+          <div class="col-md-2 col-sm-4">
+            <div class="single-new-project">
+              <a href="#" class="slide-btn">
+                start now
+              </a>
+            </div><!-- /.single-new-project-->	
+          </div><!-- /.col-->	
+        </div><!-- /.row-->	
+      </div><!-- /.new-project-details-->	
+    </div><!-- /.container-->	
+
+</section><!-- /.new-project-->	
+<!-- new-project end -->
 
 
       {%endblock%}

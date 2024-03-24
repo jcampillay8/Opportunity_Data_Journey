@@ -1,178 +1,48 @@
 {% load static %}
 
-<style>
-.menu-link.active {
-  color: #ff561e !important;
-  border-bottom: 2px solid #ff561e !important;
-}
+		<!--menu start-->
+		<section id="menu">
+			<div class="container">
+				<div class="menubar">
+					<nav class="navbar navbar-default">
+						<!-- Brand and toggle get grouped for better mobile display -->
+						<div class="navbar-header" style="display: flex; align-items: center;">
+							<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+								<span class="sr-only">Toggle navigation</span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+							</button>
+							<a class="navbar-brand" href="{% url 'welcome' %}">
+								<div style="display: flex; align-items: center">
+									<img src="{% static 'images/logo/global_white.png' %}" alt="logo" width="50" height="50">
+									<span style="color:#fff; font-size: 40px; margin-left: 20px;">SP Global</span>
+								</div>
+							</a>
+						</div><!--/.navbar-header -->
+		
+						<!-- Collect the nav links, forms, and other content for toggling -->
+						<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" style="display: flex; align-items: center;">
+							<ul class="nav navbar-nav navbar-right">
+								<li class="{% if current_page == 'welcome' %}active{% endif %}">
+                  <a href="{% url 'welcome' %}">Home</a>
+                </li>
+								
+                <li class="{% if current_page == 'request_home' %}active{% endif %}">
+                  <a href="{% url 'request_home' %}">Service</a>
+                </li>
+								<li class="{% if current_page == 'contact' %}active{% endif %}">
+                  <a href="{% url 'contact' %}">Contact</a>
+                </li>
+								<li>
+									<a href="#">
+										<span class="lnr lnr-cart"></span>
+									</a>
+								</li>
 
-.nav-links .drop-menu{
-  width: 400px; /* Ajusta este valor según tus necesidades */
-}
-
-.AboutMe-dropdown .mega-box .content .row{
-  width: calc(50% - 30px); /* Ajusta el ancho de cada fila al 50% */
-  line-height: 45px;
-}
-
-.mega-box .content {
-  display: flex;
-  align-items: flex-start; /* Alinea los elementos al inicio del contenedor */
-}
-
-.portafolio-dropdown .mega-box .content .row{
-  width: calc(75% - 100px); /* Ajusta el ancho de cada fila al 60% */
-  line-height: 45px;
-}
-</style>
-<body>
-  <nav class="navbar_menu">
-    <div class="wrapper">
-      <div class="logo"><a href="#">Business & Tehcnology</a></div>
-      
-      <ul id="link_menu" class="nav-links" >
-        <label for="close-btn" class="btn close-btn"><i class="fas fa-times"></i></label>
-        <li>
-          
-          <a class="desktop-item menu-link {% if current_page == 'welcome' %}active{% endif %}" href="{% url 'welcome' %}">{{ selected_language.selected_language.menu_home.home }}</a>
-
-        
-          <input type="checkbox" id="showDrop">
-          <label for="showDrop" class="mobile-item">Home</label>
-          <ul class="drop-menu">
-            <li><a href="{% url 'welcome' %}#skills">{{ selected_language.selected_language.menu_home.Home_Dropdown.skills }}</a></li>
-            <li><a href="{% url 'welcome' %}#portfolio">{{ selected_language.selected_language.menu_home.Home_Dropdown.portfolio }}</a></li>
-            <li><a href="{% url 'welcome' %}#about">{{ selected_language.selected_language.menu_home.Home_Dropdown.about }}</a></li>
-            <li><a href="{% url 'welcome' %}#cv">{{ selected_language.selected_language.menu_home.Home_Dropdown.cv }}</a></li>
-            <li><a href="{% url 'welcome' %}#contact">{{ selected_language.selected_language.menu_home.Home_Dropdown.contact }}</a></li>
-        </ul>        
-      </li>
-
-      <li class="AboutMe-dropdown">
-        <a class="desktop-item menu-link {% if current_page == 'About_Us' or current_page == 'professional_studies' %}active{% endif %}" href="#">{{ selected_language.selected_language.menu_home.About_Us }}</a>
-        <input type="checkbox" id="showAboutMe">
-        <label for="showAboutMe" class="mobile-item">About Us</label>
-        <div class="mega-box">
-          <div class="content">
-            <div class="row">
-              <header>My Profile</header>
-              <ul class="mega-links">
-                <li><a href="#">{{ selected_language.selected_language.menu_home.About_Me_Dropdown.My_Profile.who_am_I }}</a></li>
-                <li><a href="#">{{ selected_language.selected_language.menu_home.About_Me_Dropdown.My_Profile.what_are_my_interest }}</a></li>
-                <li><a href="#">{{ selected_language.selected_language.menu_home.About_Me_Dropdown.My_Profile.what_do_I_want_to_learn }}</a></li>
-                <li><a href="">{{ selected_language.selected_language.menu_home.About_Me_Dropdown.My_Profile.what_do_I_know_now }}</a></li>
-                <li><a href="">{{ selected_language.selected_language.menu_home.About_Me_Dropdown.My_Profile.what_am_I_studying_now }}</a></li>
-              </ul>
-            </div>
-            <div class="row">
-              
-              <header><a class="desktop-item menu-link {% if current_page == 'blog' %}active{% endif %}" href="#">Blog</a></header>
-              <ul class="mega-links">
-                <li><a href="#">{{ selected_language.selected_language.menu_home.About_Me_Dropdown.blog.one }}</a></li>
-                <li><a href="#">{{ selected_language.selected_language.menu_home.About_Me_Dropdown.blog.two }}</a></li>
-                <li><a href="#">{{ selected_language.selected_language.menu_home.About_Me_Dropdown.blog.three }}</a></li>
-                <li><a href="#">{{ selected_language.selected_language.menu_home.About_Me_Dropdown.blog.four }}</a></li>
-              </ul>
-            </div>
-            <div class="row">
-              <header><a class="desktop-item menu-link {% if current_page == 'professional_studies' %}active{% endif %}" href="#">{{ selected_language.selected_language.menu_home.Estudies }}</a></header>
-              <ul class="mega-links">
-                <li><a href="#">{{ selected_language.selected_language.menu_home.About_Me_Dropdown.Estudies.one }}</a></li>
-                <li><a href="#">{{ selected_language.selected_language.menu_home.About_Me_Dropdown.Estudies.two }}</a></li>
-                <li><a href="#">{{ selected_language.selected_language.menu_home.About_Me_Dropdown.Estudies.three }}</a></li>
-                <li><a href="#">{{ selected_language.selected_language.menu_home.About_Me_Dropdown.Estudies.four }}</a></li>
-              </ul>
-            </div>
- 
-          </div>
-        </div>
-      </li>
-      <li class="portafolio-dropdown">
-        <!-- <a href="#" class="desktop-item ">Portfolio</a> -->
-        <a class="desktop-item menu-link {% if current_page == 'request_home' %}active{% endif %}" href="#">{{ selected_language.selected_language.menu_home.Request }}</a>
-        <input type="checkbox" id="showPortfolio">
-        <label for="showPortfolio" class="mobile-item">Request</label>
-        <div class="mega-box">
-          <div class="content">
-            <div class="row">
-              <header>Personal Projects</header>
-              <ul class="mega-links">
-                <li><a href="#">{{ selected_language.selected_language.menu_home.Portfolio_Dropdown.Personal_Projects.four }}</a></li>
-                <li><a href="#">{{ selected_language.selected_language.menu_home.Portfolio_Dropdown.Personal_Projects.three }}</a></li>
-                <li><a href="#">{{ selected_language.selected_language.menu_home.Portfolio_Dropdown.Personal_Projects.two }}</a></li>
-                <li><a href="#">{{ selected_language.selected_language.menu_home.Portfolio_Dropdown.Personal_Projects.one }}</a></li>
-              </ul>
-            </div>
-            <div class="row">
-              <header>Professional Projects</header>
-              <ul class="mega-links">
-                <li><a href="#">{{ selected_language.selected_language.menu_home.Portfolio_Dropdown.Professional_Projects.six }}</a></li>
-                <li><a href="#">{{ selected_language.selected_language.menu_home.Portfolio_Dropdown.Professional_Projects.five }}</a></li>
-                <li><a href="#">{{ selected_language.selected_language.menu_home.Portfolio_Dropdown.Professional_Projects.four }}</a></li>
-                <li><a href="#">{{ selected_language.selected_language.menu_home.Portfolio_Dropdown.Professional_Projects.three }}</a></li>
-                <li><a href="#">{{ selected_language.selected_language.menu_home.Portfolio_Dropdown.Professional_Projects.two }}</a></li>
-                <li><a href="#">{{ selected_language.selected_language.menu_home.Portfolio_Dropdown.Professional_Projects.one }}</a></li>
-              </ul>
-            </div>
-            <div class="row">
-              <header>Work Experience</header>
-              <ul class="mega-links">
-                <li><a href="#">{{ selected_language.selected_language.menu_home.Portfolio_Dropdown.Work_Experience.three }}</a></li>
-                <li><a href="#">{{ selected_language.selected_language.menu_home.Portfolio_Dropdown.Work_Experience.two }}</a></li>
-                <li><a href="#">{{ selected_language.selected_language.menu_home.Portfolio_Dropdown.Work_Experience.one }}</a></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </li>
-      <li>
-        <a class="desktop-item menu-link {% if current_page == 'Quizzes' %}active{% endif %}" href="#">{{ selected_language.selected_language.menu_home.Blog }}</a>
-        
-        <input type="checkbox" id="showEstudies">
-        <label for="showEstudies" class="mobile-item">Blog</label>
-        <ul class="drop-menu">
-          <li><a href="#">{{ selected_language.selected_language.menu_home.Quizzes_Dropdown.one }}</a></li>
-          <li><a href="#">{{ selected_language.selected_language.menu_home.Quizzes_Dropdown.two }}</a></li>
-        </ul>
-      </li>
-
-      <li><a class="desktop-item menu-link {% if current_page == 'contact' %}active{% endif %}" href="{% url 'contact' %}"> {{ selected_language.selected_language.menu_home.contact }} </a></li>    
-
-
-      
-
-      </ul>
-      <button type="button" id="js-menu-trigger" class="sliding-menu-button lines-button x2" role="button" aria-label="Toggle Navigation">
-        <span class="nav-line nav-line-1"></span>
-        <span class="nav-line nav-line-2"></span>
-        <span class="nav-line nav-line-3"></span>
-      </button>
-
-    </div>
-
-  </nav>
-
-  <script>
-    // Asegúrate de que el DOM esté completamente cargado antes de ejecutar este script
-document.addEventListener("DOMContentLoaded", function() {
-  // Obtén todos los enlaces del menú
-  var menuLinks = document.querySelectorAll(".menu-link");
-
-  // Añade un controlador de eventos a cada enlace del menú
-  menuLinks.forEach(function(link) {
-    link.addEventListener("click", function() {
-      // Elimina la clase 'active' de todos los enlaces del menú
-      menuLinks.forEach(function(link) {
-        link.classList.remove("active");
-      });
-
-      // Añade la clase 'active' al enlace que se acaba de hacer clic
-      this.classList.add("active");
-    });
-  });
-});
-
-  </script>
-  
-</body>
-</html>
+							</ul><!-- / ul -->
+						</div><!-- /.navbar-collapse -->
+					</nav><!--/nav -->
+				</div><!--/.menubar -->
+			</div><!-- /.container -->
+		</section><!--/#menu-->

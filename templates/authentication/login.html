@@ -10,109 +10,150 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh; /* Ajusta esto según tus necesidades */
+    
   }
-
-   a {
-  color: #FC2F2F;
-}
-.btn-primary {
-  background-color: #FC2F2F;
-  border: 1px solid black; /* Ajusta el grosor del borde según tus necesidades */
-  
-}
-.image_login{
+  .image_login{
     height:125px;
     padding-top: 25px;
     padding-right: 200px;
     padding-left: 180px;
-
 }
-  </style>
+
+  .logout-link {
+  font-size: 17px !important;
+  padding: 10px !important;
+  color: white !important;
+  text-decoration: none !important;
+  background: none !important;
+  color: white !important;
+  border: none;
+}
+
+.logout-link :hover {
+  font-size: 17px !important;
+  padding: 10px !important;
+  text-decoration: none !important;
+  background-color: rgb(21, 32, 43);
+  color: rgb(29, 161, 243) !important;
+  border: none;
+}
+
+.sidebar-container-items a {
+  font-size: 17px;
+  padding: 10px;
+  color: white;
+  text-decoration: none;
+  background: none;
+  color: white;
+  border: none;
+}
+
+.login-section {
+  margin-top: 10%;
+}
+
+@media (max-width: 765px) {
+  .mobile-links {
+    display: flex !important;
+    flex-wrap: wrap;
+  }
+}
+.mobile-up {
+  color: white;
+  padding: 5px 15px;
+  font-size: 15px;
+}
+
+@media (max-width: 500px) {
+  .login-section {
+    margin-top: 2%;
+  }
+  main {
+    padding-top: 150px !important;
+  }
+}
+
+.toggle-show {
+  position: absolute;
+  right: 10%;
+  margin-top: 2px;
+}
+
+.show-toggler {
+  cursor: pointer;
+  color: cornflowerblue;
+  transition: all;
+}
+.show-toggler:hover {
+  transform: scale(1.1);
+}
+
+</style>
+
     <!-- Page Content -->
     <!-- Banner Starts Here -->
-    <div class="main-banner header-text" id="top">
-      <div class="Modern-Slider">
-        <!-- Item -->
-        <div class="item item-2">
-          <div class="img-fill">
-            <section id="login" class="login-section h-100">
-              <div class="container">
-                <div class="row">
-                <div class="col-md-6 mx-auto">
-                  <div class="center-card">
-                    <div class="card">
-                    <div class="card-body">
-                        <img src="{% static 'img/login_users.png' %}" class="image_login" style="margin: 0px 0%;"  alt="Card image cap">
-                        <p class="text-center" style="color: black;"><b>{{ selected_language.welcome.login.title }}</b></p>
-                    <form class="mt-2" autocomplete="off" action="{%url 'login'%}"  method="POST" autocomplete="off">
-                          {% csrf_token%}
-            
-                        {% include 'partials/_alerts.html'%}
-                          <div class="form-group">
-                            <input
-                              type="text"
-                              name="username"
-                              placeholder="Username or Email"
-                            class="form-control form-control-sm"
-                              required
-                              value="{% if values.username %}{{ values.username }}{% else %}{{ values.email }}{% endif %}"
-                            />
-                          </div>
-                          <div class="form-group">
-                          </div>
-                          <div class="form-group">
-                            <input
-                              type="password"
-                              placeholder="Password"
-                              name="password"
-                            class="form-control form-control-sm"
-                              required
-                              value="{{ values.password }}"
-            
-                            >
-                            </input>
-                          </div>
-                          <input
-                            type="submit"
-                            value="{{ selected_language.welcome.login.boton_login }}"
-                            class="btn btn-block btn-primary submit-btn"
-                          />
-                            <div class="lower my-3 pl-3 pr-3">
-                                                <div class="row">
-                                                    <div class="col-md-5">
-                                                        <hr class="ml-1">
-                                                    </div>
-                                                    <div class="col-md-2">
-                                                        <small class="text-muted">OR</small>
-                                                    </div>
-                                                    <div class="col-md-5">
-                                                        <hr class="mr-1">
-                                                    </div>
-                                                </div>
-                                                <a href="{% url 'register'%}" class="btn btn-block btn-sm">{{ selected_language.welcome.login.boton_create_account }}</a>
-            
-                                                <a href="{% url 'request-password' %}" class="btn btn-block btn-sm">{{ selected_language.welcome.login.boton_forgot_password }}</a>
-            
-                                            </div>
-                        </form>
-            
-                                    </div>
-                      </div>
+    <div class="single-slide-item slide-1">
+      <div class="container">
+          <div class="center-card">
+            <div class="card">
+            <div class="card-body">
+                <img src="{% static 'img/login_users.png' %}" class="image_login" style="margin: 0px 0%;"  alt="Card image cap">
+                  <p class="text-center" style="color: black;"><b>{{ selected_language.welcome.login.title }}</b></p>
+                  <form class="mt-2" autocomplete="off" action="{%url 'login'%}"  method="POST" autocomplete="off">
+                  {% csrf_token%}
+    
+                {% include 'partials/_alerts.html'%}
+                  <div class="form-group">
+                    <input
+                      type="text"
+                      name="username"
+                      placeholder="Username or Email"
+                    class="form-control form-control-sm"
+                      required
+                      value="{% if values.username %}{{ values.username }}{% else %}{{ values.email }}{% endif %}"
+                    />
                   </div>
-                </div>
+                  <div class="form-group">
+                  </div>
+                  <div class="form-group">
+                    <input
+                      type="password"
+                      placeholder="Password"
+                      name="password"
+                    class="form-control form-control-sm"
+                      required
+                      value="{{ values.password }}"
+    
+                    >
+                    </input>
+                  </div>
+                  <input
+                    type="submit"
+                    value="{{ selected_language.welcome.login.boton_login }}"
+                    class="btn btn-block btn-primary submit-btn"
+                  />
+                    <div class="lower my-3 pl-3 pr-3">
+                                        <div class="row">
+                                            <div class="col-md-5">
+                                                <hr class="ml-1">
+                                            </div>
+                                            <div class="col-md-2">
+                                                <small class="text-muted">OR</small>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <hr class="mr-1">
+                                            </div>
+                                        </div>
+                                        <a href="{% url 'register'%}" class="btn btn-block btn-sm">{{ selected_language.welcome.login.boton_create_account }}</a>
+    
+                                        <a href="{% url 'request-password' %}" class="btn btn-block btn-sm">{{ selected_language.welcome.login.boton_forgot_password }}</a>
+    
+                                    </div>
+                </form>
                 </div>
               </div>
-          </section>
           </div>
-        </div>
-
-          </div>
-        </div>
       </div>
-  </div>
-
-
-
+    </div>
 
 {%endblock%}

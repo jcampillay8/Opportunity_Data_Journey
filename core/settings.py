@@ -185,10 +185,16 @@ X_FRAME_OPTIONS = 'SAMEORIGIN'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-STATIC_URL = '/static/'
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+# STATIC_URL = '/static/'
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, 'core/static')
+# ]
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'assets')
+STATIC_URL = '/assets/'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'core/static')
+    os.path.join(BASE_DIR, 'core/assets')
 ]
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'django_gcp/staticfiles/dash/component/dash_bootstrap_components/_components/dash_bootstrap_components.min.js')

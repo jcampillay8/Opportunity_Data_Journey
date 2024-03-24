@@ -4,51 +4,97 @@
 
 {%block content%}
 
-<style>
+<!--header start-->
+<section class="header">
+  <div class="container">	
+    <div class="header-left">
+      <ul class="pull-left">
+        <li>
+          <a href="#">
+            <i class="fa fa-envelope" aria-hidden="true"></i>info@mail.com
+          </a>
+        </li><!--/li-->
+        <li>
+          <a href="#">
+            <i class="fa fa-phone" aria-hidden="true"></i> +992 563 542
+          </a>
+        </li><!--/li-->
 
-  @media (max-width: 768px) {
-    .content-container {
-      flex-direction: column;
-      justify-content: center; /* Añadido para centrar el contenido */
-    }
-  }
-</style>
+      </ul><!--/ul-->
+    </div><!--/.header-left -->
+    <div class="header-right pull-right">
+      <ul>
 
-<header class="">
-    <nav class="navbar navbar-expand-lg">
-      <div class="container">
-        
-        <a href="{% url 'welcome' %}" class="navbar-brand">
-          <span style="color:red; font-size: 2em; text-shadow: 0px 0px 0.1px white;">SP</span>
-          <span style="color:red; font-size: 2em; text-shadow: 0px 0px 0.1px white;"> GLOBAL</span>
-      </a>
-      
+        <li>
+          <div class="social-icon">
+            <ul>
+              <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+              <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+              <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+              <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+            </ul><!--/.ul -->
+          </div><!--/.social-icon -->
+        </li><!--/li -->
+      </ul><!--/ul -->
+    </div><!--/.header-right -->
+  </div><!--/.container -->	
 
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-          <ul class="navbar-nav ml-auto">
+</section><!--/.header-->	
+<!--header end-->
+
+<!--menu start-->
+<section id="menu">
+  <div class="container">
+    <div class="menubar">
+      <nav class="navbar navbar-default">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header" style="display: flex; align-items: center;">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="{% url 'welcome' %}">
+            <div style="display: flex; align-items: center">
+              <img src="{% static 'images/logo/global_white.png' %}" alt="logo" width="50" height="50">
+              <span style="color:#fff; font-size: 40px; margin-left: 20px;">SP Global</span>
+            </div>
+          </a>
+        </div><!--/.navbar-header -->
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" style="display: flex; align-items: center;">
+          <ul class="nav navbar-nav navbar-right">
             <li class="nav-item {% if request.path == '/' %}active{% endif %}">
-              <a class="nav-link" href="{% url 'welcome' %}">Home
+              <a href="{% url 'welcome' %}">Home
                 <span class="sr-only">(current)</span>
               </a>
             </li>
+            
             <li class="nav-item {% if request.path == '/authentication/login' %}active{% endif %}">
-                <a class="nav-link" id="login-link" href="/authentication/login">{{ selected_language.welcome.header_welcome.login }}</a>
+              <a href="/authentication/login">Login
+                
+              </a>
             </li>
             <li class="nav-item {% if request.path == '/authentication/register' %}active{% endif %}">
-                <a class="nav-link" id="register-link" href="/authentication/register">{{ selected_language.welcome.header_welcome.register }}</a>
+              <a href="/authentication/register">Register</a>
             </li>
             <li class="nav-item {% if request.path == '/authentication/request-password' %}active{% endif %}">
-                <a class="nav-link" id="forgot-password-link" href="/authentication/request-password">{{ selected_language.welcome.header_welcome.forgot_password }}</a>
+              <a href="/authentication/request-password">Forgot Password</a>
             </li>
-          </ul>
-        </div>
-        
-      </div>
-    </nav>
-  </header>
+            <li>
+              <a href="#">
+                <span class="lnr lnr-cart"></span>
+              </a>
+            </li>
 
+          </ul><!-- / ul -->
+        </div><!-- /.navbar-collapse -->
+      </nav><!--/nav -->
+    </div><!--/.menubar -->
+  </div><!-- /.container -->
+</section><!--/#menu-->
 
+<!--menu end-->
 {%endblock%}

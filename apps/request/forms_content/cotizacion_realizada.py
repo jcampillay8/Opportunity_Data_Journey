@@ -169,7 +169,7 @@ def form_cotizacion_realizada(selected_company):
                     dbc.Row([
         dbc.Col((),width=1),
         dbc.Col((
-            dcc.Markdown(f''' ## DESGLOSE COMPRA ''', className="text-center"),
+            dcc.Markdown(f''' ## DESGLOSE COMPRA (OPCIONAL) ''', className="text-center"),
         ),width=10),
         dbc.Col((),width=1),
     ]),
@@ -277,7 +277,7 @@ def form_cotizacion_realizada(selected_company):
         dbc.Row([
         dbc.Col((),width=1),
         dbc.Col((
-            dcc.Markdown(f''' ## ADJUNTAR DOCUMENTOS (OPCIONAL) ''', className="text-center"),
+            dcc.Markdown(f''' ## ADJUNTAR DOCUMENTOS ''', className="text-center"),
         ),width=10),
         dbc.Col((),width=1),
     ]),

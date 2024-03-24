@@ -6,28 +6,80 @@
 
 {%block content%}
 
-    <!-- Banner Starts Here -->
-    <div class="main-banner header-text" id="top">
-      <div class="Modern-Slider">
-        <!-- Item -->
-        <div class="item item-1">
-          <div class="img-fill">
-              <div class="text-content">
-                <h6>we are ready to help you</h6>
-                <h4>Financial Analysis<br>&amp; Consulting</h4>
-                <p>This finance HTML template is 100% free of charge provided by TemplateMo for everyone. You can download, edit and use this layout for your business website.</p>
-                <a href="{%url 'login'%}" class="filled-button">Login</a>
-              </div>
-          </div>
-        </div>
-        <!-- // Item -->
+<!-- header-slider-area start -->
+<section class="header-slider-area">
+  <div id="carousel-example-generic" class="carousel slide carousel-fade" data-ride="carousel">
+  
+    <!-- Indicators -->
+    <ol class="carousel-indicators">
+      <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+      <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+    </ol>
 
-          </div>
-        </div>
-        <!-- // Item -->
-      </div>
-  </div>
-  <!-- Banner Ends Here -->
+    <!-- Wrapper for slides -->
+    <div class="carousel-inner" role="listbox">
+      <div class="item active">
+        <div class="single-slide-item slide-1">
+          <div class="container">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="single-slide-item-content">
+                  <h2>Consult Your <br> Business With Us</h2>
+                  <p>
+                    We are the unique Consultancy Farm for your business solution, That is ready to take challenge and knockout your business problems. 
+                  </p>
+                  <button type="button" class="slide-btn"
+                     href="/authentication/login">Login
+                  </button>
+                  <button type="button"  class="slide-btn">
+                    <a href="/authentication/register">Register</a>
+                  </button>
+                  
+                </div><!-- /.single-slide-item-content-->
+              </div><!-- /.col-->
+            </div><!-- /.row-->
+          </div><!-- /.container-->
+        </div><!-- /.single-slide-item-->
+      </div><!-- /.item .active-->
+      <div class="item">
+        <div class="single-slide-item slide-2">
+          <div class="container">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="single-slide-item-content">
+                  <h2>
+                    Consult Your <br> Business
+                  </h2>
+                  <p>
+                    We are the unique Consultancy Farm for your business solution, That is ready to take challenge and knockout your business problems.  
+                  </p>
+                  <button type="button"  class="slide-btn">
+                    get started
+                  </button>
+                  <button type="button"  class="slide-btn
+                  ">
+                    explore more
+                  </button>
+                </div><!-- /.single-slide-item-content-->
+              
+              </div><!-- /.col-->
+            </div><!-- /.row-->
+          </div><!-- /.container-->
+        </div><!-- /.single-slide-item-->
+      </div><!-- /.item .active-->
+    </div><!-- /.carousel-inner-->
+
+    <!-- Controls -->
+    <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+      <span class="lnr lnr-chevron-left"></span>
+    </a>
+    <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+      <span class="lnr lnr-chevron-right"></span>
+    </a>
+  </div><!-- /.carousel-->
+
+</section><!-- /.header-slider-area-->
+<!-- header-slider-area end -->
 
 
 
