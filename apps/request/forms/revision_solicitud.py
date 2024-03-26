@@ -40,7 +40,15 @@ def serve_layout():
             dbc.Col(width=1),
 
         ]),
+            dbc.Row([
+            dbc.Col(width=1),
+            dbc.Col((
+            dcc.Markdown(id='values'),
 
+            ),width=10),
+            dbc.Col(width=1),
+
+        ]),
 
     ],
     fluid=True,
@@ -48,3 +56,18 @@ def serve_layout():
 )
 
 app.layout = serve_layout
+
+
+
+@app.callback(
+    Output('values', 'children'),
+    [Input('url', 'pathname')])
+def update_values(pathname):
+    
+    if pathname.startswith('/revision_solicitud/'):
+        values = pathname.split('request/revision_solicitud/')[1]
+        
+        return dcc.Markdown('''*** VALUES *** \n\n{}'''.format(values))
+    else:
+        return ''
+

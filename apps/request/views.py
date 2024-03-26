@@ -3,6 +3,7 @@ from django.views.generic import (View, TemplateView)
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 #from .forms.request_form_dash import RequestForm
+from apps.request.models import CotizacionRealizada, CotizacionRealizada_Productos, CotizacionRealizada_Archivos, Estado_Solicitudes
 from apps.request.forms.request_form_dash import app
 from apps.request.forms.request_status_form import app
 from apps.request.forms.revision_solicitud import app
@@ -45,6 +46,7 @@ def request_history(request):
 def request_status(request):
     return render(request, 'request/request_status.html',{'current_page': 'request_home','selected_language':get_context(request)})
 
-def revision_solicitud(request):
-    return render(request, 'request/request_review/revision_solicitud.html',{'current_page': 'request_home','selected_language':get_context(request)})
+def revision_solicitud(request, id):
+    selected_row = CotizacionRealizada.objects.get(id=id)
+    return render(request, 'request/revision_solicitud.html',{'current_page': 'request_home','selected_language':get_context(request)})
 

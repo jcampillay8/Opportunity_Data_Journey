@@ -91,6 +91,7 @@ df = pd.DataFrame.from_records(qs)
 
 def serve_layout():  
     return dbc.Container([
+    dcc.Location(id='url', refresh=True),  # Agrega esto a tu layout
     dbc.Row([
         dbc.Col(html.Div(style={'height': '40px'}), width=12)
     ]),
@@ -151,29 +152,26 @@ def update_styles(selected_columns):
     } for i in selected_columns]
 
 @app.callback(
-    Output('datatable-interactivity-container', "children"),
+    [Output('url', 'pathname'), Output('datatable-interactivity-container', "children")],
     Input('submit-button', 'n_clicks'),
     State('datatable-interactivity', "derived_virtual_data"),
     State('datatable-interactivity', "derived_virtual_selected_rows"),
     prevent_initial_call=True)
 def update_graphs(n_clicks, rows, derived_virtual_selected_rows):
-    print('Hola')
-
     if derived_virtual_selected_rows is None:
         derived_virtual_selected_rows = []
 
     dff = df if rows is None else pd.DataFrame(rows)
 
     if len(derived_virtual_selected_rows) > 1:
-        return html.Div([
+        return dash.no_update, html.Div([
             'El valor de la primera columna de las filas seleccionadas es: {}'.format(', '.join([str(dff.iloc[i, 0]) for i in derived_virtual_selected_rows]))
         ])
     elif len(derived_virtual_selected_rows) == 1:
-        return html.Div([
-            'Los valores de la fila seleccionada son: {}'.format(', '.join([str(value) for value in dff.iloc[derived_virtual_selected_rows[0]]]))
-        ])
+        selected_row_id = dff.iloc[derived_virtual_selected_rows[0]]['ID_OC_id']
+        return '/request/revision_solicitud/{}'.format(selected_row_id), dash.no_update
     else:
-        return html.Div([])
+        return dash.no_update, html.Div([])
 
 
 
