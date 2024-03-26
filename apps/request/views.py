@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 #from .forms.request_form_dash import RequestForm
 from apps.request.forms.request_form_dash import app
 from apps.request.forms.request_status_form import app
+from apps.request.forms.revision_solicitud import app
 
 from django.contrib.auth import logout
 from apps.utils import get_context
@@ -43,3 +44,7 @@ def request_history(request):
 
 def request_status(request):
     return render(request, 'request/request_status.html',{'current_page': 'request_home','selected_language':get_context(request)})
+
+def revision_solicitud(request):
+    return render(request, 'request/request_review/revision_solicitud.html',{'current_page': 'request_home','selected_language':get_context(request)})
+

@@ -132,7 +132,7 @@
             <div class="footer-menu ">	  
               <ul class="">
                 <li><a href="{% url 'welcome' %}" >Home</a></li>
-                <li><a href="about.html">About</a></li>
+                <li><a href="#">About</a></li>
                 <li><a href="#">Service</a></li>
                 <li><a href="#">Contact us</a></li> 
               </ul>
@@ -238,7 +238,10 @@
 
 <!-- for manu -->
 
-<script src="/static/js/jquery.hc-sticky.min.js"></script>
+
+<script src="{% static 'js/jquery.hc-sticky.min.js' %}"></script>
+
+<script src="{% static 'js/bootsnav.js' %}"></script>
 
 
 
@@ -252,7 +255,7 @@
     <script type="text/javascript" src="{% static 'js/owl.carousel.min.js' %}"></script>
 
 <!-- counter js -->
-<script src="static/js/jquery.counterup.min.js"></script>
+<script src="{% static 'js/jquery.counterup.min.js' %}"></script>
 <script src="{% static 'js/waypoints.min.js' %}"></script>
 
     <!--Custom JS-->

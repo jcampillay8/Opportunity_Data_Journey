@@ -64,17 +64,16 @@
         </div><!--/.navbar-header -->
 
         <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" style="display: flex; align-items: center;">
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" >
           <ul class="nav navbar-nav navbar-right">
             <li class="nav-item {% if request.path == '/' %}active{% endif %}">
               <a href="{% url 'welcome' %}">Home
-                <span class="sr-only">(current)</span>
+                
               </a>
             </li>
             
             <li class="nav-item {% if request.path == '/authentication/login' %}active{% endif %}">
-              <a href="/authentication/login">Login
-                
+              <a href="/authentication/login">Login 
               </a>
             </li>
             <li class="nav-item {% if request.path == '/authentication/register' %}active{% endif %}">
@@ -83,11 +82,7 @@
             <li class="nav-item {% if request.path == '/authentication/request-password' %}active{% endif %}">
               <a href="/authentication/request-password">Forgot Password</a>
             </li>
-            <li>
-              <a href="#">
-                <span class="lnr lnr-cart"></span>
-              </a>
-            </li>
+
 
           </ul><!-- / ul -->
         </div><!-- /.navbar-collapse -->
@@ -97,4 +92,6 @@
 </section><!--/#menu-->
 
 <!--menu end-->
+
+
 {%endblock%}

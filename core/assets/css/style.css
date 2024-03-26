@@ -306,11 +306,11 @@ html,body{
 .navbar-default .navbar-toggle:focus,
  .navbar-default .navbar-toggle:hover {
     background-color: transparent;
-    border: 1px solid #000;
+    border: 1px solid #fff;
     margin-top: 25px;
 }
 .navbar-default .navbar-toggle .icon-bar {
-    background-color: #000;
+    background-color: #fff;
 
 }/* navbar-toggle*/
 
@@ -1791,11 +1791,11 @@ a:active.learn-btn{
 
 /* breadcrumb */
 .breadcrumb {
-    background-color:transparent;
+    background-color:transparent !important;
 }
 .breadcrumb>li+li:before {
     padding: 0 0px;
-    color:transparent;
+    color:transparent !important;
     content: "";
 }
 .breadcrumb li>a{

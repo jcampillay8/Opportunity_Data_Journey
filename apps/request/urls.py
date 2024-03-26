@@ -10,5 +10,8 @@ urlpatterns = [
     path("new_request/<int:pk>", views.new_request, name="new_request"),
     path('request_history/', views.request_history, name='request_history'),
     path('request_status', views.request_status, name="request_status"),
+    path('revision_solicitud', views.revision_solicitud, name="revision_solicitud"),
+    
+
 
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

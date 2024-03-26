@@ -1,12 +1,14 @@
 import dash
 import dash_bootstrap_components as dbc
-from dash import Dash, html, dcc, callback, Input, Output, State, callback
+from dash import Dash, dash_table, html, dcc, callback, Input, Output, State, callback
 from dash.dependencies import Input, Output, State
 from django_plotly_dash import DjangoDash  
 from django.core.exceptions import ObjectDoesNotExist
 from apps.request.models import CotizacionRealizada, CotizacionRealizada_Productos, CotizacionRealizada_Archivos, Estado_Solicitudes
+from django.db.models import F
 import dash_daq as daq
 from datetime import date
+from django_pandas.io import read_frame
 from django.contrib.auth.decorators import login_required
 import plotly.graph_objects as go
 
@@ -17,7 +19,7 @@ import os
 
 import pandas as pd
 
-external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
+
 
 theme = dbc.themes.BOOTSTRAP
 
@@ -70,25 +72,109 @@ card4 = dbc.Card(
     style={"height": "300px"}
 )
 
+qs = Estado_Solicitudes.objects.select_related('ID_OC').values(
+    "ID_OC_id",
+    "Request_Status",
+    User_Id=F('ID_OC__User_Id'),
+    User_Name=F('ID_OC__User_Name'),
+    Formulario=F('ID_OC__Formulario'),
+    Empresa=F('ID_OC__Empresa'),
+    Area=F('ID_OC__Area'),
+    Centro_Costo=F('ID_OC__Centro_Costo'),
+    Nombre_Solicitante=F('ID_OC__Nombre_Solicitante'),
+    Nombre_Autoriza=F('ID_OC__Nombre_Autoriza'),
+    hora_solicitud=F('ID_OC__hora_solicitud'),
+    fecha_solicitud=F('ID_OC__fecha_solicitud')
+).order_by('-fecha_solicitud', '-hora_solicitud')
 
+df = pd.DataFrame.from_records(qs)
 
 def serve_layout():  
     return dbc.Container([
     dbc.Row([
-        dbc.Col(html.Div(style={'height': '20px'}), width=12)
+        dbc.Col(html.Div(style={'height': '40px'}), width=12)
     ]),
-
-    dbc.Row([dbc.Col(card1), dbc.Col(card2), dbc.Col(card3),dbc.Col(card4)]),
-
+    dbc.Row([
+        dbc.Col((html.Div(style={'height': '20px'})),width=1),
+        dbc.Col((dbc.Row([dbc.Col(card1), dbc.Col(card2), dbc.Col(card3),dbc.Col(card4)]),),width=10),
+        dbc.Col((html.Div(style={'height': '20px'})),width=1),
+    ]),
+    dbc.Row([
+        dbc.Col(html.Div(style={'height': '40px'}), width=12)
+    ]),
+        dbc.Row([
+        dbc.Col((html.Div(style={'height': '20px'})),width=1),
+        dbc.Col((    dash_table.DataTable(
+        id='datatable-interactivity',
+        columns=[
+            {"name": i, "id": i, "deletable": True, "selectable": True} for i in df.columns
+        ],
+        data=df.to_dict('records'),
+        editable=True,
+        filter_action="native",
+        sort_action="native",
+        sort_mode="multi",
+        column_selectable="single",
+        row_selectable="multi",
+        row_deletable=True,
+        selected_columns=[],
+        selected_rows=[],
+        page_action="native",
+        page_current= 0,
+        page_size= 10,
+    ),
+    dbc.Button('Submit', id='submit-button', n_clicks=0),
+    html.Div(id='datatable-interactivity-container')),width=10),
+    dbc.Col((html.Div(style={'height': '20px'})),width=1),
+    ]),
     html.Div(id='user_id', style={'display': 'none'}),
     html.Div(id='username', style={'display': 'none'}),
-    html.Div(id='email', style={'display' : 'none'})    
+    html.Div(id='email', style={'display' : 'none'})  
+         
+
+
     ],
     fluid=True,
     style={'padding-bottom':'200px'}
 )
 
 app.layout = serve_layout
+
+@callback(
+    Output('datatable-interactivity', 'style_data_conditional'),
+    Input('datatable-interactivity', 'selected_columns')
+)
+def update_styles(selected_columns):
+    return [{
+        'if': { 'column_id': i },
+        'background_color': '#D2F3FF'
+    } for i in selected_columns]
+
+@app.callback(
+    Output('datatable-interactivity-container', "children"),
+    Input('submit-button', 'n_clicks'),
+    State('datatable-interactivity', "derived_virtual_data"),
+    State('datatable-interactivity', "derived_virtual_selected_rows"),
+    prevent_initial_call=True)
+def update_graphs(n_clicks, rows, derived_virtual_selected_rows):
+    print('Hola')
+
+    if derived_virtual_selected_rows is None:
+        derived_virtual_selected_rows = []
+
+    dff = df if rows is None else pd.DataFrame(rows)
+
+    if len(derived_virtual_selected_rows) > 1:
+        return html.Div([
+            'El valor de la primera columna de las filas seleccionadas es: {}'.format(', '.join([str(dff.iloc[i, 0]) for i in derived_virtual_selected_rows]))
+        ])
+    elif len(derived_virtual_selected_rows) == 1:
+        return html.Div([
+            'Los valores de la fila seleccionada son: {}'.format(', '.join([str(value) for value in dff.iloc[derived_virtual_selected_rows[0]]]))
+        ])
+    else:
+        return html.Div([])
+
 
 
 

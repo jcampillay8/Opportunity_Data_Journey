@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load plotly_dash %}
+{% block title %} Quiz - GCP Digital Leader {% endblock%}
+
+{% block content %}
+
+    {% if user.is_authenticated %}
+    <section class="about-part project-part" >
+        <div class="container">
+            <div class="about-part-details text-center"> 
+                <h2>Servicios</h2>
+                <div class="about-part-content">
+                    <div class="breadcrumbs">
+                        <div class="container">
+                            <ol class="breadcrumb">
+                              <li><a href="#">home</a><span>//</span></li>
+                              <li><a href="#">Servicios</a></li>
+                            </ol><!--/.breadcrumb-->
+                        </div><!--/.container-->
+                    </div><!--/.breadcrumbs-->
+                </div><!--/.about-part-content-->
+            </div><!--/.about-part-details-->	
+        </div><!--/.container-->
+
+    </section><!--/.about-part-->
+    
+    <body>
+        <!-- Agrega los elementos Div aquí -->
+
+        <div class="{%plotly_class name='Request_Revision_Solicitud_DashApp'%}">
+            {%plotly_app name="Request_Revision_Solicitud_DashApp" ratio=0.45%}
+        </div>
+    </body>
+    <section class="position-relative py-4" >
+
+    </section>
+
+    {% else %}
+    <h1>Necesita <a href="/login">Iniciar sesion</a> para crear un post</h1>
+    {% endif %}
+{% endblock %}
