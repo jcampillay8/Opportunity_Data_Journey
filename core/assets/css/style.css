@@ -387,12 +387,12 @@ html,body{
 	 border: 1px solid #fff;
 }
 .single-slide-item.slide-1 {
-	background-image: url('/assets/images/banner/banner1.jpg');
+	background-image: url('/assets/images/banner/santiago_1400.jpg');
 	position:relative;
 	z-index:1;
 }
 .single-slide-item.slide-2 {
-	background-image: url('/assets/images/banner/banner2.jpg');
+	background-image: url('/assets/img/bg_image_1.jpg');
 	position:relative;
 	z-index:1;
 }
@@ -1755,16 +1755,16 @@ a:active.learn-btn{
 	z-index:1;
 }
 .about-part.service-part{
-	background: url(../images/service/service-banner.jpg)no-repeat center;
+	background: url(../img/bg_image_3.jpg)no-repeat center;
 }
 .about-part.project-part{
-	background: url(../images/project/project-banner.jpg)no-repeat center;
+	background: url(../img/bg_image_2.jpg)no-repeat center;
 }
 .about-part.team-part{
-	background: url(../images/team/team-banner.jpg)no-repeat center;
+	background: url(../images/project/project-banner.jpg)no-repeat center;
 }
-.about-part.blog-part{
-	background: url(../images/blog/blog-banner.jpg)no-repeat center;
+.about-part.request-part{
+	background: url(../images/project/project-banner.jpg)no-repeat center;
 }
 .about-part:before{
 	position:absolute;

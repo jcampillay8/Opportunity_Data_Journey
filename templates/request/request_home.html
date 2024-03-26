@@ -4,7 +4,27 @@
 {%block content%}
 
     <title> TITULO {% block title %} {% endblock %}</title>
+		<!--about-part start-->
+		<section class="about-part team-part">
+      
+			<div class="container">
+				<div class="about-part-details text-center"> 
+					<h2>Servicios</h2>
+					<div class="about-part-content">
+						<div class="breadcrumbs">
+							<div class="container">
+								<ol class="breadcrumb">
+								  <li><a href="#">home</a><span>//</span></li>
+								  <li><a href="#">Servicios</a></li>
+								</ol><!--/.breadcrumb-->
+							</div><!--/.container-->
+						</div><!--/.breadcrumbs-->
+					</div><!--/.about-part-content-->
+				</div><!--/.about-part-details-->	
+			</div><!--/.container-->
 
+		</section><!--/.about-part-->
+		<!--about-part end-->
 
 		<section  class="service">
       <div class="container">
@@ -42,7 +62,7 @@
                   </div><!--/.service-img-->
                   <div class="service-txt">
                     <h2>
-                      <a href="#">Revisar Estado Solicitud</a>
+                      <a href="{% url 'request_status' %}">Revisar Estado Solicitud</a>
                     </h2>
                     <p>
                       Lorem ipsum dolo dolor in  in voluptate velit esse cillum dolore. epteur sint oat cupidatat 
@@ -60,7 +80,7 @@
                   </div><!--/.service-img-->
                   <div class="service-txt">
                     <h2>
-                      <a href="#">Revisar Historial Solicitudes</a>
+                      <a href="{% url 'request_history' %}">Revisar Historial Solicitudes</a>
                     </h2>
                     <p>
                       Lorem ipsum dolo dolor in  in voluptate velit esse cillum dolore. epteur sint oat cupidatat 

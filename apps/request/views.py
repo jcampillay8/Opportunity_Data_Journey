@@ -4,13 +4,15 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 #from .forms.request_form_dash import RequestForm
 from apps.request.forms.request_form_dash import app
+from apps.request.forms.request_status_form import app
+
 from django.contrib.auth import logout
 from apps.utils import get_context
 
 
 # Create your views here.
 def request_home(request):
-    return render(request, 'request/request_home.html')
+    return render(request, 'request/request_home.html',{'current_page': 'request_home'})
 
 
 @login_required(login_url='login')
@@ -31,7 +33,7 @@ def new_request(request,pk):
     
 
     if pk == 8:
-        return render(request, 'request/new_request.html', context)
+        return render(request, 'request/new_request.html', {'current_page': 'request_home'})
         #return render(request, 'request/new_request.html', {'user_id' : user.id, 'username': request.user.username, 'selected_language':get_context(request)})
     else:
         return render(request, 'request/formulario_no_disponible.html', context)

@@ -12,214 +12,167 @@
     align-items: center;
     
   }
-  .image_login{
+  .image_register{
     height:125px;
     padding-top: 25px;
     padding-right: 200px;
     padding-left: 180px;
 }
 
-  .logout-link {
-  font-size: 17px !important;
-  padding: 10px !important;
-  color: white !important;
-  text-decoration: none !important;
-  background: none !important;
-  color: white !important;
-  border: none;
-}
 
-.logout-link :hover {
-  font-size: 17px !important;
-  padding: 10px !important;
-  text-decoration: none !important;
-  background-color: rgb(21, 32, 43);
-  color: rgb(29, 161, 243) !important;
-  border: none;
-}
-
-.sidebar-container-items a {
-  font-size: 17px;
-  padding: 10px;
-  color: white;
-  text-decoration: none;
-  background: none;
-  color: white;
-  border: none;
-}
-
-.login-section {
-  margin-top: 10%;
-}
-
-@media (max-width: 765px) {
-  .mobile-links {
-    display: flex !important;
-    flex-wrap: wrap;
-  }
-}
-.mobile-up {
-  color: white;
-  padding: 5px 15px;
-  font-size: 15px;
-}
-
-@media (max-width: 500px) {
-  .login-section {
-    margin-top: 2%;
-  }
-  main {
-    padding-top: 150px !important;
-  }
-}
-
-.toggle-show {
-  position: absolute;
-  right: 10%;
-  margin-top: 2px;
-}
-
-.show-toggler {
-  cursor: pointer;
-  color: cornflowerblue;
-  transition: all;
-}
-.show-toggler:hover {
-  transform: scale(1.1);
-}
 
 </style>
     <!-- Banner Starts Here -->
 
     <div class="single-slide-item slide-1">
       <div class="container">
-        <div class="row">
-          <div class="col-md-6 mx-auto login-section">
-            <div class="card">
-              <div class="card-body">
-    
-    
-      <div class="card-body">
-                                <img src="{% static 'img/logo.png' %}" id="image" style="margin: 0px 0%;" height="90" alt="Card image cap">
-                                <p class="text-center"><b>Register for a free account</b></p>
-                                <form class="mt-2" autocomplete="off" action="{%url 'register'%}" method="POST" autocomplete="off">
-                  {% csrf_token%}
-                    <!-- Alerts -->
-                {% include 'partials/_alerts.html'%}
-        <div class="form-group">
-          <input
-            type="text"
-            name="first_name"
-            placeholder="First Name"
-            class="form-control form-control-sm"
-            required
-            value="{{ values.first_name }}"
-          />
-        </div>
-        <div class="form-group">
-          <input
-            type="text"
-            name="last_name"
-            placeholder="Last Name"
-            class="form-control form-control-sm"
-            required
-            value="{{ values.last_name }}"
-          />
-        </div>
-          <div class="form-group">
-    
-    
-       <div class="form-group">
-        <input
+                  
+                    
+                      <div class="center-card">
+                      <div class="card">
+                        <div class="card-body">
+              
+              
+                
+                                          <img src="{% static 'img/register_users.png' %}" class="image_register" style="margin: 0px 0%" alt="Card image cap">
+                                          <p class="text-center" style="color: black;"><b>{{ selected_language.welcome.register.title }}</b></p>
+            <form class="mt-2" action="{%url 'register'%}" method="POST" autocomplete="off">
+              {% csrf_token%}
+              <!-- Alerts -->
+              {% include 'partials/_alerts.html'%}
+              <div class="form-group">
+                <input
+                  list="company-names"
+                  name="company_name"
+                  placeholder="Company Name"
+                  class="form-control form-control-sm"
+                  required
+                  value="{{ values.company_name }}"
+                />
+                <datalist id="company-names">
+                  {% for company in companies %}
+                    <option value="{{ company.company_name }}">
+                  {% endfor %}
+                </datalist>
+              </div>
+              <div class="form-group">
+                <input
+                  type="text"
+                  name="first_name"
+                  placeholder="First Name"
+                  class="form-control form-control-sm"
+                  required
+                  value="{{ values.first_name }}"
+                />
+              </div>
+              <div class="form-group">
+                <input
+                  type="text"
+                  name="last_name"
+                  placeholder="Last Name"
+                  class="form-control form-control-sm"
+                  required
+                  value="{{ values.last_name }}"
+                />
+              </div>
+                <div class="form-group">
+              <div class="form-group">            
+                 <div class="form-group">
+                  <input
                       type="text"
                       name="username"
                       placeholder="Username"
                       id="validationServerUsername"
-                     class="form-control   username form-control-sm"
+                      class="form-control   username form-control-sm"
                       required
                       value="{{ values.username }}"
                     />
-    
-          </div>
-    <div class="spinner-border username_spinner  spinner-border-sm" style="display:none;"></div>
-    <div class="valid-feedback username-check-done">
-           <i class="fa fa-check" color="green"></i><span>Available</span>
-          </div>
-     <div class="invalid-feedback" style="display:none;">
-    
-            </div>
-                  </div>
-                  <div class="form-group">
-    
-                    <input
-                      type="email"
-                      name="email"
-                      placeholder="Email"
-                     class="form-control form-control-sm user-email"
-                      required
-                      value="{{ values.email }}"
-                    />
-    
-    
-    
-                  </div>
-    
-    <div class="spinner-border email_spinner  spinner-border-sm" style="display:none;"></div>
-    <div class="valid-feedback email-check-done" style="display:none;">
-           <i class="fa fa-check" color="green"></i><span>Email Looks good !</span>
-          </div>
-     <div class="email-invalid-feedback invalid-feedback" style="display:none;">
-                  </div>
-                  <div class="form-group">
-                    <input
-                      type="password"
-                      placeholder="Password"
-                      name="password"
-                       class="form-control form-control-sm passwordField"
-                      required
-                      value="{{ values.password }}"
-                    >
-                    </input>
-    
-                    <small class="float-right py-2  show-toggler">SHOW</small>
-                  </div>
+              
+                </div>
+                    <div class="spinner-border username_spinner  spinner-border-sm" style="display:none;"></div>
+                    <div class="valid-feedback username-check-done">
+                      <i class="fa fa-check" color="green"></i><span>Available</span>
+                    </div>
+                    <div class="invalid-feedback" style="display:none;"></div>
+                    </div>
+                <div class="form-group">
+                  <input
+                    type="email"
+                    name="email"
+                    placeholder="Email"
+                    class="form-control form-control-sm user-email"
+                    required
+                    value="{{ values.email }}"
+                  />
+                </div>
+                    <div class="spinner-border email_spinner  spinner-border-sm" style="display:none;"></div>
+                    <div class="valid-feedback email-check-done" style="display:none;">
+                      <i class="fa fa-check" color="green"></i><span>Email Looks good !</span>
+                    </div>
+                    <div class="email-invalid-feedback invalid-feedback" style="display:none;"></div>
+                <div class="form-group">
+                  <input
+                    type="password"
+                    placeholder="Password"
+                    name="password"
+                      class="form-control form-control-sm passwordField"
+                    required
+                    value="{{ values.password }}"
+                  >
+                  </input>
+  
+                  <small class="float-right py-2  show-toggler">{{ selected_language.welcome.register.show }}</small>
+                </div>
                   <input
                     type="submit"
-                    value="Register"
+                    value="{{ selected_language.welcome.register.boton_register }}"
                     class="btn btn-primary submit-btn btn-block btn-sm btn-block"
                   />
-                     <div class="lower my-3 pl-3 pr-3">
-                                        <div class="row">
-                                            <div class="col-md-5">
-                                                <hr class="ml-1">
-                                            </div>
-                                            <div class="col-md-2">
-                                                <small class="text-muted">OR</small>
-                                            </div>
-                                            <div class="col-md-5">
-                                                <hr class="mr-1">
-                                            </div>
-                                        </div>
-                                        <a href="#" class="btn btn-block btn-sm">Reset Password</a>
-    
-                                        <a href="{% url 'login' %}" class="btn btn-block btn-sm">Back to Login</a>
-    
-                                    </div>
-                </form>
-    
-                            </div>
-              </div>
-            </div>
-          </div>
-        </div>
-    
-    
+                      <div class="lower my-3 pl-3 pr-3">
+                          <div class="row">
+                              <div class="col-md-5">
+                                  <hr class="ml-1">
+                              </div>
+                              <div class="col-md-2">
+                                  <small class="text-muted">OR</small>
+                              </div>
+                              <div class="col-md-5">
+                                  <hr class="mr-1">
+                              </div>
+                          </div>
+                          <a href="{% url 'request-password'%}" class="btn btn-block btn-sm">{{ selected_language.welcome.register.reset_password }}</a>
+  
+                          <a href="{% url 'login' %}" class="btn btn-block btn-sm">{{ selected_language.welcome.register.back_login }}</a>
+  
+                      </div>
+                  </form>
+              
+                                      </div>
+                        </div>
+                      </div>
+                    
+                    
+                  </div>
+              
+              
+              <script src={% static 'js/register.js' %}>
+              
+              
+              </script>
+              
+                
+              
+          <!-- // Item -->
+  
+            
+        
+    </div>
     <script src={% static 'js/register.js' %}>
     
     
     </script>
     
-      </div>
+
     </div>
 
 
