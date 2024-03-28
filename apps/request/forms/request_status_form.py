@@ -29,6 +29,7 @@ app = DjangoDash('Request_Status_DashApp', add_bootstrap_links=True, external_st
 # Update the serve_layout function to include the 'output-card' in the layout
 def serve_layout():  
     return dbc.Container([
+    dcc.Location(id='url', refresh=True),
     dbc.Row([
         dbc.Col(html.Div(style={'height': '20px'}), width=12)
     ]),
@@ -92,6 +93,8 @@ def serve_layout():
     # Add a Submit button to the layout
     html.Button('Submit', id='submit', n_clicks=0, style={'display': 'none'}),
 
+    dbc.Button('Watch', id='watch-button', n_clicks=0),
+
     ],
     fluid=True,
     style={'padding-bottom':'200px'}
@@ -99,6 +102,20 @@ def serve_layout():
 
 app.layout = serve_layout
 
+@app.callback(
+    Output('url', 'pathname'),
+    Input('watch-button', 'n_clicks'),
+    State('datatable-interactivity', 'derived_virtual_selected_rows'),
+    State('datatable-interactivity', 'data'),
+    prevent_initial_call=True,
+)
+def watch_button(n_clicks, derived_virtual_selected_rows, data):
+    if n_clicks > 0:
+        if len(derived_virtual_selected_rows) == 1:
+            dff = pd.DataFrame(data)
+            selected_row_id = dff.iloc[derived_virtual_selected_rows[0]]['ID_OC_id']
+            return '/request/revision_solicitud/{}'.format(selected_row_id)
+    return dash.no_update
 
 @app.callback(
     Output('output-card1', 'children'),

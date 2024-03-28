@@ -48,14 +48,10 @@ def request_status(request):
     return render(request, 'request/request_status.html',{'current_page': 'request_home','selected_language':get_context(request)})
 
 
-
+@login_required(login_url='login')
 def revision_solicitud(request, id):
-    selected_row = CotizacionRealizada.objects.get(id=id)
-    print(selected_row)
-    return render(request, 'request/revision_solicitud.html', {
-        'current_page': 'request_home',
-        'selected_language': get_context(request),
-        'selected_row': selected_row,
-    })
+    request.session['id'] = id  
+    return render(request, 'request/revision_solicitud.html')
+
 
 

@@ -19,44 +19,38 @@ import os
 
 import pandas as pd
 
-external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
+
 
 theme = dbc.themes.BOOTSTRAP
 
-app = DjangoDash('Request_Status_DashApp', add_bootstrap_links=True, external_stylesheets=[theme, dbc.icons.BOOTSTRAP], meta_tags=[ { "name": "viewport", "content": "width=device-width, initial-scale=1, maximum-scale=1", }, ],)
-
-# Count the number of rows for each status
-solicitud_creada_count = Estado_Solicitudes.objects.filter(Request_Status='Solicitud Creada').count()
+app = DjangoDash('Request_Revision_Solicitud_DashApp', add_bootstrap_links=True, external_stylesheets=[theme, dbc.icons.BOOTSTRAP], meta_tags=[ { "name": "viewport", "content": "width=device-width, initial-scale=1, maximum-scale=1", }, ],)
 
 
-# Use these counts in your figures
-fig1 = go.Figure(go.Indicator(
-    value = solicitud_creada_count,
-    title = {"text": "Solicitud Creada"},
-))
-
-card1 = dbc.Card(
-    dcc.Graph(figure=fig1, style={"height": "100%", "width": "100%"}),
-    style={"height": "300px"}
-)
 
 def serve_layout():  
     return dbc.Container([
+    dbc.Row([
+        dbc.Col(html.Div(style={'height': '40px'}), width=12)
+    ]),
+    dbc.Row([
+            dbc.Col(width=1),
+            dbc.Col((
+            dcc.Markdown('''# REVISIÓN SOLICITUD '''),
 
+            ),width=10),
+            dbc.Col(width=1),
+
+        ]),
     dbc.Row([
         dbc.Col((html.Div(style={'height': '20px'})),width=1),
-        dbc.Col((dbc.Row([dbc.Col(card1)]),),width=10),
+        dbc.Col((html.Div(id='output-user')),width=10),
         dbc.Col((html.Div(style={'height': '20px'})),width=1),
     ]),
-
     html.Div(id='user_id', style={'display': 'none'}),
     html.Div(id='username', style={'display': 'none'}),
 
-    # Add the 'output-user' to the layout
-    html.Div(id='output-user'),
-
     # Add a Submit button to the layout
-    html.Button('Submit', id='submit', n_clicks=0),
+    html.Button('Submit', id='submit', n_clicks=0, style={'display': 'none'}),
 
     ],
     fluid=True,
@@ -71,7 +65,6 @@ app.layout = serve_layout
     Input('submit', "n_clicks"),
     [State('user_id', 'children'),
      State('username', 'children')],
-     prevent_initial_call=True,
 )
 def get_user(n_clicks, user_id, username,request):
     user = request.user
@@ -79,3 +72,9 @@ def get_user(n_clicks, user_id, username,request):
     user_id = user.id
     if n_clicks is not None:
         return f"El nombre de usuario es {username} y su id es {user_id}"
+
+@app.callback(Output('page-content', 'children'),
+              [Input('url', 'pathname')])
+def display_page(pathname):
+    id = pathname.split('/')[-1]
+    return 'El id es: {}'.format(id)

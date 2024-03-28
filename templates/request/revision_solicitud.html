@@ -1,13 +1,9 @@
 
 {% load plotly_dash %}
 
-
-
-
     {% if user.is_authenticated %}
 
     <body>
-        <!-- Agrega los elementos Div aquí -->
 
         <div class="{%plotly_class name='Request_Revision_Solicitud_DashApp'%}">
             {%plotly_app name="Request_Revision_Solicitud_DashApp" ratio=0.45%}
