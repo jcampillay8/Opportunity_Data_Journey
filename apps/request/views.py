@@ -43,10 +43,19 @@ def new_request(request,pk):
 def request_history(request):
     return render(request, 'request/request_history.html',{'current_page': 'request_home','selected_language':get_context(request)})
 
+@login_required(login_url='login')
 def request_status(request):
     return render(request, 'request/request_status.html',{'current_page': 'request_home','selected_language':get_context(request)})
 
+
+
 def revision_solicitud(request, id):
     selected_row = CotizacionRealizada.objects.get(id=id)
-    return render(request, 'request/revision_solicitud.html',{'current_page': 'request_home','selected_language':get_context(request)})
+    print(selected_row)
+    return render(request, 'request/revision_solicitud.html', {
+        'current_page': 'request_home',
+        'selected_language': get_context(request),
+        'selected_row': selected_row,
+    })
+
 

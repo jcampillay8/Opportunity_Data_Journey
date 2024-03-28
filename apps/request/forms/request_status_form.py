@@ -19,120 +19,78 @@ import os
 
 import pandas as pd
 
-
+external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 theme = dbc.themes.BOOTSTRAP
 
 app = DjangoDash('Request_Status_DashApp', add_bootstrap_links=True, external_stylesheets=[theme, dbc.icons.BOOTSTRAP], meta_tags=[ { "name": "viewport", "content": "width=device-width, initial-scale=1, maximum-scale=1", }, ],)
 
-# Count the number of rows for each status
-solicitud_creada_count = Estado_Solicitudes.objects.filter(Request_Status='Solicitud Creada').count()
-solicitud_revision_count = Estado_Solicitudes.objects.filter(Request_Status='Solicitud en Revisión').count()
-solicitud_aprobada_count = Estado_Solicitudes.objects.filter(Request_Status='Solicitud Aprobada').count()
-solicitud_finalizada_count = Estado_Solicitudes.objects.filter(Request_Status='Solicitud Finalizada').count()
 
-# Use these counts in your figures
-fig1 = go.Figure(go.Indicator(
-    value = solicitud_creada_count,
-    title = {"text": "Solicitud Creada"},
-))
-
-fig2 = go.Figure(go.Indicator(
-    value = solicitud_revision_count,
-    title = {"text": "Solicitud en Revisión"},
-))
-
-fig3 = go.Figure(go.Indicator(
-    value = solicitud_aprobada_count,
-    title = {"text": "Solicitud Aprobada"},
-))
-
-fig4 = go.Figure(go.Indicator(
-    value = solicitud_finalizada_count,
-    title = {"text": "Solicitud Finalizada"},
-))
-
-card1 = dbc.Card(
-    dcc.Graph(figure=fig1, style={"height": "100%", "width": "100%"}),
-    style={"height": "300px"}
-)
-
-card2 = dbc.Card(
-    dcc.Graph(figure=fig2, style={"height": "100%", "width": "100%"}),
-    style={"height": "300px"}
-)
-
-card3 = dbc.Card(
-    dcc.Graph(figure=fig3, style={"height": "100%", "width": "100%"}),
-    style={"height": "300px"}
-)
-
-card4 = dbc.Card(
-    dcc.Graph(figure=fig4, style={"height": "100%", "width": "100%"}),
-    style={"height": "300px"}
-)
-
-qs = Estado_Solicitudes.objects.select_related('ID_OC').values(
-    "ID_OC_id",
-    "Request_Status",
-    User_Id=F('ID_OC__User_Id'),
-    User_Name=F('ID_OC__User_Name'),
-    Formulario=F('ID_OC__Formulario'),
-    Empresa=F('ID_OC__Empresa'),
-    Area=F('ID_OC__Area'),
-    Centro_Costo=F('ID_OC__Centro_Costo'),
-    Nombre_Solicitante=F('ID_OC__Nombre_Solicitante'),
-    Nombre_Autoriza=F('ID_OC__Nombre_Autoriza'),
-    hora_solicitud=F('ID_OC__hora_solicitud'),
-    fecha_solicitud=F('ID_OC__fecha_solicitud')
-).order_by('-fecha_solicitud', '-hora_solicitud')
-
-df = pd.DataFrame.from_records(qs)
-
+# Update the serve_layout function to include the 'output-card' in the layout
 def serve_layout():  
     return dbc.Container([
-    dcc.Location(id='url', refresh=True),  # Agrega esto a tu layout
+    dbc.Row([
+        dbc.Col(html.Div(style={'height': '20px'}), width=12)
+    ]),
+
+    dbc.Row([
+        dbc.Col((html.Div(style={'height': '20px'})),width=1),
+        dbc.Col((dbc.Row([dbc.Col(html.Div(id='output-card1')),dbc.Col(html.Div(id='output-card2')),dbc.Col(html.Div(id='output-card3')),dbc.Col(html.Div(id='output-card4'))]),),width=10),
+        dbc.Col((html.Div(style={'height': '20px'})),width=1),
+    ]),
     dbc.Row([
         dbc.Col(html.Div(style={'height': '40px'}), width=12)
     ]),
     dbc.Row([
-        dbc.Col((html.Div(style={'height': '20px'})),width=1),
-        dbc.Col((dbc.Row([dbc.Col(card1), dbc.Col(card2), dbc.Col(card3),dbc.Col(card4)]),),width=10),
-        dbc.Col((html.Div(style={'height': '20px'})),width=1),
-    ]),
-    dbc.Row([
-        dbc.Col(html.Div(style={'height': '40px'}), width=12)
-    ]),
-        dbc.Row([
-        dbc.Col((html.Div(style={'height': '20px'})),width=1),
-        dbc.Col((    dash_table.DataTable(
+        dbc.Col((),width=1),
+        dbc.Col((dash_table.DataTable(
+
         id='datatable-interactivity',
         columns=[
-            {"name": i, "id": i, "deletable": True, "selectable": True} for i in df.columns
+            {"name": "ID_OC_id", "id": "ID_OC_id", "deletable": True, "selectable": True},
+            {"name": "Request_Status", "id": "Request_Status", "deletable": True, "selectable": True},
+            {"name": "User_Id", "id": "User_Id", "deletable": True, "selectable": True},
+            {"name": "User_Name", "id": "User_Name", "deletable": True, "selectable": True},
+            {"name": "Formulario", "id": "Formulario", "deletable": True, "selectable": True},
+            {"name": "Empresa", "id": "Empresa", "deletable": True, "selectable": True},
+            {"name": "Area", "id": "Area", "deletable": True, "selectable": True},
+            {"name": "Centro_Costo", "id": "Centro_Costo", "deletable": True, "selectable": True},
+            {"name": "Nombre_Solicitante", "id": "Nombre_Solicitante", "deletable": True, "selectable": True},
+            {"name": "Nombre_Autoriza", "id": "Nombre_Autoriza", "deletable": True, "selectable": True},
+            {"name": "hora_solicitud", "id": "hora_solicitud", "deletable": True, "selectable": True},
+            {"name": "fecha_solicitud", "id": "fecha_solicitud", "deletable": True, "selectable": True},
         ],
-        data=df.to_dict('records'),
-        editable=True,
-        filter_action="native",
-        sort_action="native",
-        sort_mode="multi",
-        column_selectable="single",
-        row_selectable="multi",
-        row_deletable=True,
-        selected_columns=[],
-        selected_rows=[],
-        page_action="native",
-        page_current= 0,
-        page_size= 10,
-    ),
-    dbc.Button('Submit', id='submit-button', n_clicks=0),
-    html.Div(id='datatable-interactivity-container')),width=10),
-    dbc.Col((html.Div(style={'height': '20px'})),width=1),
+            data=[],
+            editable=False,
+            filter_action="native",
+            sort_action="native",
+            sort_mode="multi",
+            column_selectable="single",
+            row_selectable="single",
+            row_deletable=False,
+            selected_columns=[],
+            selected_rows=[],
+            page_action="native",
+            page_current= 0,
+            page_size= 10,
+            style_data={
+            'whiteSpace': 'normal',
+            'height': 'auto',
+
+            },
+        )),width=10),
+        dbc.Col(html.Div(style={'height': '20px'}),width=1),
     ]),
+    
+    dbc.Row([
+        dbc.Col(html.Div(style={'height': '20px'}), width=12)
+    ]),
+
     html.Div(id='user_id', style={'display': 'none'}),
     html.Div(id='username', style={'display': 'none'}),
-    html.Div(id='email', style={'display' : 'none'})  
-         
 
+    # Add a Submit button to the layout
+    html.Button('Submit', id='submit', n_clicks=0, style={'display': 'none'}),
 
     ],
     fluid=True,
@@ -141,40 +99,104 @@ def serve_layout():
 
 app.layout = serve_layout
 
-@callback(
-    Output('datatable-interactivity', 'style_data_conditional'),
-    Input('datatable-interactivity', 'selected_columns')
-)
-def update_styles(selected_columns):
-    return [{
-        'if': { 'column_id': i },
-        'background_color': '#D2F3FF'
-    } for i in selected_columns]
 
 @app.callback(
-    [Output('url', 'pathname'), Output('datatable-interactivity-container', "children")],
-    Input('submit-button', 'n_clicks'),
-    State('datatable-interactivity', "derived_virtual_data"),
-    State('datatable-interactivity', "derived_virtual_selected_rows"),
-    prevent_initial_call=True)
-def update_graphs(n_clicks, rows, derived_virtual_selected_rows):
-    if derived_virtual_selected_rows is None:
-        derived_virtual_selected_rows = []
+    Output('output-card1', 'children'),
+    Output('output-card2', 'children'),
+    Output('output-card3', 'children'),
+    Output('output-card4', 'children'),
+    Output('datatable-interactivity', 'data'),
+    Input('submit', "n_clicks"),
+    [State('user_id', 'children'),
+     State('username', 'children')],
+     
+)
+def get_user(n_clicks, user_id, username, request):
+    user = request.user
+    username = user.username
+    user_id = user.id
+    if n_clicks is not None:
+        if user.is_superuser or user.is_staff:
+            solicitud_creada_count = Estado_Solicitudes.objects.filter(Request_Status='Solicitud Creada').count()
+            solicitud_revision_count = Estado_Solicitudes.objects.filter(Request_Status='Solicitud en Revisión').count()
+            solicitud_aprobada_count = Estado_Solicitudes.objects.filter(Request_Status='Solicitud Aprobada').count()
+            solicitud_finalizada_count = Estado_Solicitudes.objects.filter(Request_Status='Solicitud Finalizada').count()
+            qs = Estado_Solicitudes.objects.select_related('ID_OC').values(
+                "ID_OC_id",
+                "Request_Status",
+                User_Id=F('ID_OC__User_Id'),
+                User_Name=F('ID_OC__User_Name'),
+                Formulario=F('ID_OC__Formulario'),
+                Empresa=F('ID_OC__Empresa'),
+                Area=F('ID_OC__Area'),
+                Centro_Costo=F('ID_OC__Centro_Costo'),
+                Nombre_Solicitante=F('ID_OC__Nombre_Solicitante'),
+                Nombre_Autoriza=F('ID_OC__Nombre_Autoriza'),
+                hora_solicitud=F('ID_OC__hora_solicitud'),
+                fecha_solicitud=F('ID_OC__fecha_solicitud')
+            ).order_by('-fecha_solicitud', '-hora_solicitud')
+        else:
+            solicitud_creada_count = Estado_Solicitudes.objects.filter(Request_Status='Solicitud Creada', ID_OC__User_Id=user_id).count()
+            solicitud_revision_count = Estado_Solicitudes.objects.filter(Request_Status='Solicitud en Revisión', ID_OC__User_Id=user_id).count()
+            solicitud_aprobada_count = Estado_Solicitudes.objects.filter(Request_Status='Solicitud Aprobada', ID_OC__User_Id=user_id).count()
+            solicitud_finalizada_count = Estado_Solicitudes.objects.filter(Request_Status='Solicitud Finalizada', ID_OC__User_Id=user_id).count()
+            qs = Estado_Solicitudes.objects.filter(ID_OC__User_Id=user_id).select_related('ID_OC').values(
+                "ID_OC_id",
+                "Request_Status",
+                User_Id=F('ID_OC__User_Id'),
+                User_Name=F('ID_OC__User_Name'),
+                Formulario=F('ID_OC__Formulario'),
+                Empresa=F('ID_OC__Empresa'),
+                Area=F('ID_OC__Area'),
+                Centro_Costo=F('ID_OC__Centro_Costo'),
+                Nombre_Solicitante=F('ID_OC__Nombre_Solicitante'),
+                Nombre_Autoriza=F('ID_OC__Nombre_Autoriza'),
+                hora_solicitud=F('ID_OC__hora_solicitud'),
+                fecha_solicitud=F('ID_OC__fecha_solicitud')
+            ).order_by('-fecha_solicitud', '-hora_solicitud')        
+    
 
-    dff = df if rows is None else pd.DataFrame(rows)
+        df = pd.DataFrame.from_records(qs)
 
-    if len(derived_virtual_selected_rows) > 1:
-        return dash.no_update, html.Div([
-            'El valor de la primera columna de las filas seleccionadas es: {}'.format(', '.join([str(dff.iloc[i, 0]) for i in derived_virtual_selected_rows]))
-        ])
-    elif len(derived_virtual_selected_rows) == 1:
-        selected_row_id = dff.iloc[derived_virtual_selected_rows[0]]['ID_OC_id']
-        return '/request/revision_solicitud/{}'.format(selected_row_id), dash.no_update
-    else:
-        return dash.no_update, html.Div([])
+        fig1 = go.Figure(go.Indicator(
+            value = solicitud_creada_count,
+            title = {"text": "Solicitud Creada"},
+        ))
+
+        fig2 = go.Figure(go.Indicator(
+            value = solicitud_revision_count,
+            title = {"text": "Solicitud en Revisión"},
+        ))
+
+        fig3 = go.Figure(go.Indicator(
+            value = solicitud_aprobada_count,
+            title = {"text": "Solicitud Aprobada"},
+        ))
+
+        fig4 = go.Figure(go.Indicator(
+            value = solicitud_finalizada_count,
+            title = {"text": "Solicitud Finalizada"},
+        ))
+
+        card1 = dbc.Card(
+            dcc.Graph(figure=fig1, style={"height": "100%", "width": "100%"}),
+            style={"height": "300px"}
+        )
+
+        card2 = dbc.Card(
+            dcc.Graph(figure=fig2, style={"height": "100%", "width": "100%"}),
+            style={"height": "300px"}
+        )
+
+        card3 = dbc.Card(
+            dcc.Graph(figure=fig3, style={"height": "100%", "width": "100%"}),
+            style={"height": "300px"}
+        )
+
+        card4 = dbc.Card(
+            dcc.Graph(figure=fig4, style={"height": "100%", "width": "100%"}),
+            style={"height": "300px"}
+        )
 
 
-
-
-
-
+        return card1, card2, card3, card4, df.to_dict('records')

@@ -1,45 +1,81 @@
+import dash
+import dash_bootstrap_components as dbc
+from dash import Dash, dash_table, html, dcc, callback, Input, Output, State, callback
+from dash.dependencies import Input, Output, State
+from django_plotly_dash import DjangoDash  
+from django.core.exceptions import ObjectDoesNotExist
+from apps.request.models import CotizacionRealizada, CotizacionRealizada_Productos, CotizacionRealizada_Archivos, Estado_Solicitudes
+from django.db.models import F
+import dash_daq as daq
+from datetime import date
+from django_pandas.io import read_frame
+from django.contrib.auth.decorators import login_required
+import plotly.graph_objects as go
+
+import base64
+import datetime    
+import io
 import os
-import django
+
 import pandas as pd
-from datetime import datetime
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'core.settings')
-django.setup()
+external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
-from apps.request.models import CotizacionRealizada, Estado_Solicitudes
+theme = dbc.themes.BOOTSTRAP
 
-def load_data():
-    # Crea un DataFrame con los datos de tu tabla
-    data = {
-        'ID_OC_id': list(range(13, 33)),
-        'Request_Status': ['Solicitud Creada'] * 20,
-        'Solicitud_Creada': [True] * 20,
-        'Solicitud_Revision': [False] * 20,
-        'Solicitud_Aprobada': [False] * 20,
-        'Solicitud_Finalizada': [False] * 20,
-        'Hora_Inicio_Solicitud_Creada': [datetime.now()] * 20,
-        'Hora_Inicio_Solicitud_Revision': [None] * 20,
-        'Hora_Inicio_Solicitud_Aprobada': [None] * 20,
-        'Hora_Inicio_Solicitud_Finalizada': [None] * 20
-    }
-    df = pd.DataFrame(data)
+app = DjangoDash('Request_Status_DashApp', add_bootstrap_links=True, external_stylesheets=[theme, dbc.icons.BOOTSTRAP], meta_tags=[ { "name": "viewport", "content": "width=device-width, initial-scale=1, maximum-scale=1", }, ],)
 
-    # Itera sobre cada fila del DataFrame
-    for index, row in df.iterrows():
-        # Crea un nuevo objeto Estado_Solicitudes con los datos de la fila
-        estado_solicitud = Estado_Solicitudes(
-            ID_OC=CotizacionRealizada.objects.get(id=row['ID_OC_id']),
-            Request_Status=row['Request_Status'],
-            Solicitud_Creada=row['Solicitud_Creada'],
-            Solicitud_Revision=row['Solicitud_Revision'],
-            Solicitud_Aprobada=row['Solicitud_Aprobada'],
-            Solicitud_Finalizada=row['Solicitud_Finalizada'],
-            Hora_Inicio_Solicitud_Creada=row['Hora_Inicio_Solicitud_Creada'],
-            Hora_Inicio_Solicitud_Revision=row['Hora_Inicio_Solicitud_Revision'],
-            Hora_Inicio_Solicitud_Aprobada=row['Hora_Inicio_Solicitud_Aprobada'],
-            Hora_Inicio_Solicitud_Finalizada=row['Hora_Inicio_Solicitud_Finalizada']
-        )
-        # Guarda el objeto en la base de datos
-        estado_solicitud.save()
+# Count the number of rows for each status
+solicitud_creada_count = Estado_Solicitudes.objects.filter(Request_Status='Solicitud Creada').count()
 
-load_data()
+
+# Use these counts in your figures
+fig1 = go.Figure(go.Indicator(
+    value = solicitud_creada_count,
+    title = {"text": "Solicitud Creada"},
+))
+
+card1 = dbc.Card(
+    dcc.Graph(figure=fig1, style={"height": "100%", "width": "100%"}),
+    style={"height": "300px"}
+)
+
+def serve_layout():  
+    return dbc.Container([
+
+    dbc.Row([
+        dbc.Col((html.Div(style={'height': '20px'})),width=1),
+        dbc.Col((dbc.Row([dbc.Col(card1)]),),width=10),
+        dbc.Col((html.Div(style={'height': '20px'})),width=1),
+    ]),
+
+    html.Div(id='user_id', style={'display': 'none'}),
+    html.Div(id='username', style={'display': 'none'}),
+
+    # Add the 'output-user' to the layout
+    html.Div(id='output-user'),
+
+    # Add a Submit button to the layout
+    html.Button('Submit', id='submit', n_clicks=0),
+
+    ],
+    fluid=True,
+    style={'padding-bottom':'200px'}
+)
+
+app.layout = serve_layout
+
+
+@app.callback(
+    Output('output-user', 'children'),
+    Input('submit', "n_clicks"),
+    [State('user_id', 'children'),
+     State('username', 'children')],
+     prevent_initial_call=True,
+)
+def get_user(n_clicks, user_id, username,request):
+    user = request.user
+    username = user.username
+    user_id = user.id
+    if n_clicks is not None:
+        return f"El nombre de usuario es {username} y su id es {user_id}"
