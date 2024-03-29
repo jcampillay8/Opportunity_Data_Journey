@@ -34,24 +34,67 @@ def serve_layout():
     dbc.Row([
             dbc.Col(width=1),
             dbc.Col((
-            dcc.Markdown('''# REVISIÓN SOLICITUD '''),
+            dcc.Markdown('''# REVISIÓN SOLICITUD ''', className="text-center"),
 
             ),width=10),
             dbc.Col(width=1),
 
         ]),
     dbc.Row([
+        dbc.Col(html.Div(style={'height': '20px'}), width=12)
+    ]),
+        dbc.Row([
             dbc.Col(width=1),
             dbc.Col((
             html.Div(id='output_nombre_formulario', style={'fontSize': 30, 'font-weight': 'bold'}),
             ),width=10),
             dbc.Col(width=1),
-
         ]),
+                       dbc.Row([
+            dbc.Col(width=1),
+            dbc.Col((
+            dbc.Row([
+            dbc.Col(html.Div([
+                html.Br(),
+                dcc.Markdown(''' ### NÚMERO ORDEN COMPRA: '''),
+            ]), md=12, width=2, lg=2),
+            dbc.Col(html.Div([
+                html.Br(),
+                dcc.Input(
+                    id = 'input_numero_orden_compra',
+                    placeholder='Enter a value...',
+                    type='text',
+                    value='',
+                    style={'width': '100%'}
+                ),
+            ], className='pl-0'), md=12, width=4, lg=4),
+            dbc.Col(html.Div([
+                html.Br(),
+                dcc.Markdown(''' ### NÚMERO FACTURA: '''),
+            ]), md=12, width=2, lg=2),
+            dbc.Col(html.Div([
+                html.Br(),
+                dcc.Input(
+                    id = 'input_numero_factura',
+                    placeholder='Enter a value...',
+                    type='text',
+                    value='',
+                    style={'width': '100%'}
+                ),
+            ], className='pl-0'), md=12, width=4, lg=4),
+            
+                ])
+            ),width=10),
+            dbc.Col(width=1),
+        ]),
+
     dbc.Row([
         dbc.Col((html.Div(style={'height': '20px'})),width=1),
         dbc.Col((html.Div(id='output-user')),width=10),
         dbc.Col((html.Div(style={'height': '20px'})),width=1),
+    ]),
+    dbc.Row([
+        dbc.Col(html.Div(style={'height': '20px'}), width=12)
     ]),
     dbc.Row([
         dbc.Col(width=1),
@@ -66,20 +109,49 @@ def serve_layout():
                 ],
                 data=[],
                 editable=True,  # Hace que la tabla sea editable
-                style_cell={'textAlign': 'left'},
+                row_selectable="single",
                 style_header={
                     'backgroundColor': 'rgb(230, 230, 230)',
-                    'fontWeight': 'bold'
-                }
+                    'fontWeight': 'bold',
+                    'textAlign': 'center',
+                },
+                style_data_conditional=[
+                    {
+                        'whiteSpace': 'normal',
+                        'height': 'auto',   
+                    },
+                ],
+                style_cell_conditional=[
+                    {
+                        'if': {'column_id': 'Descripcion_Producto'},
+                        'whiteSpace': 'normal',
+                        'textAlign': 'left',
+                        'height': 'auto',
+                    },
+                    {
+                        'if': {'column_id': 'Nombre_Producto'},
+                        'textAlign': 'center',
+                        'height': 'auto',
+                    },
+                    {
+                        'if': {'column_id': 'Cantidad'},
+                        'textAlign': 'center',
+                        'height': 'auto',
+                    }
+                ],
             )
         ),width=10),
         dbc.Col(width=1),
     ]),
-    dbc.Row([  # Agrega esta línea
-        dbc.Col(width=1),
-        dbc.Col((dbc.Button('SAVE', id='save-button', style={'display': 'none'})),width=10),  # Agrega esta línea
-        dbc.Col(width=1),
-    ]),  # Agrega esta línea
+        dbc.Row([
+            dbc.Col((html.Div(style={'height': '40px'})),width=1),
+        ]),
+    dbc.Row([
+        dbc.Col(width=2),
+        dbc.Col(dbc.Button('SAVE & UPDATE', id='save-button', style={'display': 'none'}), width=4),
+        dbc.Col(dbc.Button('UPDATE DATA', id='update-button', style={'display': 'none'}), width=4),
+        dbc.Col(width=2),
+    ]),
     dbc.Row([
             dbc.Col((),width=1),
             dbc.Col((
@@ -89,6 +161,64 @@ def serve_layout():
             ),width=10),
             dbc.Col((),width=1),
         ]),
+dbc.Row([
+        dbc.Col(width=1),
+        dbc.Col((
+            dbc.Row([
+                dbc.Col(html.Div([
+                    html.Br(),
+                    dcc.Markdown(''' ### NOMBRE PRODUCTO: '''),
+                ]), md=12, width=2, lg=2),
+                dbc.Col(html.Div([
+                    html.Br(),
+                    dcc.Input(
+                        id='input_nombre_producto',
+                        placeholder='Enter a value...',
+                        type='text',
+                        value='',
+                        readOnly=True,
+                        style={'width': '100%'}
+                    ),
+                ], className='pl-0'), md=12, width=6, lg=6),
+                dbc.Col(html.Div([
+                    html.Br(),
+                    dcc.Markdown(''' ### CANTIDAD: '''),
+                ]), md=12, width=2, lg=2),
+                dbc.Col(html.Div([
+                    html.Br(),
+                    dcc.Input(
+                        id='input_cantidad',
+                        placeholder='Enter a value...',
+                        type='number',
+                        value='',
+                        readOnly=True,
+                        style={'width': '100%'}
+                    ),
+                ], className='pl-0'), md=12, width=2, lg=2),
+            ])
+        ), width=10),
+        dbc.Col(width=1),
+    ]),
+    html.Div(style={'height': '40px'}),  # Add a space
+    dbc.Row([
+        dbc.Col(width=1),
+        dbc.Col((
+            dcc.Markdown(''' ### DESCRIPCIÓN PRODUCTO: '''),
+        ), width=10),
+        dbc.Col(width=1),
+    ]),
+    dbc.Row([
+        dbc.Col(width=1),
+        dbc.Col((
+            dcc.Textarea(
+                id='input_descripcion_producto',
+                placeholder='Describa el ítem...',
+                readOnly=True,
+                style={'width': '100%'}
+            )
+        ), width=10),
+        dbc.Col(width=1),
+    ]),
     html.Div(id='user_id', style={'display': 'none'}),
     html.Div(id='username', style={'display': 'none'}),
     dcc.ConfirmDialog(id='confirm',message=''),
@@ -105,17 +235,44 @@ app.layout = serve_layout
 
 
 @app.callback(
-    Output('save-button', 'style'),
+    [Output('save-button', 'style'),
+     Output('update-button', 'style'),
+     Output('input_numero_orden_compra', 'readOnly'),
+     Output('input_numero_factura', 'readOnly')],
     [Input('submit', "n_clicks")],
 )
-def update_button(n_clicks, request):
+def update_buttons(n_clicks, request):
     user = request.user
     if n_clicks is not None:
         if user.is_superuser or user.is_staff:
-            return {'display': 'block'}
+            return {'display': 'block'}, {'display': 'block'}, False, False
         else:
-            return {'display': 'none'}
-    return {'display': 'none'}
+            return {'display': 'none'}, {'display': 'none'}, True, True
+    return {'display': 'none'}, {'display': 'none'}, True, True
+
+
+
+@app.callback(
+    [Output('input_nombre_producto', 'value'),
+     Output('input_nombre_producto', 'readOnly'),
+     Output('input_cantidad', 'value'),
+     Output('input_cantidad', 'readOnly'),
+     Output('input_descripcion_producto', 'value'),
+     Output('input_descripcion_producto', 'readOnly')],
+    [Input('output-table', 'selected_rows'),
+     Input('output-table', 'data')]
+)
+def update_output(selected_rows, data,request):
+    user = request.user
+    if selected_rows:
+        selected_row_data = data[selected_rows[0]]
+        if user.is_superuser or user.is_staff:
+            return selected_row_data['Nombre_Producto'], False, selected_row_data['Cantidad'], False, selected_row_data['Descripcion_Producto'], False
+        else:
+            return selected_row_data['Nombre_Producto'], True, selected_row_data['Cantidad'], True, selected_row_data['Descripcion_Producto'], True
+    else:
+        return "", True, "", True, "", True
+
 
 
 @app.callback(
@@ -135,23 +292,43 @@ def get_user(n_clicks, user_id, username, request):  # Agrega pathname aquí
 
 
 @app.callback(
-    [Output('output-table', 'data'),
+    [Output('output_nombre_formulario','children'),
+     Output('output-table', 'data'),
      Output('output-table', 'editable')],
-    [Input('submit', "n_clicks")],
+    [Input('submit', "n_clicks"),
+     Input('update-button', 'n_clicks')],
+    [State('output-table', 'selected_rows'),
+     State('output-table', 'data'),
+     State('input_nombre_producto', 'value'),
+     State('input_cantidad', 'value'),
+     State('input_descripcion_producto', 'value')]
 )
-def get_product(n_clicks,request):
+def update_output(n_clicks_submit, n_clicks_update, selected_rows, data, nombre_producto, cantidad, descripcion_producto,request):
+
+
     user = request.user
     id = request.session.get('id')  # Obtiene el id de la sesión
     user_id = user.id
-    if n_clicks is not None:
+
+    if n_clicks_update is not None and selected_rows:
+        data[selected_rows[0]]['Nombre_Producto'] = nombre_producto
+        data[selected_rows[0]]['Cantidad'] = cantidad
+        data[selected_rows[0]]['Descripcion_Producto'] = descripcion_producto
+        return dash.no_update, data, dash.no_update
+    
+    elif n_clicks_submit is not None:
+        data_cotizacion = CotizacionRealizada.objects.filter(id=id).first()
+        nombre_formulario = data_cotizacion.Formulario
+        data_formulario = nombre_formulario + '  ID: '+str(id)
         products = CotizacionRealizada_Productos.objects.filter(ID_OC_id=id)  # Obtiene todos los productos
         # Crea una lista de diccionarios con los datos de los productos
         data = [{'ID': product.id, 'Nombre_Producto': product.Nombre_Producto, 'Cantidad': product.Cantidad, 'Descripcion_Producto': product.Descripcion_Producto} for product in products]
         if user.is_superuser or user.is_staff:
-            return data, True
+            return data_formulario, data, True
         else:
-            return data, False
-    return [], False
+            return data_formulario, data, False
+
+    return "", [], False
 
 
 
@@ -170,12 +347,18 @@ def open_confirm_dialog(n_clicks):
 @app.callback(
     Output('output-message', 'children'),
     [Input('confirm', 'submit_n_clicks')],
-    [State('output-table', 'data')]
+    [State('output-table', 'data'),
+    State('input_numero_orden_compra', 'value'),
+    State('input_numero_factura', 'value')]
 )
-def update_output(submit_n_clicks, table_data, request):
+def update_output(submit_n_clicks, table_data,numero_orden_compra, numero_factura,  request):
     id = request.session.get('id')
     if submit_n_clicks is not None:
         try:
+            CotizacionRealizada.objects.filter(id=id).update(
+                Numero_Orden_compra=numero_orden_compra,
+                Numero_Factura=numero_factura
+            )
             # Itera sobre cada fila en los datos de la tabla
             for row in table_data:
                 # Actualiza los datos en la base de datos para cada producto

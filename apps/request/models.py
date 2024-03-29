@@ -13,12 +13,16 @@ class CotizacionRealizada(models.Model):
     Nombre_Autoriza = models.CharField(max_length=200)
     hora_solicitud = models.DateTimeField(auto_now_add=True)
     fecha_solicitud = models.DateTimeField(auto_now_add=True)
+    Numero_Orden_compra = models.CharField(max_length=200, default='')
+    Numero_Factura = models.CharField(max_length=200, default='')
+
+
 
 class CotizacionRealizada_Productos(models.Model):
     ID_OC = models.ForeignKey(CotizacionRealizada, on_delete=models.CASCADE)
     Nombre_Producto = models.CharField(max_length=200)
     Cantidad = models.IntegerField()
-    Descripcion_Producto = models.CharField(max_length=200)
+    Descripcion_Producto =  models.TextField()
 
 class CotizacionRealizada_Archivos(models.Model):
     ID_OC = models.ForeignKey(CotizacionRealizada, on_delete=models.CASCADE)

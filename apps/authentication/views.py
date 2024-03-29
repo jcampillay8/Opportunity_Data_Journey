@@ -88,6 +88,8 @@ class RegistrationView(View):
         password = request.POST.get('password')
         company_name = request.POST.get('company_name')  # Obtiene el nombre de la compañía del formulario
 
+        request.session['language'] = request.POST.get('language', 'English')
+
         context = get_context(request)
 
         if first_name and last_name and username and email and password and company_name:  # Asegúrate de que también se proporcionó el nombre de la compañía

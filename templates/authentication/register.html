@@ -37,7 +37,7 @@
                                           <img src="{% static 'img/register_users.png' %}" class="image_register" style="margin: 0px 0%" alt="Card image cap">
                                           <p class="text-center" style="color: black;"><b>{{ selected_language.welcome.register.title }}</b></p>
             <form class="mt-2" action="{%url 'register'%}" method="POST" autocomplete="off">
-              {% csrf_token%}
+              {% csrf_token %}
               <!-- Alerts -->
               {% include 'partials/_alerts.html'%}
               <div class="form-group">

@@ -48,9 +48,9 @@ def serve_layout():
 
         id='datatable-interactivity',
         columns=[
-            {"name": "ID_OC_id", "id": "ID_OC_id", "deletable": True, "selectable": True},
+            {"name": "ID_OC_id", "id": "ID_OC_id", "deletable": True, "selectable": True,'type': 'numeric'},
             {"name": "Request_Status", "id": "Request_Status", "deletable": True, "selectable": True},
-            {"name": "User_Id", "id": "User_Id", "deletable": True, "selectable": True},
+            {"name": "User_Id", "id": "User_Id", "deletable": True, "selectable": True,'type': 'numeric'},
             {"name": "User_Name", "id": "User_Name", "deletable": True, "selectable": True},
             {"name": "Formulario", "id": "Formulario", "deletable": True, "selectable": True},
             {"name": "Empresa", "id": "Empresa", "deletable": True, "selectable": True},
@@ -74,6 +74,11 @@ def serve_layout():
             page_action="native",
             page_current= 0,
             page_size= 10,
+            style_header={
+                    'backgroundColor': 'rgb(230, 230, 230)',
+                    'fontWeight': 'bold',
+                    'textAlign': 'center',
+                },
             style_data={
             'whiteSpace': 'normal',
             'height': 'auto',
@@ -93,7 +98,12 @@ def serve_layout():
     # Add a Submit button to the layout
     html.Button('Submit', id='submit', n_clicks=0, style={'display': 'none'}),
 
-    dbc.Button('Watch', id='watch-button', n_clicks=0),
+    dbc.Row([
+        dbc.Col((),width=2),
+        dbc.Col((dbc.Button('Watch', id='watch-button', n_clicks=0)),width=9),
+        dbc.Col((),width=1),
+    ]),
+
 
     ],
     fluid=True,
@@ -174,6 +184,11 @@ def get_user(n_clicks, user_id, username, request):
     
 
         df = pd.DataFrame.from_records(qs)
+            # Formatea las columnas 'hora_solicitud' y 'fecha_solicitud'
+        df['ID_OC_id'] = pd.to_numeric(df['ID_OC_id'])
+        df['User_Id'] = pd.to_numeric(df['User_Id'])
+        df['hora_solicitud'] = df['hora_solicitud'].dt.strftime('%H:%M:%S')
+        df['fecha_solicitud'] = df['fecha_solicitud'].dt.strftime('%d-%m-%Y')
 
         fig1 = go.Figure(go.Indicator(
             value = solicitud_creada_count,

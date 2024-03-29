@@ -9,7 +9,9 @@
 <!-- header-slider-area start -->
 <section class="header-slider-area">
   <div id="carousel-example-generic" class="carousel slide carousel-fade" data-ride="carousel">
-  
+    {% csrf_token%}
+    
+    {% include 'partials/_alerts.html'%}
     <!-- Indicators -->
     <ol class="carousel-indicators">
       <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>

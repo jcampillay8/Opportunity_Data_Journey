@@ -5,6 +5,7 @@
 {%endblock%} 
 
 {%block content%}
+
 <style>
   .center-card {
     display: flex;
@@ -35,7 +36,7 @@
                   <form class="mt-2" autocomplete="off" action="{%url 'login'%}"  method="POST" autocomplete="off">
                   {% csrf_token%}
     
-                {% include 'partials/_alerts.html'%}
+                  {% include 'partials/_alerts.html'%}
                   <div class="form-group">
                     <input
                       type="text"
@@ -63,7 +64,7 @@
                   <input
                     type="submit"
                     value="{{ selected_language.welcome.login.boton_login }}"
-                    class="btn btn-block btn-primary submit-btn"
+                    class="btn btn-primary btn-block btn-sm btn-block"
                   />
                     <div class="lower my-3 pl-3 pr-3">
                                         <div class="row">

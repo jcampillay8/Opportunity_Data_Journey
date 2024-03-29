@@ -10,6 +10,7 @@ import dash_daq as daq
 from datetime import date
 import dash_table
 import pandas as pd
+import os
 
 df_solicitud_cotizacion = pd.DataFrame(columns=['User_Id', 'User_Name','Formulario', 'Nombre Proveedor', 'Rut_Proveedor', 'Empresa', 'Area', 'Centro Costo', 'Nombre Solicitante', 'Nombre de Quién Autoriza'])
 df_solicitud_cotizacion_productos = pd.DataFrame(columns=['Nombre Producto', 'Cantidad', 'Descripción Producto'])
