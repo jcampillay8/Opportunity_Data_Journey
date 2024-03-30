@@ -11,7 +11,7 @@ from datetime import date
 from django_pandas.io import read_frame
 from django.contrib.auth.decorators import login_required
 import plotly.graph_objects as go
-
+from django.utils import timezone
 import base64
 import datetime    
 import io
@@ -126,12 +126,30 @@ app.layout = serve_layout
     State('datatable-interactivity', 'data'),
     prevent_initial_call=True,
 )
-def watch_button(n_clicks, derived_virtual_selected_rows, data):
+def watch_button(n_clicks, derived_virtual_selected_rows, data, request):
+    user = request.user
     if n_clicks > 0:
-        if len(derived_virtual_selected_rows) == 1:
-            dff = pd.DataFrame(data)
-            selected_row_id = dff.iloc[derived_virtual_selected_rows[0]]['ID_OC_id']
-            return '/request/revision_solicitud/{}'.format(selected_row_id)
+        if user.is_superuser or user.is_staff:
+            if len(derived_virtual_selected_rows) == 1:
+                dff = pd.DataFrame(data)
+                selected_row_id = dff.iloc[derived_virtual_selected_rows[0]]['ID_OC_id']
+                
+                # Obtén el objeto Estado_Solicitudes correspondiente
+                estado_solicitud = Estado_Solicitudes.objects.get(ID_OC=selected_row_id)
+                
+                # Si el estado actual no es "Solicitud en Revisión", actualiza el estado
+                if estado_solicitud.Request_Status != "Solicitud en Revisión":
+                    estado_solicitud.Request_Status = "Solicitud en Revisión"
+                    estado_solicitud.Solicitud_Revision = True
+                    estado_solicitud.Hora_Inicio_Solicitud_Revision = timezone.now()
+                    estado_solicitud.save()
+                
+                return '/request/revision_solicitud/{}'.format(selected_row_id)
+        else:
+            if len(derived_virtual_selected_rows) == 1:
+                dff = pd.DataFrame(data)
+                selected_row_id = dff.iloc[derived_virtual_selected_rows[0]]['ID_OC_id']
+                return '/request/revision_solicitud/{}'.format(selected_row_id)
     return dash.no_update
 
 @app.callback(
@@ -154,7 +172,7 @@ def get_user(n_clicks, user_id, username, request):
         if user.is_superuser or user.is_staff:
             solicitud_creada_count = Estado_Solicitudes.objects.filter(Request_Status='Solicitud Creada').count()
             solicitud_revision_count = Estado_Solicitudes.objects.filter(Request_Status='Solicitud en Revisión').count()
-            solicitud_ajuste_informacion_count = Estado_Solicitudes.objects.filter(Request_Status='Solicitud en Ajuste Información').count()
+            solicitud_ajuste_informacion_count = Estado_Solicitudes.objects.filter(Request_Status='Solicitud Ajuste Información').count()
             solicitud_aprobada_count = Estado_Solicitudes.objects.filter(Request_Status='Solicitud Aprobada').count()
             solicitud_finalizada_count = Estado_Solicitudes.objects.filter(Request_Status='Solicitud Finalizada').count()
             qs = Estado_Solicitudes.objects.select_related('ID_OC').values(

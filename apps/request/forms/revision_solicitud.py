@@ -11,6 +11,7 @@ from datetime import date
 from django_pandas.io import read_frame
 from django.contrib.auth.decorators import login_required
 import plotly.graph_objects as go
+from django.utils import timezone
 import requests
 from django.contrib import messages
 import base64
@@ -479,16 +480,23 @@ def open_confirm_dialog(n_clicks):
     [Input('confirm_ajuste', 'submit_n_clicks')],
     [State('input_texto_ajuste_informacion', 'value')]
 )
-def update_output(submit_n_clicks, texto_ajuste,  request):
+def update_output2(submit_n_clicks, texto_ajuste,  request):
     id = request.session.get('id')
-    print(id)
-    print(texto_ajuste)
     if submit_n_clicks is not None:
         try:
-            print(texto_ajuste)
             CotizacionRealizada.objects.filter(id=id).update(
                 texto_ajuste_informacion_solicitud=texto_ajuste
             )
+
+            # Obtén el objeto Estado_Solicitudes correspondiente
+            estado_solicitud = Estado_Solicitudes.objects.get(ID_OC=id)
+            
+            # Si el estado actual no es "Solicitud Ajuste Información", actualiza el estado
+            if estado_solicitud.Request_Status != "Solicitud Ajuste Información":
+                estado_solicitud.Request_Status = "Solicitud Ajuste Información"
+                estado_solicitud.Solicitud_Ajuste_Informacion = True
+                estado_solicitud.Hora_Inicio_Solicitud_Ajuste_Informacion = timezone.now()
+                estado_solicitud.save()
 
             # Si la actualización fue exitosa, devuelve un mensaje de éxito
             return dbc.Alert(
