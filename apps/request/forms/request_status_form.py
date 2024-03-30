@@ -34,11 +34,18 @@ def serve_layout():
         dbc.Col(html.Div(style={'height': '20px'}), width=12)
     ]),
 
-    dbc.Row([
-        dbc.Col((html.Div(style={'height': '20px'})),width=1),
-        dbc.Col((dbc.Row([dbc.Col(html.Div(id='output-card1')),dbc.Col(html.Div(id='output-card2')),dbc.Col(html.Div(id='output-card3')),dbc.Col(html.Div(id='output-card4'))]),),width=10),
-        dbc.Col((html.Div(style={'height': '20px'})),width=1),
-    ]),
+dbc.Row([
+    dbc.Col((html.Div(style={'height': '20px'})),md=12, lg=1),
+    dbc.Col((dbc.Row([
+        dbc.Col((html.Div(id='output-card1')),md=12, lg=2),
+        dbc.Col((html.Div(id='output-card2')),md=12, lg=2),
+        dbc.Col((html.Div(id='output-card3')),md=12, lg=2),
+        dbc.Col((html.Div(id='output-card4')),md=12, lg=2),
+        dbc.Col((html.Div(id='output-card5')),md=12, lg=2),
+        ]),),md=12, lg=10),
+    dbc.Col((html.Div(style={'height': '20px'})),md=12, lg=1),
+]),
+
     dbc.Row([
         dbc.Col(html.Div(style={'height': '40px'}), width=12)
     ]),
@@ -132,6 +139,7 @@ def watch_button(n_clicks, derived_virtual_selected_rows, data):
     Output('output-card2', 'children'),
     Output('output-card3', 'children'),
     Output('output-card4', 'children'),
+    Output('output-card5', 'children'),
     Output('datatable-interactivity', 'data'),
     Input('submit', "n_clicks"),
     [State('user_id', 'children'),
@@ -146,6 +154,7 @@ def get_user(n_clicks, user_id, username, request):
         if user.is_superuser or user.is_staff:
             solicitud_creada_count = Estado_Solicitudes.objects.filter(Request_Status='Solicitud Creada').count()
             solicitud_revision_count = Estado_Solicitudes.objects.filter(Request_Status='Solicitud en Revisión').count()
+            solicitud_ajuste_informacion_count = Estado_Solicitudes.objects.filter(Request_Status='Solicitud en Ajuste Información').count()
             solicitud_aprobada_count = Estado_Solicitudes.objects.filter(Request_Status='Solicitud Aprobada').count()
             solicitud_finalizada_count = Estado_Solicitudes.objects.filter(Request_Status='Solicitud Finalizada').count()
             qs = Estado_Solicitudes.objects.select_related('ID_OC').values(
@@ -165,6 +174,7 @@ def get_user(n_clicks, user_id, username, request):
         else:
             solicitud_creada_count = Estado_Solicitudes.objects.filter(Request_Status='Solicitud Creada', ID_OC__User_Id=user_id).count()
             solicitud_revision_count = Estado_Solicitudes.objects.filter(Request_Status='Solicitud en Revisión', ID_OC__User_Id=user_id).count()
+            solicitud_ajuste_informacion_count = Estado_Solicitudes.objects.filter(Request_Status='Solicitud en Ajuste Información', ID_OC__User_Id=user_id).count()
             solicitud_aprobada_count = Estado_Solicitudes.objects.filter(Request_Status='Solicitud Aprobada', ID_OC__User_Id=user_id).count()
             solicitud_finalizada_count = Estado_Solicitudes.objects.filter(Request_Status='Solicitud Finalizada', ID_OC__User_Id=user_id).count()
             qs = Estado_Solicitudes.objects.filter(ID_OC__User_Id=user_id).select_related('ID_OC').values(
@@ -201,11 +211,16 @@ def get_user(n_clicks, user_id, username, request):
         ))
 
         fig3 = go.Figure(go.Indicator(
+            value = solicitud_ajuste_informacion_count,
+            title = {"text": "Solicitud Ajuste Información"},
+        ))
+
+        fig4 = go.Figure(go.Indicator(
             value = solicitud_aprobada_count,
             title = {"text": "Solicitud Aprobada"},
         ))
 
-        fig4 = go.Figure(go.Indicator(
+        fig5 = go.Figure(go.Indicator(
             value = solicitud_finalizada_count,
             title = {"text": "Solicitud Finalizada"},
         ))
@@ -230,5 +245,10 @@ def get_user(n_clicks, user_id, username, request):
             style={"height": "300px"}
         )
 
+        card5 = dbc.Card(
+            dcc.Graph(figure=fig5, style={"height": "100%", "width": "100%"}),
+            style={"height": "300px"}
+        )
 
-        return card1, card2, card3, card4, df.to_dict('records')
+
+        return card1, card2, card3, card4, card5, df.to_dict('records')

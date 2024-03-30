@@ -28,200 +28,269 @@ app = DjangoDash('Request_Revision_Solicitud_DashApp', add_bootstrap_links=True,
 
 def serve_layout():  
     return dbc.Container([
-    dbc.Row([
-        dbc.Col(html.Div(style={'height': '40px'}), width=12)
-    ]),
-    dbc.Row([
-            dbc.Col(width=1),
-            dbc.Col((
-            dcc.Markdown('''# REVISIÓN SOLICITUD ''', className="text-center"),
-
-            ),width=10),
-            dbc.Col(width=1),
-
-        ]),
-    dbc.Row([
-        dbc.Col(html.Div(style={'height': '20px'}), width=12)
-    ]),
-        dbc.Row([
-            dbc.Col(width=1),
-            dbc.Col((
-            html.Div(id='output_nombre_formulario', style={'fontSize': 30, 'font-weight': 'bold'}),
-            ),width=10),
-            dbc.Col(width=1),
-        ]),
-                       dbc.Row([
-            dbc.Col(width=1),
-            dbc.Col((
+    dcc.Tabs(id="tabs-styled-with-props", value='tab-1', children=[
+        dcc.Tab(label='REVISIÓN SOLICITUD', value='tab-1',children=[
             dbc.Row([
-            dbc.Col(html.Div([
-                html.Br(),
-                dcc.Markdown(''' ### NÚMERO ORDEN COMPRA: '''),
-            ]), md=12, width=2, lg=2),
-            dbc.Col(html.Div([
-                html.Br(),
-                dcc.Input(
-                    id = 'input_numero_orden_compra',
-                    placeholder='Enter a value...',
-                    type='text',
-                    value='',
-                    style={'width': '100%'}
-                ),
-            ], className='pl-0'), md=12, width=4, lg=4),
-            dbc.Col(html.Div([
-                html.Br(),
-                dcc.Markdown(''' ### NÚMERO FACTURA: '''),
-            ]), md=12, width=2, lg=2),
-            dbc.Col(html.Div([
-                html.Br(),
-                dcc.Input(
-                    id = 'input_numero_factura',
-                    placeholder='Enter a value...',
-                    type='text',
-                    value='',
-                    style={'width': '100%'}
-                ),
-            ], className='pl-0'), md=12, width=4, lg=4),
-            
-                ])
-            ),width=10),
-            dbc.Col(width=1),
-        ]),
-
-    dbc.Row([
-        dbc.Col((html.Div(style={'height': '20px'})),width=1),
-        dbc.Col((html.Div(id='output-user')),width=10),
-        dbc.Col((html.Div(style={'height': '20px'})),width=1),
-    ]),
-    dbc.Row([
-        dbc.Col(html.Div(style={'height': '20px'}), width=12)
-    ]),
-    dbc.Row([
-        dbc.Col(width=1),
-        dbc.Col((
-            dash_table.DataTable(
-                id='output-table',
-                columns=[
-                    {"name": "ID", "id": "ID"},
-                    {"name": "Nombre Producto", "id": "Nombre_Producto"},
-                    {"name": "Cantidad", "id": "Cantidad"},
-                    {"name": "Descripción Producto", "id": "Descripcion_Producto"}
-                ],
-                data=[],
-                editable=True,  # Hace que la tabla sea editable
-                row_selectable="single",
-                style_header={
-                    'backgroundColor': 'rgb(230, 230, 230)',
-                    'fontWeight': 'bold',
-                    'textAlign': 'center',
-                },
-                style_data_conditional=[
-                    {
-                        'whiteSpace': 'normal',
-                        'height': 'auto',   
-                    },
-                ],
-                style_cell_conditional=[
-                    {
-                        'if': {'column_id': 'Descripcion_Producto'},
-                        'whiteSpace': 'normal',
-                        'textAlign': 'left',
-                        'height': 'auto',
-                    },
-                    {
-                        'if': {'column_id': 'Nombre_Producto'},
-                        'textAlign': 'center',
-                        'height': 'auto',
-                    },
-                    {
-                        'if': {'column_id': 'Cantidad'},
-                        'textAlign': 'center',
-                        'height': 'auto',
-                    }
-                ],
-            )
-        ),width=10),
-        dbc.Col(width=1),
-    ]),
-        dbc.Row([
-            dbc.Col((html.Div(style={'height': '40px'})),width=1),
-        ]),
-    dbc.Row([
-        dbc.Col(width=2),
-        dbc.Col(dbc.Button('SAVE & UPDATE', id='save-button', style={'display': 'none'}), width=4),
-        dbc.Col(dbc.Button('UPDATE DATA', id='update-button', style={'display': 'none'}), width=4),
-        dbc.Col(width=2),
-    ]),
-    dbc.Row([
-            dbc.Col((),width=1),
-            dbc.Col((
-                html.Div(style={'height': '20px'}),
-                html.Div( id='output-message', className="text-center"),
-                html.Div(style={'height': '20px'}),
-            ),width=10),
-            dbc.Col((),width=1),
-        ]),
-dbc.Row([
-        dbc.Col(width=1),
-        dbc.Col((
+                dbc.Col(html.Div(style={'height': '40px'}), width=12)
+            ]),
             dbc.Row([
-                dbc.Col(html.Div([
-                    html.Br(),
-                    dcc.Markdown(''' ### NOMBRE PRODUCTO: '''),
-                ]), md=12, width=2, lg=2),
-                dbc.Col(html.Div([
-                    html.Br(),
-                    dcc.Input(
-                        id='input_nombre_producto',
-                        placeholder='Enter a value...',
-                        type='text',
-                        value='',
+                    dbc.Col(width=1),
+                    dbc.Col((
+                    dcc.Markdown('''# REVISIÓN SOLICITUD ''', className="text-center"),
+
+                    ),width=10),
+                    dbc.Col(width=1),
+                ]),
+            dbc.Row([
+                dbc.Col(html.Div(style={'height': '20px'}), width=12)
+            ]),
+            dbc.Row([
+                    dbc.Col(width=1),
+                    dbc.Col((
+                    html.Div(id='output_nombre_formulario', style={'fontSize': 30, 'font-weight': 'bold'}),
+                    ),width=10),
+                    dbc.Col(width=1),
+                ]),
+                            dbc.Row([
+                    dbc.Col(width=1),
+                    dbc.Col((
+                    dbc.Row([
+                    dbc.Col(html.Div([
+                        html.Br(),
+                        dcc.Markdown(''' ### NÚMERO ORDEN COMPRA: '''),
+                    ]), md=12, width=2, lg=2),
+                    dbc.Col(html.Div([
+                        html.Br(),
+                        dcc.Input(
+                            id = 'input_numero_orden_compra',
+                            placeholder='Enter a value...',
+                            type='text',
+                            value='',
+                            style={'width': '100%'}
+                        ),
+                    ], className='pl-0'), md=12, width=4, lg=4),
+                    dbc.Col(html.Div([
+                        html.Br(),
+                        dcc.Markdown(''' ### NÚMERO FACTURA: '''),
+                    ]), md=12, width=2, lg=2),
+                    dbc.Col(html.Div([
+                        html.Br(),
+                        dcc.Input(
+                            id = 'input_numero_factura',
+                            placeholder='Enter a value...',
+                            type='text',
+                            value='',
+                            style={'width': '100%'}
+                        ),
+                    ], className='pl-0'), md=12, width=4, lg=4),
+                    
+                        ])
+                    ),width=10),
+                    dbc.Col(width=1),
+                ]),
+
+            dbc.Row([
+                dbc.Col((html.Div(style={'height': '20px'})),width=1),
+                dbc.Col((html.Div(id='output-user')),width=10),
+                dbc.Col((html.Div(style={'height': '20px'})),width=1),
+            ]),
+            dbc.Row([
+                dbc.Col(html.Div(style={'height': '20px'}), width=12)
+            ]),
+            dbc.Row([
+                dbc.Col(html.Div(style={'height': '20px'}), width=1),
+                dbc.Col(html.Label("Seleccione Fila Para Editar", style={'fontSize': 24, 'font-weight': 'bold','color':'blue'}), width=10),
+                dbc.Col(html.Div(style={'height': '20px'}), width=1),
+            ]),
+            dbc.Row([
+                dbc.Col(width=1),
+                dbc.Col((
+                    dash_table.DataTable(
+                        id='output-table',
+                        columns=[
+                            {"name": "ID", "id": "ID"},
+                            {"name": "Nombre Producto", "id": "Nombre_Producto"},
+                            {"name": "Cantidad", "id": "Cantidad"},
+                            {"name": "Descripción Producto", "id": "Descripcion_Producto"}
+                        ],
+                        data=[],
+                        editable=False,
+                        row_selectable="single",
+                        style_header={
+                            'backgroundColor': 'rgb(230, 230, 230)',
+                            'fontWeight': 'bold',
+                            'textAlign': 'center',
+                        },
+                        style_data_conditional=[
+                            {
+                                'whiteSpace': 'normal',
+                                'height': 'auto',   
+                            },
+                        ],
+                        style_cell_conditional=[
+                                                {
+                                "if": {"state": "selected"},
+                                "backgroundColor": "inherit !important",
+                                "border": "inherit !important",
+                            },
+                            {
+                                'if': {'column_id': 'Descripcion_Producto'},
+                                'whiteSpace': 'normal',
+                                'textAlign': 'left',
+                                'height': 'auto',
+                            },
+                            {
+                                'if': {'column_id': 'Nombre_Producto'},
+                                'textAlign': 'center',
+                                'height': 'auto',
+                            },
+                            {
+                                'if': {'column_id': 'Cantidad'},
+                                'textAlign': 'center',
+                                'height': 'auto',
+                            }
+                        ],
+                    )
+                ),width=10),
+                dbc.Col(width=1),
+            ]),
+            dbc.Row([
+                    dbc.Col((html.Div(style={'height': '40px'})),width=1),
+                ]),
+            dbc.Row([
+                dbc.Col(width=2),
+                dbc.Col(dbc.Button('ACTUALIZAR DATOS FILA', id='update-button', style={'display': 'none'}), width=8),
+                dbc.Col(width=2),
+            ]),
+            dbc.Row([
+                    dbc.Col((),width=1),
+                    dbc.Col((
+                        html.Div(style={'height': '20px'}),
+                        html.Div( id='output-message', className="text-center"),
+                        html.Div(style={'height': '20px'}),
+                    ),width=10),
+                    dbc.Col((),width=1),
+                ]),
+            dbc.Row([
+                dbc.Col(width=1),
+                dbc.Col((
+                    dbc.Row([
+                        dbc.Col(html.Div([
+                            html.Br(),
+                            dcc.Markdown(''' ### NOMBRE PRODUCTO: '''),
+                        ]), md=12, width=2, lg=2),
+                        dbc.Col(html.Div([
+                            html.Br(),
+                            dcc.Input(
+                                id='input_nombre_producto',
+                                placeholder='Enter a value...',
+                                type='text',
+                                value='',
+                                readOnly=True,
+                                style={'width': '100%'}
+                            ),
+                        ], className='pl-0'), md=12, width=6, lg=6),
+                        dbc.Col(html.Div([
+                            html.Br(),
+                            dcc.Markdown(''' ### CANTIDAD: '''),
+                        ]), md=12, width=2, lg=2),
+                        dbc.Col(html.Div([
+                            html.Br(),
+                            dcc.Input(
+                                id='input_cantidad',
+                                placeholder='Enter a value...',
+                                type='number',
+                                value='',
+                                readOnly=True,
+                                style={'width': '100%'}
+                            ),
+                        ], className='pl-0'), md=12, width=2, lg=2),
+                    ])
+                ), width=10),
+                dbc.Col(width=1),
+            ]),
+            html.Div(style={'height': '40px'}),
+            dbc.Row([
+                dbc.Col(width=1),
+                dbc.Col((
+                    dcc.Markdown(''' ### DESCRIPCIÓN PRODUCTO: '''),
+                ), width=10),
+                dbc.Col(width=1),
+            ]),
+            dbc.Row([
+                dbc.Col(width=1),
+                dbc.Col((
+                    dcc.Textarea(
+                        id='input_descripcion_producto',
+                        placeholder='Describa el ítem...',
                         readOnly=True,
                         style={'width': '100%'}
-                    ),
-                ], className='pl-0'), md=12, width=6, lg=6),
-                dbc.Col(html.Div([
-                    html.Br(),
-                    dcc.Markdown(''' ### CANTIDAD: '''),
-                ]), md=12, width=2, lg=2),
-                dbc.Col(html.Div([
-                    html.Br(),
-                    dcc.Input(
-                        id='input_cantidad',
-                        placeholder='Enter a value...',
-                        type='number',
-                        value='',
-                        readOnly=True,
+                    )
+                ), width=10),
+                dbc.Col(width=1),
+            ]),
+            html.Div(style={'height': '40px'}),
+            dbc.Row([
+                dbc.Col(width=2),
+                dbc.Col(dbc.Button('SOLICITUD AJUSTE INFORMACIÓN', id='ajuste-button', style={'display': 'block', 'background-color':'#FFD700', 'color': 'black'}), width=4),
+                dbc.Col(dbc.Button('GUARDAR & APROBAR', id='save-button', style={'display': 'none'}), width=4),
+                dbc.Col(width=2),
+            ]),
+        ]),
+        dcc.Tab(label='SOLICITUD AJUSTE INFORMACIÓN', id='Tab-2', value='tab-2', children=[
+            dbc.Row([
+                dbc.Col(html.Div(style={'height': '40px'}), width=12)
+            ]),
+            dbc.Row([
+                dbc.Col((),width=1),
+                dbc.Col((dcc.Markdown('''# AJUSTE INFORMACIÓN ''', className="text-center")),width=10),
+                dbc.Col((),width=1),
+            ]),
+            dbc.Row([
+                dbc.Col(html.Div(style={'height': '20px'}), width=12)
+            ]),
+            dbc.Row([
+                dbc.Col(html.Div(style={'height': '20px'}), width=1),
+                dbc.Col(html.Label("Ingrese Informaicón a ser Ajustada", style={'fontSize': 24, 'font-weight': 'bold','color':'blue'}), width=10),
+                dbc.Col(html.Div(style={'height': '20px'}), width=1),
+            ]),
+            dbc.Row([
+                dbc.Col((),width=1),
+                dbc.Col((
+                    dcc.Textarea(
+                        id='input_texto_ajuste_informacion',
+                        placeholder='Describa el ítem...',
+                        readOnly=False,
                         style={'width': '100%'}
-                    ),
-                ], className='pl-0'), md=12, width=2, lg=2),
-            ])
-        ), width=10),
-        dbc.Col(width=1),
-    ]),
-    html.Div(style={'height': '40px'}),  # Add a space
-    dbc.Row([
-        dbc.Col(width=1),
-        dbc.Col((
-            dcc.Markdown(''' ### DESCRIPCIÓN PRODUCTO: '''),
-        ), width=10),
-        dbc.Col(width=1),
-    ]),
-    dbc.Row([
-        dbc.Col(width=1),
-        dbc.Col((
-            dcc.Textarea(
-                id='input_descripcion_producto',
-                placeholder='Describa el ítem...',
-                readOnly=True,
-                style={'width': '100%'}
-            )
-        ), width=10),
-        dbc.Col(width=1),
-    ]),
+                    )
+                ), width=10),
+                dbc.Col((),width=1),
+            ]),
+            dbc.Row([
+                dbc.Col(html.Div(style={'height': '20px'}), width=12)
+            ]),
+            dbc.Row([
+                    dbc.Col((),width=1),
+                    dbc.Col((
+                        html.Div(style={'height': '20px'}),
+                        html.Div( id='output-message_ajuste', className="text-center"),
+                        html.Div(style={'height': '20px'}),
+                    ),width=10),
+                    dbc.Col((),width=1),
+                ]),
+            dbc.Row([
+                dbc.Col(width=2),
+                dbc.Col(dbc.Button('ENVIAR AJUSTE INFORMACIÓN', id='enviar-ajuste-button', style={'display': 'block', 'background-color':'#FFD700', 'color': 'black'}), width=4),
+                dbc.Col(width=2),
+            ]),
+        ]),
+    ],style={ 'background': '#0074D9','color':'black', 'fontSize': 30, 'font-weight': 'bold'}),
+    html.Div(id='tabs-content-props'),
+
     html.Div(id='user_id', style={'display': 'none'}),
     html.Div(id='username', style={'display': 'none'}),
     dcc.ConfirmDialog(id='confirm',message=''),
+    dcc.ConfirmDialog(id='confirm_ajuste',message=''),
 
     # Add a Submit button to the layout
     html.Button('Submit', id='submit', n_clicks=0, style={'display': 'none'}),
@@ -324,7 +393,7 @@ def update_output(n_clicks_submit, n_clicks_update, selected_rows, data, nombre_
         # Crea una lista de diccionarios con los datos de los productos
         data = [{'ID': product.id, 'Nombre_Producto': product.Nombre_Producto, 'Cantidad': product.Cantidad, 'Descripcion_Producto': product.Descripcion_Producto} for product in products]
         if user.is_superuser or user.is_staff:
-            return data_formulario, data, True
+            return data_formulario, data, False
         else:
             return data_formulario, data, False
 
@@ -384,3 +453,55 @@ def update_output(submit_n_clicks, table_data,numero_orden_compra, numero_factur
     # Si el usuario hizo clic en "Cancelar", no devuelve nada
     return None
 
+@app.callback(
+    Output('tabs-styled-with-props', 'value'),  # Actualiza el valor de 'tabs-example'
+    [Input('ajuste-button', 'n_clicks')],
+    prevent_initial_call=True
+)
+def change_tab(n_clicks):
+    if n_clicks is not None:  # Si el botón ha sido presionado
+        return 'tab-2'
+
+
+@app.callback(
+    [Output("confirm_ajuste", "displayed"), Output("confirm_ajuste", "message")],
+    [Input("enviar-ajuste-button", "n_clicks")],
+    prevent_initial_call=True
+)
+def open_confirm_dialog(n_clicks):
+    if n_clicks is not None and n_clicks > 0:
+        return True, "¿Está seguro de enviar ajuste de información?"
+    return False, ""
+
+
+@app.callback(
+    Output('output-message_ajuste', 'children'),
+    [Input('confirm_ajuste', 'submit_n_clicks')],
+    [State('input_texto_ajuste_informacion', 'value')]
+)
+def update_output(submit_n_clicks, texto_ajuste,  request):
+    id = request.session.get('id')
+    print(id)
+    print(texto_ajuste)
+    if submit_n_clicks is not None:
+        try:
+            print(texto_ajuste)
+            CotizacionRealizada.objects.filter(id=id).update(
+                texto_ajuste_informacion_solicitud=texto_ajuste
+            )
+
+            # Si la actualización fue exitosa, devuelve un mensaje de éxito
+            return dbc.Alert(
+                [html.I(className="bi bi-check-circle-fill me-2"), "Solicitud Ajuste Informaición enviado exitosamente"],
+                color="success",
+                className="d-flex align-items-center",
+            )
+        except Exception as e:
+            # Si ocurrió un error durante la actualización, devuelve un mensaje de error
+            return dbc.Alert(
+                [html.I(className="bi bi-x-octagon-fill me-2"), f'Error actualización ajuste información: {str(e)}'],
+                color="danger",
+                className="d-flex align-items-center",
+            )
+    # Si el usuario hizo clic en "Cancelar", no devuelve nada
+    return None

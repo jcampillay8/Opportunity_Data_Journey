@@ -15,6 +15,7 @@ class CotizacionRealizada(models.Model):
     fecha_solicitud = models.DateTimeField(auto_now_add=True)
     Numero_Orden_compra = models.CharField(max_length=200, default='')
     Numero_Factura = models.CharField(max_length=200, default='')
+    texto_ajuste_informacion_solicitud =  models.TextField(default='')
 
 
 
@@ -41,4 +42,6 @@ class Estado_Solicitudes(models.Model):
     Hora_Inicio_Solicitud_Revision = models.DateTimeField(null=True, blank=True)
     Hora_Inicio_Solicitud_Aprobada = models.DateTimeField(null=True, blank=True)
     Hora_Inicio_Solicitud_Finalizada = models.DateTimeField(null=True, blank=True)
+    Solicitud_Ajuste_Informacion = models.BooleanField(default=False)
+    Hora_Inicio_Solicitud_Ajuste_Informacion = models.DateTimeField(null=True, blank=True)
 

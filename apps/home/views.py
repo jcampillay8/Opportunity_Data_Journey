@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 #from guest_user.decorators import allow_guest_user
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.mail import EmailMessage, send_mail
+from django.contrib.auth.models import User
 from django.conf import settings
 from functools import wraps
 from django.contrib.auth.models import AnonymousUser
@@ -45,6 +46,7 @@ def guest_login(request):
 def home(request):
 
     contact_form = ContactForm(request.POST or None)
+    user = User.objects.get(username=request.user.username)
     
     request.session['language'] = request.POST.get('language', 'English')
     print(type(get_context(request)))
@@ -61,7 +63,7 @@ def home(request):
     # if request.method == 'POST':
     #     request.session['language'] = request.POST.get('language', 'English')
 
-    return render(request, 'home/home.html',{ 'current_page': 'welcome','form':contact_form, 'selected_language':get_context(request) })
+    return render(request, 'home/home.html',{ 'current_page': 'welcome','form':contact_form, 'selected_language':get_context(request), 'user_first_name': user.first_name, 'user_last_name':user.last_name })
 
 
 def welcome(request):

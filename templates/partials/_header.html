@@ -31,14 +31,14 @@
 				<div class="header-right pull-right">
 					<ul>
 						<li class="reg">
-							<a href="#" data-toggle="modal" data-target=".bs-example-modal-sm">
-								Register
-							</a>
-								/
-							<a href="#" data-toggle="modal" data-target=".bs-example-modal-lg">
-								Log in
-							</a>
 							
+								<form action="{% url 'logout' %}" method="POST" class="logout-form">
+									{% csrf_token %}
+									<button class="fa fa-sign-out" type="submit" style="background-color: #283e6d; color: white; font-size: 15px; padding: 5px;">Logout</button>
+									
+								</form>
+							
+
 							<!-- small modal -->
 							<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
 								<div class="modal-dialog modal-sm" role="document">
