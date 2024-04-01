@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load plotly_dash %}
 {% load static %}
 
 {%block content%}
@@ -10,7 +11,7 @@
 
   <body >
 
-
+    {% if user.is_authenticated %}
     <section class="about-part team-part">
       
         <div class="container">
@@ -33,72 +34,25 @@
         
 
 
-        <section class="container-xxl ">
-            <h2> REQUEST HISTORY </h2>
-          </section>
+    <body>
+        <!-- Agrega los elementos Div aquí -->
 
-<!-- About Section -->
-<section class="container py-5" id="what_do_I_want_to_learn">
-    <h1> What do I want to learn? </h1>
-    
-</section>
-
-
-<!-- Curriculum Vitae Section -->
-<section class="container py-5" id="what_do_I_know_now">
-    <h1> What do I know now? </h1>
-    <div class="row justify-content-around">
-        <div class="col-3">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Título de la tarjeta</h5>
-                    <p class="card-text">Aquí va el texto de tu tarjeta.</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-3">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Título de la tarjeta</h5>
-                    <p class="card-text">Aquí va el texto de tu tarjeta.</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-3">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Título de la tarjeta</h5>
-                    <p class="card-text">Aquí va el texto de tu tarjeta.</p>
-                </div>
-            </div>
-        </div>
+        <div class="{%plotly_class name='Request_Histogram_DashApp'%}">
+            {% if screen_width > 800 %}
+                {%plotly_app name="Request_Histogram_DashApp" ratio=1.0%}
+            {% else %}
+                {%plotly_app name="Request_Histogram_DashApp" ratio=0.45%}
+            {% endif %}
         
-    </div>
-</section>
-
- <!-- Contact Section -->
- <section class="container py-5" id="what_am_I_currently_studying">
-    <h1>What am I currently studying? </h1>
-    <div class="row justify-content-around">
-        <div class="col-10">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Título de la tarjeta</h5>
-                    <p class="card-text">Aquí va el texto de tu tarjeta.</p>
-                </div>
-            </div>
         </div>
-    </div>
- </section>
- 
+    </body>
+    <section class="position-relative py-4" >
 
- <!-- Footer -->
+    </section>
 
- <!-- </footer> -->
-
- <!-- Bootstrap script link -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
-</body>
+    {% else %}
+    <h1>Necesita <a href="/login">Iniciar sesion</a> para crear un post</h1>
+    {% endif %}
 
 
       {%endblock%}

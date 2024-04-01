@@ -7,6 +7,7 @@ from apps.request.models import CotizacionRealizada, CotizacionRealizada_Product
 from apps.request.forms.request_form_dash import app
 from apps.request.forms.request_status_form import app
 from apps.request.forms.revision_solicitud import app
+from apps.request.forms.request_histogram import app
 
 from django.contrib.auth import logout
 from apps.utils import get_context
@@ -44,7 +45,13 @@ def new_request(request,pk):
         return render(request, 'request/formulario_no_disponible.html', context)
 
 def request_history(request):
-    return render(request, 'request/request_history.html',{'current_page': 'request_home','selected_language':get_context(request)})
+    screen_width = request.COOKIES.get('screen_width')
+    context = {
+        'current_page': 'request_home',
+        'selected_language': get_context(request),
+        'screen_width': screen_width,
+    }
+    return render(request, 'request/request_history.html', context)
 
 # @login_required(login_url='login')
 # def request_status(request):
