@@ -293,10 +293,10 @@ def update_output2(submit_n_clicks, table_producto, table_data, value, nombre_pr
                 return message_alert('Información incompleta - Agregar Valor Nombre Solicitante')
             elif not nombre_autoriza:
                 return message_alert('Información incompleta - Agregar Valor Nombre de Quién Autoriza')
-            elif not table_producto or len(table_producto) == 0:
-                return message_alert('Información incompleta - Agregar valores en Tabla Productos')
-            # elif not table_data or len(table_data) == 0:
-            #     return message_alert('Información incompleta - Agregar Documentos')
+            # elif not table_producto or len(table_producto) == 0:
+            #     return message_alert('Información incompleta - Agregar valores en Tabla Productos')
+            elif not table_data or len(table_data) == 0:
+                return message_alert('Información incompleta - Agregar Documentos')
             elif nombre_proveedor and rut_proveedor and empresa_value and area_value and centro_costo and nombre_solicitante and nombre_autoriza:
                 user = request.user
                 user_id = user.id

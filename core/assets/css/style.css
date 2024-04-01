@@ -1760,12 +1760,13 @@ a:active.learn-btn{
 .about-part.project-part{
 	background: url(../img/bg_image_2.jpg)no-repeat center;
 }
+.about-part.blog-part{
+	background: url(../img/bg_image_1.jpg)no-repeat center;
+}
 .about-part.team-part{
 	background: url(../images/project/project-banner.jpg)no-repeat center;
 }
-.about-part.request-part{
-	background: url(../images/project/project-banner.jpg)no-repeat center;
-}
+
 .about-part:before{
 	position:absolute;
 	content:'';

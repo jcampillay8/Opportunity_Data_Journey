@@ -138,7 +138,7 @@ def watch_button(n_clicks, derived_virtual_selected_rows, data, request):
                 estado_solicitud = Estado_Solicitudes.objects.get(ID_OC=selected_row_id)
                 
                 # Si el estado actual no es "Solicitud en Revisión", actualiza el estado
-                if estado_solicitud.Request_Status != "Solicitud en Revisión":
+                if estado_solicitud.Request_Status == "Solicitud Creada":
                     estado_solicitud.Request_Status = "Solicitud en Revisión"
                     estado_solicitud.Solicitud_Revision = True
                     estado_solicitud.Hora_Inicio_Solicitud_Revision = timezone.now()
@@ -192,7 +192,7 @@ def get_user(n_clicks, user_id, username, request):
         else:
             solicitud_creada_count = Estado_Solicitudes.objects.filter(Request_Status='Solicitud Creada', ID_OC__User_Id=user_id).count()
             solicitud_revision_count = Estado_Solicitudes.objects.filter(Request_Status='Solicitud en Revisión', ID_OC__User_Id=user_id).count()
-            solicitud_ajuste_informacion_count = Estado_Solicitudes.objects.filter(Request_Status='Solicitud en Ajuste Información', ID_OC__User_Id=user_id).count()
+            solicitud_ajuste_informacion_count = Estado_Solicitudes.objects.filter(Request_Status='Solicitud Ajuste Información', ID_OC__User_Id=user_id).count()
             solicitud_aprobada_count = Estado_Solicitudes.objects.filter(Request_Status='Solicitud Aprobada', ID_OC__User_Id=user_id).count()
             solicitud_finalizada_count = Estado_Solicitudes.objects.filter(Request_Status='Solicitud Finalizada', ID_OC__User_Id=user_id).count()
             qs = Estado_Solicitudes.objects.filter(ID_OC__User_Id=user_id).select_related('ID_OC').values(
