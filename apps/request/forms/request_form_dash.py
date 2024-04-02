@@ -22,7 +22,7 @@ external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 theme = dbc.themes.BOOTSTRAP
 
-app = DjangoDash('Request_DashApp', add_bootstrap_links=True, external_stylesheets=[theme, dbc.icons.BOOTSTRAP], meta_tags=[ { "name": "viewport", "content": "width=device-width, initial-scale=1, maximum-scale=1", }, ],)
+app = DjangoDash('Request_DashApp', add_bootstrap_links=True, external_stylesheets=[theme, dbc.icons.BOOTSTRAP])
 
 file_data = []
 

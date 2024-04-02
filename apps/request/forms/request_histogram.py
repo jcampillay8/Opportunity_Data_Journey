@@ -31,7 +31,7 @@ cotizaciones = CotizacionRealizada.objects.values()
 df_data_solicitudes = pd.DataFrame.from_records(cotizaciones)
 
 
-app = DjangoDash('Request_Histogram_DashApp', add_bootstrap_links=True, external_stylesheets=[theme, dbc.icons.BOOTSTRAP], meta_tags=[ { "name": "viewport", "content": "width=device-width, initial-scale=1, maximum-scale=1", }, ],)
+app = DjangoDash('Request_Histogram_DashApp', add_bootstrap_links=True, external_stylesheets=[theme, dbc.icons.BOOTSTRAP])
 
 
 

@@ -1,6 +1,6 @@
 import dash
 import dash_bootstrap_components as dbc
-from dash import Dash, html, dcc, callback, Input, Output, State, callback
+from dash import Dash, html, dcc, callback, Input, Output, State, callback, dash_table
 from dash.dependencies import Input, Output, State
 from django.contrib.auth.models import User
 from django_plotly_dash import DjangoDash  
@@ -9,7 +9,8 @@ from django.core.mail import EmailMessage
 import traceback
 import dash_daq as daq
 from datetime import date
-import dash_table
+from dash.dash_table.Format import Group
+
 import pandas as pd
 import os
 
