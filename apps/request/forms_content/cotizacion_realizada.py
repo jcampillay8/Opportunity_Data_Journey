@@ -369,13 +369,13 @@ def save_button2(message, table_data, table_producto, data_table, file_data, use
 
     if data_table is None or len(data_table) == 0:
         try:
-            if not os.path.exists('apps/request/uploaded_document_forms'):
-                os.makedirs('apps/request/uploaded_document_forms')
+            if not os.path.exists('uploaded_document_forms'):
+                os.makedirs('uploaded_document_forms')
             
                 for file in data_table:
                     matching_files = [f for f in file_data if f['File Name'] == file['File Name']]
                     if matching_files:
-                        with open(f'apps/request/uploaded_document_forms/{matching_files[0]["File Name"]}', 'wb') as f:
+                        with open(f'uploaded_document_forms/{matching_files[0]["File Name"]}', 'wb') as f:
                             f.write(matching_files[0]['Content'])
             
             message = dbc.Alert( [ html.I(className="bi bi-check-circle-fill me-2"), "Archivos cargados exitosamente", ], color="success", className="d-flex align-items-center", ),
