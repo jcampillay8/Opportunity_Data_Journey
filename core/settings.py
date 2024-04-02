@@ -61,6 +61,7 @@ THIRD_PARTY_APPS = [
     'livereload',
     'six',
     'django_plotly_dash.apps.DjangoPlotlyDashConfig',
+    'whitenoise.runserver_nostatic',
     
 ]
 
@@ -102,6 +103,7 @@ MIDDLEWARE = [
     'core.languagemiddleware.LanguageMiddleware',
     'django_plotly_dash.middleware.BaseMiddleware',
     'django_plotly_dash.middleware.ExternalRedirectionMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = "core.urls"
