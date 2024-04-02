@@ -215,7 +215,7 @@ def update_output2(submit_n_clicks, table_producto, table_data, value, nombre_pr
     global file_data
     
     print('hola')
-    print(value)
+    print(table_data)
     if value == 'Cotización Realizada':
         if submit_n_clicks is not None and submit_n_clicks > 0:
             if not area_value:
@@ -267,13 +267,16 @@ def update_output2(submit_n_clicks, table_producto, table_data, value, nombre_pr
                         Cantidad=producto['Cantidad'],
                         Descripcion_Producto=producto['Descripción Producto'],
                     )
-                for archivo in table_data:
-                    CotizacionRealizada_Archivos.objects.create(
-                        ID_OC=cotizacion_realizada,
-                        File_Number=archivo['File Number'],
-                        File_Name=archivo['File Name'],
-                        File_Type=archivo['File Type'],
-                    )
+                if table_data is None:
+                    table_data = []
+                else:
+                    for archivo in table_data:
+                        CotizacionRealizada_Archivos.objects.create(
+                            ID_OC=cotizacion_realizada,
+                            File_Number=archivo['File Number'],
+                            File_Name=archivo['File Name'],
+                            File_Type=archivo['File Type'],
+                        )
                 Estado_Solicitudes.objects.create(
                     ID_OC=cotizacion_realizada,
                 )
@@ -327,13 +330,16 @@ def update_output2(submit_n_clicks, table_producto, table_data, value, nombre_pr
                     Nombre_Solicitante=nombre_solicitante,
                     Nombre_Autoriza=nombre_autoriza,
                 )
-                for producto in table_producto:
-                    CotizacionRealizada_Productos.objects.create(
-                        ID_OC=cotizacion_realizada,
-                        Nombre_Producto=producto['Nombre Producto'],
-                        Cantidad=producto['Cantidad'],
-                        Descripcion_Producto=producto['Descripción Producto'],
-                    )
+                if table_producto is None:
+                    table_producto = []
+                else:
+                    for producto in table_producto:
+                        CotizacionRealizada_Productos.objects.create(
+                            ID_OC=cotizacion_realizada,
+                            Nombre_Producto=producto['Nombre Producto'],
+                            Cantidad=producto['Cantidad'],
+                            Descripcion_Producto=producto['Descripción Producto'],
+                        )
                 for archivo in table_data:
                     CotizacionRealizada_Archivos.objects.create(
                         ID_OC=cotizacion_realizada,
@@ -355,53 +361,7 @@ def update_output2(submit_n_clicks, table_producto, table_data, value, nombre_pr
 
 
 
-# @app.callback(
-#     Output('output-container2', 'children'),
-#     Input('save-button', 'n_clicks'),
-#     State('empresa-dropdown', 'value'),
-#     State('area-dropdown', 'value'),
-#     State('input_nombre_proveedor', 'value'),
-#     prevent_initial_call=True
-# )
-# def update_output2(n_clicks, empresa_value, area_value, input_value):
-#     if n_clicks > 0 and empresa_value and area_value and input_value:
-#         df_solicitud_cotizacion = pd.DataFrame({
-#             "Nombre Proveedor": [input_value],
-#             "Empresa": [empresa_value],
-#             "Area": [area_value]
-#         })
-#         return save_button("Valores Cargados Correctamente", df_solicitud_cotizacion.to_dict('records'))
-#     else:
-#         return save_button('Error botón', [])
 
-
-
-
-
-
-
-
-
-
-# @app.callback([Output('save-button', 'n_clicks'),
-#             Output('output-message', 'children')],
-#             Input('save-button', 'n_clicks'),
-#             State('data-table', 'data'),
-#             prevent_initial_call=True  )
-# def save_files(n_clicks, table_data):
-
-#     if n_clicks is not None:
-#         try:
-#             if not os.path.exists('uploaded_document_forms'):
-#                 os.makedirs('uploaded_document_forms')
-#             for file in table_data:
-#                 matching_files = [f for f in file_data if f['File Name'] == file['File Name']]
-#                 if matching_files:
-#                     with open(f'uploaded_document_forms/{matching_files[0]["File Name"]}', 'wb') as f:
-#                         f.write(matching_files[0]['Content'])
-#             return n_clicks, 'Archivos cargados exitosamente'
-#         except Exception as e:
-#             return n_clicks, f'Error en cargar archivos: {str(e)}'
 
 
 

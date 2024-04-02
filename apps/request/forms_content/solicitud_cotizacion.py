@@ -35,7 +35,7 @@ def form_solicitud_cotizacion(selected_company):
             dbc.Col(html.Div([
                 html.Br(),
                 dcc.Markdown(''' ### NOMBRE PROVEEDOR: '''),
-            ]), md=12, width=3, lg=3),
+            ]), md=12, lg=3),
             dbc.Col(html.Div([
                 html.Br(),
                 dcc.Input(
@@ -45,7 +45,7 @@ def form_solicitud_cotizacion(selected_company):
                     value='',
                     style={'width': '100%'}
                 ),
-            ], className='pl-0'), md=12, width=9, lg=9),
+            ], className='pl-0'), md=12, lg=9),
 
                 ])
             ),width=10),
@@ -58,7 +58,7 @@ def form_solicitud_cotizacion(selected_company):
                                 dbc.Col(html.Div([
                 html.Br(),
                 dcc.Markdown(''' ### RUT PROVEEDOR: '''),
-            ]), md=12, width=3, lg=3),
+            ]), md=12, lg=3),
             dbc.Col(html.Div([
                 html.Br(),
                 dcc.Input(
@@ -68,7 +68,7 @@ def form_solicitud_cotizacion(selected_company):
                     value='',
                     style={'width': '100%'}
                 ),
-            ], className='pl-0'), md=12, width=9, lg=9),
+            ], className='pl-0'), md=12, lg=9),
                 ])
             ),width=10),
             dbc.Col(width=1),
@@ -81,14 +81,14 @@ def form_solicitud_cotizacion(selected_company):
             html.Div(style={'height': '20px'}),  # Add a space
     
             # dbc.Row([
-            #     dbc.Col(dcc.Markdown(''' ### EMPRESA: '''), md=12, width=3, lg=3),
-            #     dbc.Col(dcc.Dropdown(id='empresa-dropdown', options=[{'label': i, 'value': i} for i in ['ETICSA', 'DTS']]), md=12, width=9, lg=9),
+            #     dbc.Col(dcc.Markdown(''' ### EMPRESA: '''), md=12, lg=3),
+            #     dbc.Col(dcc.Dropdown(id='empresa-dropdown', options=[{'label': i, 'value': i} for i in ['ETICSA', 'DTS']]), md=12, lg=9),
             # ]),
             html.Div(style={'height': '20px'}),  # Add a space between the dropdowns
             dbc.Row([
-                dbc.Col(dcc.Markdown(''' ### ÁREA: '''), md=12, width=3, lg=3),
-                #dbc.Col(dcc.Dropdown(id='area-dropdown'), md=12, width=9, lg=9),
-                dbc.Col(dcc.Dropdown(selected_company, id='area-dropdown'), md=12, width=9, lg=9),
+                dbc.Col(dcc.Markdown(''' ### ÁREA: '''), md=12, lg=3),
+                #dbc.Col(dcc.Dropdown(id='area-dropdown'), md=12, lg=9),
+                dbc.Col(dcc.Dropdown(selected_company, id='area-dropdown'), md=12, lg=9),
             ]),
             ])),width=10),
         dbc.Col(width=1)
@@ -100,7 +100,7 @@ def form_solicitud_cotizacion(selected_company):
                                 dbc.Col(html.Div([
                 html.Br(),
                 dcc.Markdown(''' ### CENTRO COSTO: '''),
-            ]), md=12, width=3, lg=3),
+            ]), md=12, lg=3),
             dbc.Col(html.Div([
                 html.Br(),
                 dcc.Input(
@@ -110,7 +110,7 @@ def form_solicitud_cotizacion(selected_company):
                     value='',
                     style={'width': '100%'}
                 ),
-            ], className='pl-0'), md=12, width=9, lg=9),
+            ], className='pl-0'), md=12, lg=9),
                 ])
             ),width=10),
             dbc.Col(width=1),
@@ -123,7 +123,7 @@ def form_solicitud_cotizacion(selected_company):
                                 dbc.Col(html.Div([
                 html.Br(),
                 dcc.Markdown(''' ### NOMBRE SOLICITANTE: '''),
-            ]), md=12, width=3, lg=3),
+            ]), md=12, lg=3),
             dbc.Col(html.Div([
                 html.Br(),
                 dcc.Input(
@@ -133,7 +133,7 @@ def form_solicitud_cotizacion(selected_company):
                     value='',
                     style={'width': '100%'}
                 ),
-            ], className='pl-0'), md=12, width=9, lg=9),
+            ], className='pl-0'), md=12, lg=9),
                 ])
             ),width=10),
             dbc.Col(width=1),
@@ -146,7 +146,7 @@ def form_solicitud_cotizacion(selected_company):
                                 dbc.Col(html.Div([
                 html.Br(),
                 dcc.Markdown(''' ### NOMBRE DE QUIÉN AUTORIZA: '''),
-            ]), md=12, width=3, lg=3),
+            ]), md=12, lg=3),
             dbc.Col(html.Div([
                 html.Br(),
                 dcc.Input(
@@ -178,7 +178,7 @@ def form_solicitud_cotizacion(selected_company):
             dbc.Col(html.Div([
                 html.Br(),
                 dcc.Markdown(''' ### NOMBRE PRODUCTO: '''),
-            ]), md=12, width=2, lg=2),
+            ]), md=12, lg=2),
             dbc.Col(html.Div([
                 html.Br(),
                 dcc.Input(
@@ -188,11 +188,11 @@ def form_solicitud_cotizacion(selected_company):
                     value='',
                     style={'width': '100%'}
                 ),
-            ], className='pl-0'), md=12, width=6, lg=6),
+            ], className='pl-0'), md=12, lg=6),
             dbc.Col(html.Div([
                 html.Br(),
                 dcc.Markdown(''' ### CANTIDAD: '''),
-            ]), md=12, width=2, lg=2),
+            ]), md=12, lg=2),
             dbc.Col(html.Div([
                 html.Br(),
                 dcc.Input(
@@ -202,7 +202,7 @@ def form_solicitud_cotizacion(selected_company):
                     value='',
                     style={'width': '100%'}
                 ),
-            ], className='pl-0'), md=12, width=2, lg=2),
+            ], className='pl-0'), md=12, lg=2),
             
                 ])
             ),width=10),
@@ -275,7 +275,7 @@ def form_solicitud_cotizacion(selected_company):
         dbc.Row([
         dbc.Col((),width=1),
         dbc.Col((
-            dcc.Markdown(f''' ## ADJUNTAR DOCUMENTOS ''', className="text-center"),
+            dcc.Markdown(f''' ## ADJUNTAR DOCUMENTOS  ''', className="text-center"),
         ),width=10),
         dbc.Col((),width=1),
     ]),

@@ -258,12 +258,12 @@ def serve_layout():
             dbc.Row([
                 dbc.Col((),width=1),
                 dbc.Col((
-                    dcc.Textarea(
-                        id='input_texto_ajuste_informacion',
-                        placeholder='Describa el ítem...',
-                        readOnly=False,
-                        style={'width': '100%'}
-                    )
+                dcc.Textarea(
+                    id='input_texto_ajuste_informacion',
+                    placeholder='Describa el ítem...',
+                    readOnly=False,
+                    style={'width': '100%'}
+                )
                 ), width=10),
                 dbc.Col((),width=1),
             ]),
@@ -279,11 +279,11 @@ def serve_layout():
                     ),width=10),
                     dbc.Col((),width=1),
                 ]),
-            dbc.Row([
-                dbc.Col(width=2),
-                dbc.Col(dbc.Button('ENVIAR AJUSTE INFORMACIÓN', id='enviar-ajuste-button', style={'display': 'block', 'background-color':'#FFD700', 'color': 'black'}), width=4),
-                dbc.Col(width=2),
-            ]),
+    dbc.Row([
+        dbc.Col(width=2),
+        dbc.Col(dbc.Button('ENVIAR AJUSTE INFORMACIÓN', id='enviar-ajuste-button', style={'display': 'block', 'background-color':'#FFD700', 'color': 'black'}), width=4),
+        dbc.Col(width=2),
+    ]),
         ]),
     ],style={ 'background': '#0074D9','color':'black', 'fontSize': 30, 'font-weight': 'bold'}),
     html.Div(id='tabs-content-props'),
@@ -308,7 +308,8 @@ app.layout = serve_layout
     [Output('save-button', 'style'),
      Output('update-button', 'style'),
      Output('input_numero_orden_compra', 'readOnly'),
-     Output('input_numero_factura', 'readOnly')],
+     Output('input_numero_factura', 'readOnly',
+     )],
     [Input('submit', "n_clicks")],
 )
 def update_buttons(n_clicks, request):
@@ -465,14 +466,18 @@ def change_tab(n_clicks):
 
 
 @app.callback(
-    [Output("confirm_ajuste", "displayed"), Output("confirm_ajuste", "message")],
+    [Output("confirm_ajuste", "displayed"), Output("confirm_ajuste", "message"), Output("enviar-ajuste-button", "style")],
     [Input("enviar-ajuste-button", "n_clicks")],
     prevent_initial_call=True
 )
-def open_confirm_dialog(n_clicks):
-    if n_clicks is not None and n_clicks > 0:
-        return True, "¿Está seguro de enviar ajuste de información?"
-    return False, ""
+def open_confirm_dialog(n_clicks, request):
+    user = request.user
+    if user.is_superuser or user.is_staff:
+        if n_clicks is not None and n_clicks > 0:
+            return True, "¿Está seguro de enviar ajuste de información?", {'display': 'block', 'background-color':'#FFD700', 'color': 'black'}
+        return False, "", {'display': 'block', 'background-color':'#FFD700', 'color': 'black'},
+    else:
+        return False, "", {'display': 'none'}
 
 
 @app.callback(
@@ -482,6 +487,7 @@ def open_confirm_dialog(n_clicks):
 )
 def update_output2(submit_n_clicks, texto_ajuste,  request):
     id = request.session.get('id')
+    user_id = user.id
     if submit_n_clicks is not None:
         try:
             CotizacionRealizada.objects.filter(id=id).update(

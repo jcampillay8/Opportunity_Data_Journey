@@ -44,6 +44,8 @@ def new_request(request,pk):
     else:
         return render(request, 'request/formulario_no_disponible.html', context)
 
+
+@login_required
 def request_history(request):
     screen_width = request.COOKIES.get('screen_width')
     context = {
@@ -58,6 +60,7 @@ def request_history(request):
 #     return render(request, 'request/request_status.html',{'current_page': 'request_home','selected_language':get_context(request)})
 
 
+@login_required
 def request_status(request):
     screen_width = request.COOKIES.get('screen_width')
     context = {

@@ -12,25 +12,7 @@
   <body >
 
     {% if user.is_authenticated %}
-    <section class="about-part team-part">
-      
-        <div class="container">
-            <div class="about-part-details text-center"> 
-                <h2>Servicios</h2>
-                <div class="about-part-content">
-                    <div class="breadcrumbs">
-                        <div class="container">
-                            <ol class="breadcrumb">
-                              <li><a href="#">home</a><span>//</span></li>
-                              <li><a href="#">Servicios</a></li>
-                            </ol><!--/.breadcrumb-->
-                        </div><!--/.container-->
-                    </div><!--/.breadcrumbs-->
-                </div><!--/.about-part-content-->
-            </div><!--/.about-part-details-->	
-        </div><!--/.container-->
 
-    </section><!--/.about-part-->
         
 
 
@@ -39,7 +21,7 @@
 
         <div class="{%plotly_class name='Request_Histogram_DashApp'%}">
             {% if screen_width > 800 %}
-                {%plotly_app name="Request_Histogram_DashApp" ratio=1.0%}
+                {%plotly_app name="Request_Histogram_DashApp" ratio=1.2%}
             {% else %}
                 {%plotly_app name="Request_Histogram_DashApp" ratio=0.45%}
             {% endif %}

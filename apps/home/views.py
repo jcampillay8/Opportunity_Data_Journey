@@ -23,6 +23,7 @@ class GuestUser:
     is_anonymous = False
 
 
+
 def login_or_guest_required(func):
     @wraps(func)
     def decorated_view(request, *args, **kwargs):
@@ -37,9 +38,6 @@ def login_or_guest_required(func):
     return decorated_view
 
 
-def guest_login(request):
-    request.session['is_guest'] = True  # Establecer una variable de sesión para indicar que el usuario es un invitado
-    return redirect('home')  # Redirigir al usuario a la página de inicio
 
 
 @login_or_guest_required
@@ -90,6 +88,7 @@ def welcome(request):
     return render(request, 'partials/_welcome_content.html', context)
 
 
+@login_required
 def contact_home(request):
 
     contact_form = ContactForm(request.POST or None)

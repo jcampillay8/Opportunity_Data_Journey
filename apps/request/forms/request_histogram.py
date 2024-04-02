@@ -37,32 +37,61 @@ app = DjangoDash('Request_Histogram_DashApp', add_bootstrap_links=True, external
 
 def serve_layout():
     return dbc.Container([
-        dcc.Dropdown(
-            id='dropdown',
-            options=[{'label': i, 'value': i} for i in df_data_solicitudes['Nombre_Proveedor'].unique()],
-            value=df_data_solicitudes['Nombre_Proveedor'].unique(),
-            multi=True
-        ),
-        html.H2("Nombre_Proveedor Histogram"),
-        dcc.Graph(id='graph'),
+        dbc.Row([
+                dbc.Col(html.Div(style={'height': '60px'}), width=12)
+            ]),
+
+        dbc.Row([
+            dbc.Col((),width=1),
+            dbc.Col((
+                html.H2("Nombre_Proveedor Count Bar Chart"),
+                dcc.DatePickerRange(
+                    id='date-picker-range',
+                    start_date=df_data_solicitudes['fecha_solicitud'].min(),
+                    end_date=df_data_solicitudes['fecha_solicitud'].max()
+                ),  
+                dcc.Graph(id='graph3'),
+            ),width=10),
+            dbc.Col((),width=1),
+        ]),
+        dbc.Row([
+                dbc.Col(html.Div(style={'height': '60px'}), width=12)
+            ]),
+        dbc.Row([
+            dbc.Col((),width=1),
+            dbc.Col((
+                html.H2("Formulario and Empresa Histogram"),
+                dcc.Dropdown(
+                    id='dropdown2',
+                    options=[{'label': str((i,j)), 'value': str((i,j))} for i,j in df_data_solicitudes[['Formulario', 'Empresa']].drop_duplicates().values],
+                    value=[str((i,j)) for i,j in df_data_solicitudes[['Formulario', 'Empresa']].drop_duplicates().values],
+                    multi=True
+                ),
+                dcc.Graph(id='graph2'),),width=10),
+            dbc.Col((),width=1),
+        ]),
+        dbc.Row([
+                dbc.Col(html.Div(style={'height': '60px'}), width=12)
+            ]),
+        dbc.Row([
+            dbc.Col((),width=1),
+            dbc.Col(( 
+                html.H2("Nombre_Proveedor Histogram"),
+                dcc.Dropdown(
+                    id='dropdown',
+                    options=[{'label': i, 'value': i} for i in df_data_solicitudes['Nombre_Proveedor'].unique()],
+                    value=df_data_solicitudes['Nombre_Proveedor'].unique(),
+                    multi=True),
+                
+                dcc.Graph(id='graph'),),width=10),
+            dbc.Col((),width=1),
+        ]),
+
         html.Br(),  # Add a line break for spacing
-        dcc.Dropdown(
-            id='dropdown2',
-            options=[{'label': str((i,j)), 'value': str((i,j))} for i,j in df_data_solicitudes[['Formulario', 'Empresa']].drop_duplicates().values],
-            value=[str((i,j)) for i,j in df_data_solicitudes[['Formulario', 'Empresa']].drop_duplicates().values],
-            multi=True
-        ),
-        html.H2("Formulario and Empresa Histogram"),
-        dcc.Graph(id='graph2'),
+
         html.Br(),  # Add a line break for spacing
-        html.H2("Nombre_Proveedor Count Bar Chart"),
-        dcc.DatePickerRange(
-            id='date-picker-range',
-            start_date=df_data_solicitudes['fecha_solicitud'].min(),
-            end_date=df_data_solicitudes['fecha_solicitud'].max()
-        ),
-    
-    dcc.Graph(id='graph3'),
+
+
     html.Div(id='user_id', style={'display': 'none'}),
     html.Div(id='username', style={'display': 'none'}),
     dcc.ConfirmDialog(id='confirm',message=''),

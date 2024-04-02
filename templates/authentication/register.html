@@ -48,6 +48,7 @@
                   class="form-control form-control-sm"
                   required
                   value="{{ values.company_name }}"
+                  style="font-size:small;"
                 />
                 <datalist id="company-names">
                   {% for company in companies %}
@@ -63,6 +64,7 @@
                   class="form-control form-control-sm"
                   required
                   value="{{ values.first_name }}"
+                  style="font-size:small;"
                 />
               </div>
               <div class="form-group">
@@ -73,6 +75,7 @@
                   class="form-control form-control-sm"
                   required
                   value="{{ values.last_name }}"
+                  style="font-size:small;"
                 />
               </div>
                 <div class="form-group">
@@ -86,6 +89,7 @@
                       class="form-control   username form-control-sm"
                       required
                       value="{{ values.username }}"
+                      style="font-size:small;"
                     />
               
                 </div>
@@ -103,6 +107,7 @@
                     class="form-control form-control-sm user-email"
                     required
                     value="{{ values.email }}"
+                    style="font-size:small;"
                   />
                 </div>
                     <div class="spinner-border email_spinner  spinner-border-sm" style="display:none;"></div>
@@ -118,6 +123,7 @@
                       class="form-control form-control-sm passwordField"
                     required
                     value="{{ values.password }}"
+                    style="font-size:small;"
                   >
                   </input>
   
@@ -127,6 +133,7 @@
                     type="submit"
                     value="{{ selected_language.welcome.register.boton_register }}"
                     class="btn btn-primary submit-btn btn-block btn-sm btn-block"
+                    style="font-size:small;"
                   />
                       <div class="lower my-3 pl-3 pr-3">
                           <div class="row">
@@ -134,15 +141,15 @@
                                   <hr class="ml-1">
                               </div>
                               <div class="col-md-2">
-                                  <small class="text-muted">OR</small>
+                                  <small class="text-muted" style="font-size:small;">OR</small>
                               </div>
                               <div class="col-md-5">
                                   <hr class="mr-1">
                               </div>
                           </div>
-                          <a href="{% url 'request-password'%}" class="btn btn-block btn-sm">{{ selected_language.welcome.register.reset_password }}</a>
+                          <a href="{% url 'request-password'%}" class="btn btn-block btn-sm" style="font-size:small;">{{ selected_language.welcome.register.reset_password }}</a>
   
-                          <a href="{% url 'login' %}" class="btn btn-block btn-sm">{{ selected_language.welcome.register.back_login }}</a>
+                          <a href="{% url 'login' %}" class="btn btn-block btn-sm" style="font-size:small;">{{ selected_language.welcome.register.back_login }}</a>
   
                       </div>
                   </form>

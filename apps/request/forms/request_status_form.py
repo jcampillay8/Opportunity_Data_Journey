@@ -37,12 +37,14 @@ def serve_layout():
 dbc.Row([
     dbc.Col((html.Div(style={'height': '20px'})),md=12, lg=1),
     dbc.Col((dbc.Row([
+        dbc.Col((html.Div(style={'height': '20px'})),md=12, lg=1),
         dbc.Col((html.Div(id='output-card1')),md=12, lg=2),
         dbc.Col((html.Div(id='output-card2')),md=12, lg=2),
         dbc.Col((html.Div(id='output-card3')),md=12, lg=2),
         dbc.Col((html.Div(id='output-card4')),md=12, lg=2),
         dbc.Col((html.Div(id='output-card5')),md=12, lg=2),
-        ]),),md=12, lg=10),
+        dbc.Col((html.Div(style={'height': '20px'})),md=12, lg=1),
+    ])),md=12, lg=12),
     dbc.Col((html.Div(style={'height': '20px'})),md=12, lg=1),
 ]),
 
@@ -73,7 +75,6 @@ dbc.Row([
             filter_action="native",
             sort_action="native",
             sort_mode="multi",
-            column_selectable="single",
             row_selectable="single",
             row_deletable=False,
             selected_columns=[],
@@ -81,6 +82,13 @@ dbc.Row([
             page_action="native",
             page_current= 0,
             page_size= 10,
+            style_cell_conditional=[
+               {
+                "if": {"state": "selected"},
+                "backgroundColor": "inherit !important",
+                "border": "inherit !important",
+               }
+            ],
             style_header={
                     'backgroundColor': 'rgb(230, 230, 230)',
                     'fontWeight': 'bold',
@@ -220,52 +228,52 @@ def get_user(n_clicks, user_id, username, request):
 
         fig1 = go.Figure(go.Indicator(
             value = solicitud_creada_count,
-            title = {"text": "Solicitud Creada"},
+            title = {"text": "Solicitud<br>Creada"},
         ))
 
         fig2 = go.Figure(go.Indicator(
             value = solicitud_revision_count,
-            title = {"text": "Solicitud en Revisión"},
+            title = {"text": "Solicitud en<br>Revisión"},
         ))
 
         fig3 = go.Figure(go.Indicator(
             value = solicitud_ajuste_informacion_count,
-            title = {"text": "Solicitud Ajuste Información"},
+            title = {"text": "Solicitud Ajuste<br>Información"},
         ))
 
         fig4 = go.Figure(go.Indicator(
             value = solicitud_aprobada_count,
-            title = {"text": "Solicitud Aprobada"},
+            title = {"text": "Solicitud<br>Aprobada"},
         ))
 
         fig5 = go.Figure(go.Indicator(
             value = solicitud_finalizada_count,
-            title = {"text": "Solicitud Finalizada"},
+            title = {"text": "Solicitud<br>Finalizada"},
         ))
 
         card1 = dbc.Card(
             dcc.Graph(figure=fig1, style={"height": "100%", "width": "100%"}),
-            style={"height": "300px"}
+            style={"height": "300px", "width":"250px", "margin-left":"20px","margin-right":"20px"}
         )
 
         card2 = dbc.Card(
             dcc.Graph(figure=fig2, style={"height": "100%", "width": "100%"}),
-            style={"height": "300px"}
+            style={"height": "300px", "width":"250px", "margin-left":"20px","margin-right":"20px"}
         )
 
         card3 = dbc.Card(
             dcc.Graph(figure=fig3, style={"height": "100%", "width": "100%"}),
-            style={"height": "300px"}
+            style={"height": "300px", "width":"250px", "margin-left":"20px","margin-right":"20px"}
         )
 
         card4 = dbc.Card(
             dcc.Graph(figure=fig4, style={"height": "100%", "width": "100%"}),
-            style={"height": "300px"}
+            style={"height": "300px", "width":"250px", "margin-left":"20px","margin-right":"20px"}
         )
 
         card5 = dbc.Card(
             dcc.Graph(figure=fig5, style={"height": "100%", "width": "100%"}),
-            style={"height": "300px"}
+            style={"height": "300px", "width":"250px", "margin-left":"20px","margin-right":"20px"}
         )
 
 
