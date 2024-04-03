@@ -62,7 +62,7 @@ THIRD_PARTY_APPS = [
     'six',
     'django_plotly_dash.apps.DjangoPlotlyDashConfig',
     'whitenoise.runserver_nostatic',
-    
+
 ]
 
 INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS + THIRD_PARTY_APPS
@@ -90,7 +90,7 @@ SESSION_SAVE_EVERY_REQUEST = True
 with open('language.json', 'r', encoding='utf-8') as file:
     LANGUAGE_DATA = json.load(file)
 
-    
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
