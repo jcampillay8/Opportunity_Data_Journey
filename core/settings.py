@@ -136,6 +136,16 @@ DATABASES = {
     }
 }
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'backendSPGlobal',
+#         'USER': 'mysuperuser',
+#         'PASSWORD': 'BTC.100K.jc',
+#         'HOST': 'backendspglobal.c5s2k0iwuarh.us-east-1.rds.amazonaws.com',
+#         'PORT': '5432',
+#     }
+# }
 
 
 
