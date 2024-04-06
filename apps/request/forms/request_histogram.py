@@ -24,19 +24,7 @@ import pandas as pd
 theme = dbc.themes.BOOTSTRAP
 
 
-<<<<<<< HEAD
-# Obtén todos los objetos CotizacionRealizada
-cotizaciones = CotizacionRealizada.objects.values()
-
-# Convierte los datos a DataFrame
-df_data_solicitudes = pd.DataFrame.from_records(cotizaciones)
-
-
 app = DjangoDash('Request_Histogram_DashApp', add_bootstrap_links=True, external_stylesheets=[theme, dbc.icons.BOOTSTRAP])
-
-=======
-app = DjangoDash('Request_Histogram_DashApp', add_bootstrap_links=True, external_stylesheets=[theme, dbc.icons.BOOTSTRAP])
->>>>>>> stage
 
 def update_data():
     cotizaciones = CotizacionRealizada.objects.values()

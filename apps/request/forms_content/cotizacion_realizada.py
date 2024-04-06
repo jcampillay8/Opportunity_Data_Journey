@@ -10,11 +10,8 @@ import traceback
 import dash_daq as daq
 from datetime import date
 from dash.dash_table.Format import Group
-<<<<<<< HEAD
-=======
 import boto3
 from django.conf import settings
->>>>>>> stage
 
 import pandas as pd
 import os
@@ -374,16 +371,6 @@ def send_email(user_email):
 def save_button2(message, table_data, table_producto, data_table, file_data, user_email): 
     if data_table is None or len(data_table) == 0:
         try:
-<<<<<<< HEAD
-            if not os.path.exists('uploaded_document_forms'):
-                os.makedirs('uploaded_document_forms')
-            
-                for file in data_table:
-                    matching_files = [f for f in file_data if f['File Name'] == file['File Name']]
-                    if matching_files:
-                        with open(f'uploaded_document_forms/{matching_files[0]["File Name"]}', 'wb') as f:
-                            f.write(matching_files[0]['Content'])
-=======
             s3 = boto3.client('s3',
                               aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
                               aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
@@ -395,7 +382,6 @@ def save_button2(message, table_data, table_producto, data_table, file_data, use
                     s3.put_object(Body=matching_files[0]['Content'],
                                   Bucket=settings.AWS_STORAGE_BUCKET_NAME,
                                   Key=f'uploaded_document_forms/{matching_files[0]["File Name"]}')
->>>>>>> stage
             
             message = dbc.Alert( [ html.I(className="bi bi-check-circle-fill me-2"), "Archivos cargados exitosamente", ], color="success", className="d-flex align-items-center", ),
             file_data.clear()
