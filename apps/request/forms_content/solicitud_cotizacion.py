@@ -11,6 +11,8 @@ from datetime import date
 from dash.dash_table.Format import Group
 import pandas as pd
 import os
+import boto3
+from django.conf import settings
 
 df_solicitud_cotizacion = pd.DataFrame(columns=['User_Id', 'User_Name','Formulario', 'Nombre Proveedor', 'Rut_Proveedor', 'Empresa', 'Area', 'Centro Costo', 'Nombre Solicitante', 'Nombre de Quién Autoriza'])
 df_solicitud_cotizacion_productos = pd.DataFrame(columns=['Nombre Producto', 'Cantidad', 'Descripción Producto'])
@@ -362,20 +364,26 @@ def send_email(user_email):
 
 
 
-def save_button2(message, table_data, table_producto, data_table, file_data, user_email):  # Agrega file_data como un argumento
-    try:
-        if not os.path.exists('uploaded_document_forms'):
-            os.makedirs('uploaded_document_forms')
-        for file in data_table:
-            matching_files = [f for f in file_data if f['File Name'] == file['File Name']]
-            if matching_files:
-                with open(f'uploaded_document_forms/{matching_files[0]["File Name"]}', 'wb') as f:
-                    f.write(matching_files[0]['Content'])
-        message = dbc.Alert( [ html.I(className="bi bi-check-circle-fill me-2"), "Archivos cargados exitosamente", ], color="success", className="d-flex align-items-center", ),
-        file_data.clear()
-        send_email(user_email)
-    except Exception as e:
-        message = dbc.Alert( [ html.I(className="bi bi-x-octagon-fill me-2"), f'Error en cargar archivos: {str(e)}', ], color="danger", className="d-flex align-items-center", ),
+def save_button2(message, table_data, table_producto, data_table, file_data, user_email): 
+    if data_table is None or len(data_table) == 0:
+        try:
+            s3 = boto3.client('s3',
+                              aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
+                              aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
+                              region_name=settings.AWS_S3_REGION_NAME)
+            
+            for file in data_table:
+                matching_files = [f for f in file_data if f['File Name'] == file['File Name']]
+                if matching_files:
+                    s3.put_object(Body=matching_files[0]['Content'],
+                                  Bucket=settings.AWS_STORAGE_BUCKET_NAME,
+                                  Key=f'uploaded_document_forms/{matching_files[0]["File Name"]}')
+            
+            message = dbc.Alert( [ html.I(className="bi bi-check-circle-fill me-2"), "Archivos cargados exitosamente", ], color="success", className="d-flex align-items-center", ),
+            file_data.clear()
+            send_email(user_email)
+        except Exception as e:
+            message = dbc.Alert( [ html.I(className="bi bi-x-octagon-fill me-2"), f'Error en cargar archivos: {str(e)}', ], color="danger", className="d-flex align-items-center", ),
     return [
         dbc.Row([
             dbc.Col((),width=1),

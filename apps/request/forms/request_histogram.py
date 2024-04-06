@@ -24,6 +24,7 @@ import pandas as pd
 theme = dbc.themes.BOOTSTRAP
 
 
+<<<<<<< HEAD
 # Obtén todos los objetos CotizacionRealizada
 cotizaciones = CotizacionRealizada.objects.values()
 
@@ -33,14 +34,21 @@ df_data_solicitudes = pd.DataFrame.from_records(cotizaciones)
 
 app = DjangoDash('Request_Histogram_DashApp', add_bootstrap_links=True, external_stylesheets=[theme, dbc.icons.BOOTSTRAP])
 
+=======
+app = DjangoDash('Request_Histogram_DashApp', add_bootstrap_links=True, external_stylesheets=[theme, dbc.icons.BOOTSTRAP])
+>>>>>>> stage
 
+def update_data():
+    cotizaciones = CotizacionRealizada.objects.values()
+    df_data_solicitudes = pd.DataFrame.from_records(cotizaciones)
+    return df_data_solicitudes
 
 def serve_layout():
+    df_data_solicitudes = update_data()
     return dbc.Container([
         dbc.Row([
                 dbc.Col(html.Div(style={'height': '60px'}), width=12)
             ]),
-
         dbc.Row([
             dbc.Col((),width=1),
             dbc.Col((
@@ -87,39 +95,35 @@ def serve_layout():
             dbc.Col((),width=1),
         ]),
 
-        html.Br(),  # Add a line break for spacing
-
-        html.Br(),  # Add a line break for spacing
-
-
     html.Div(id='user_id', style={'display': 'none'}),
     html.Div(id='username', style={'display': 'none'}),
     dcc.ConfirmDialog(id='confirm',message=''),
     dcc.ConfirmDialog(id='confirm_ajuste',message=''),
 
-    # Add a Submit button to the layout
     html.Button('Submit', id='submit', n_clicks=0, style={'display': 'none'}),
-
     ],
     fluid=True,
     style={'padding-bottom':'200px'},
-    
     )
 
 app.layout = serve_layout
+
+
+
 
 @app.callback(
     Output('graph', 'figure'),
     [Input('dropdown', 'value')]
 )
 def update_graph(selected_dropdown_value):
+    df_data_solicitudes = update_data()
     if type(selected_dropdown_value) == str:
         selected_dropdown_value = [selected_dropdown_value]
     filtered_df = df_data_solicitudes[df_data_solicitudes['Nombre_Proveedor'].isin(selected_dropdown_value)]
     fig = px.histogram(filtered_df, x='fecha_solicitud', color='Nombre_Proveedor', nbins=50)
     fig.update_traces(marker_line_width=1, marker_line_color='black')
-    fig.update_layout(xaxis={'categoryorder':'total ascending'})  # Ordenar las fechas en orden ascendente
-    fig.update_xaxes(tickangle=90)  # Rotar las etiquetas de las fechas 90 grados
+    fig.update_layout(xaxis={'categoryorder':'total ascending'})
+    fig.update_xaxes(tickangle=90)
     return fig
 
 @app.callback(
@@ -127,14 +131,15 @@ def update_graph(selected_dropdown_value):
     [Input('dropdown2', 'value')]
 )
 def update_graph2(selected_dropdown_value):
+    df_data_solicitudes = update_data()
     if type(selected_dropdown_value[0]) == str:
         selected_dropdown_value = [eval(i) for i in selected_dropdown_value]
     filtered_df = df_data_solicitudes[df_data_solicitudes[['Formulario', 'Empresa']].apply(tuple, axis=1).isin(selected_dropdown_value)]
     fig = px.histogram(filtered_df, x='fecha_solicitud', color='Empresa', facet_row='Formulario', nbins=50)
     fig.update_traces(marker_line_width=1, marker_line_color='black')
-    fig.update_layout(xaxis={'categoryorder':'total ascending'})  # Ordenar las fechas en orden ascendente
-    fig.update_xaxes(tickangle=90)  # Rotar las etiquetas de las fechas 90 grados
-    fig.for_each_annotation(lambda a: a.update(text=a.text.split("=")[-1]))  # Remove 'Formulario ='
+    fig.update_layout(xaxis={'categoryorder':'total ascending'})
+    fig.update_xaxes(tickangle=90)
+    fig.for_each_annotation(lambda a: a.update(text=a.text.split("=")[-1]))
     return fig
 
 @app.callback(
@@ -143,10 +148,11 @@ def update_graph2(selected_dropdown_value):
      Input('date-picker-range', 'end_date')]
 )
 def update_graph3(start_date, end_date):
+    df_data_solicitudes = update_data()
     filtered_df = df_data_solicitudes[(df_data_solicitudes['fecha_solicitud'] >= start_date) & (df_data_solicitudes['fecha_solicitud'] <= end_date)]
     count_df = filtered_df['Nombre_Proveedor'].value_counts().reset_index()
     count_df.columns = ['Nombre_Proveedor', 'count']
     fig = px.bar(count_df, x='Nombre_Proveedor', y='count')
-    fig.update_layout(xaxis={'categoryorder':'total ascending'})  # Ordenar las fechas en orden ascendente
-    fig.update_xaxes(tickangle=90)  # Rotar las etiquetas de las fechas 90 grados
+    fig.update_layout(xaxis={'categoryorder':'total ascending'})
+    fig.update_xaxes(tickangle=90)
     return fig
