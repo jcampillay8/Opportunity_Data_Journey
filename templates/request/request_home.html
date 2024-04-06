@@ -44,7 +44,7 @@
                   </div><!--/.service-img-->
                   <div class="service-txt">
                     <h2>
-                      <a href="{% url 'new_request' pk=8 %}">Generar una Nueva Solicitud</a>
+                      <a href="{% url 'new_request' pk=8 %}" id="new_request_link">Generar una Nueva Solicitud</a>
                     </h2>
                     <p>
                       Lorem ipsum dolo dolor in  in voluptate velit esse cillum dolore. epteur sint oat cupidatat 
@@ -62,7 +62,7 @@
                   </div><!--/.service-img-->
                   <div class="service-txt">
                     <h2>
-                      <a href="{% url 'request_status' %}">Revisar Estado Solicitud</a>
+                      <a href="{% url 'request_status' %}" id="request_status_link">Revisar Estado Solicitud</a>
                     </h2>
                     <p>
                       Lorem ipsum dolo dolor in  in voluptate velit esse cillum dolore. epteur sint oat cupidatat 
@@ -80,7 +80,7 @@
                   </div><!--/.service-img-->
                   <div class="service-txt">
                     <h2>
-                      <a href="{% url 'request_history' %}">Revisar Historial Solicitudes</a>
+                      <a href="{% url 'request_history' %}" id="request_history_link">Revisar Historial Solicitudes</a>
                     </h2>
                     <p>
                       Lorem ipsum dolo dolor in  in voluptate velit esse cillum dolore. epteur sint oat cupidatat 
@@ -126,6 +126,17 @@
   </section><!-- /.new-project-->	
   <!-- new-project end -->
   
+  <script type="text/javascript">
+    var links = ['new_request_link', 'request_status_link', 'request_history_link'];
+    for (var i = 0; i < links.length; i++) {
+        document.getElementById(links[i]).onclick = function(e) {
+            e.preventDefault();  // Evita que el enlace se siga inmediatamente
+            document.cookie = "screen_width=" + window.innerWidth;  // Establece la cookie
+            window.location.href = this.href;  // Redirige al usuario a la URL del enlace
+        };
+    }
+</script>
+
 
       {%endblock%}
 

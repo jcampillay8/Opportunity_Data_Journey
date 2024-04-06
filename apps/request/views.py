@@ -23,11 +23,12 @@ def request_home(request):
 def new_request(request,pk):
 
     user = User.objects.get(username=request.user.username)
+    screen_width = request.COOKIES.get('screen_width')
+    if screen_width is not None:
+        screen_width = int(screen_width)
 
     request.session['language'] = request.POST.get('language', 'English')
-    #post = get_object_or_404(Post, id=pk)
 
-    screen_width = request.COOKIES.get('screen_width')
 
     context = {
      #   'post': post,
@@ -48,6 +49,8 @@ def new_request(request,pk):
 @login_required
 def request_history(request):
     screen_width = request.COOKIES.get('screen_width')
+    if screen_width is not None:
+        screen_width = int(screen_width)
     context = {
         'current_page': 'request_home',
         'selected_language': get_context(request),
@@ -63,6 +66,9 @@ def request_history(request):
 @login_required
 def request_status(request):
     screen_width = request.COOKIES.get('screen_width')
+    if screen_width is not None:
+        screen_width = int(screen_width)
+
     context = {
         'current_page': 'request_home',
         'selected_language': get_context(request),
@@ -71,16 +77,12 @@ def request_status(request):
     return render(request, 'request/request_status.html', context)
 
 
-# @login_required(login_url='login')
-# def revision_solicitud(request, id):
-#     request.session['id'] = id  
-#     return render(request, 'request/revision_solicitud.html')
-
-
 @login_required(login_url='login')
 def revision_solicitud(request, id):
     request.session['id'] = id
     screen_width = request.COOKIES.get('screen_width')
+    if screen_width is not None:
+        screen_width = int(screen_width)
     context = {
         'current_page': 'request_home',
         'selected_language': get_context(request),

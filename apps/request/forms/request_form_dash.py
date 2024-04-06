@@ -22,7 +22,7 @@ external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 theme = dbc.themes.BOOTSTRAP
 
-app = DjangoDash('Request_DashApp', add_bootstrap_links=True, external_stylesheets=[theme, dbc.icons.BOOTSTRAP], meta_tags=[ { "name": "viewport", "content": "width=device-width, initial-scale=1, maximum-scale=1", }, ],)
+app = DjangoDash('Request_DashApp', add_bootstrap_links=True, external_stylesheets=[theme, dbc.icons.BOOTSTRAP])
 
 file_data = []
 
@@ -213,9 +213,6 @@ def update_table(data):
 )
 def update_output2(submit_n_clicks, table_producto, table_data, value, nombre_proveedor, rut_proveedor, empresa_value, area_value, centro_costo, nombre_solicitante, nombre_autoriza, user_id, username, is_confirm_open,request):
     global file_data
-    
-    print('hola')
-    print(table_data)
     if value == 'Cotización Realizada':
         if submit_n_clicks is not None and submit_n_clicks > 0:
             if not area_value:

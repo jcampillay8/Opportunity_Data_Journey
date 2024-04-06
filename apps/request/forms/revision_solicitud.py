@@ -23,7 +23,7 @@ import pandas as pd
 
 theme = dbc.themes.BOOTSTRAP
 
-app = DjangoDash('Request_Revision_Solicitud_DashApp', add_bootstrap_links=True, external_stylesheets=[theme, dbc.icons.BOOTSTRAP], meta_tags=[ { "name": "viewport", "content": "width=device-width, initial-scale=1, maximum-scale=1", }, ],)
+app = DjangoDash('Request_Revision_Solicitud_DashApp', add_bootstrap_links=True, external_stylesheets=[theme, dbc.icons.BOOTSTRAP])
 
 
 
@@ -439,6 +439,18 @@ def update_output(submit_n_clicks, table_data,numero_orden_compra, numero_factur
                     Descripcion_Producto=row['Descripcion_Producto']
                 )
 
+              
+            # Obtén el objeto Estado_Solicitudes correspondiente
+            estado_solicitud = Estado_Solicitudes.objects.get(ID_OC=id)
+            
+            # Si el estado actual no es "Solicitud en Revisión", actualiza el estado
+            if estado_solicitud.Request_Status == "Solicitud en Revisión" or estado_solicitud.Request_Status == "Solicitud Ajuste Información" :
+                estado_solicitud.Request_Status = "Solicitud Aprobada"
+                estado_solicitud.Solicitud_Ajuste_Informacion = True
+                estado_solicitud.Solicitud_Aprobada = True
+                estado_solicitud.Hora_Inicio_Aprobada = timezone.now()
+                estado_solicitud.save()
+
             # Si la actualización fue exitosa, devuelve un mensaje de éxito
             return dbc.Alert(
                 [html.I(className="bi bi-check-circle-fill me-2"), "Datos actualizados exitosamente"],
@@ -487,7 +499,7 @@ def open_confirm_dialog(n_clicks, request):
 )
 def update_output2(submit_n_clicks, texto_ajuste,  request):
     id = request.session.get('id')
-    user_id = user.id
+    
     if submit_n_clicks is not None:
         try:
             CotizacionRealizada.objects.filter(id=id).update(
