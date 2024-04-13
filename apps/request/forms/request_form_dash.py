@@ -51,7 +51,7 @@ def serve_layout():
         dbc.Col(width=2),
         dbc.Col((html.Div([
             html.Div(style={'height': '20px'}),  # Add a space
-            dcc.Markdown(''' # EMPRESA: '''),
+            dcc.Markdown(''' #### EMPRESA: '''),
             html.Div(style={'height': '40px'}),  # Add a space
             dcc.Dropdown(id='empresa-dropdown', options=[{'label': i, 'value': i} for i in ['ETICSA', 'DTS']]),
             
@@ -62,19 +62,20 @@ def serve_layout():
         dbc.Col(width=2),
         dbc.Col((html.Div([
             html.Div(style={'height': '20px'}),  # Add a space
-            dcc.Markdown(''' # SELECCIONE \'SOLICITUD FORMULARIO\' '''),
+            dcc.Markdown(''' #### SELECCIONE \'SOLICITUD FORMULARIO\' '''),
             html.Div(style={'height': '40px'}),  # Add a space
             dcc.Dropdown(id='dropdown', options=[{'label': i, 'value': i} for i in ['Cotización Realizada', 'Solicitud de Cotización']],),
             html.Br(),
-            dbc.Button('Submit', id='submit-button', n_clicks=0),
+            dbc.Button('Submit', id='submit-button', style={'display': 'block'}, n_clicks=0),
             ])),width=8),
         dbc.Col(width=2)
     ]), 
-    dbc.Row([
-        dbc.Col(width=1),
-        dbc.Col(html.Div(id='output-container'), width=10),
-        dbc.Col(width=1),
-    ]),
+        dbc.Row([
+            dbc.Col(width=1),
+            dbc.Col(html.Div(id='output-container', style={'display': 'block'}), width=10),  # Agregamos el estilo inicial aquí
+            dbc.Col(width=1),
+        ]),
+
         dcc.ConfirmDialog(
     id='confirm',
     message='',
@@ -194,7 +195,9 @@ def update_table(data):
 
 
 @app.callback(
-    Output('output-container2', 'children'),
+    [Output('output-container2', 'children'),
+    Output('output-container', 'style'),
+    Output('submit-button','style')],  # nuevo Output
     [Input('confirm', "submit_n_clicks"),
      Input('table_producto', 'data'),
      Input('data-table', 'data')], 
@@ -223,10 +226,10 @@ def update_output2(submit_n_clicks, table_producto, table_data, value, nombre_pr
                 return message_alert('Información incompleta - Agregar Valor Nombre Solicitante')
             elif not nombre_autoriza:
                 return message_alert('Información incompleta - Agregar Valor Nombre de Quién Autoriza')
-            elif not table_producto or len(table_producto) == 0:
-                return message_alert('Información incompleta - Agregar valores en Tabla Productos')
-            # elif not table_data or len(table_data) == 0:
-            #     return message_alert('Información incompleta - Agregar Documentos')
+            # elif not table_producto or len(table_producto) == 0:
+            #     return message_alert('Información incompleta - Agregar valores en Tabla Productos')
+            elif not table_data or len(table_data) == 0:
+                return message_alert('Información incompleta - Agregar Documentos')
             elif nombre_proveedor and rut_proveedor and empresa_value and area_value and centro_costo and nombre_solicitante and nombre_autoriza:
                 user = request.user
                 user_id = user.id
@@ -257,76 +260,6 @@ def update_output2(submit_n_clicks, table_producto, table_data, value, nombre_pr
                     Nombre_Solicitante=nombre_solicitante,
                     Nombre_Autoriza=nombre_autoriza,
                 )
-                for producto in table_producto:
-                    CotizacionRealizada_Productos.objects.create(
-                        ID_OC=cotizacion_realizada,
-                        Nombre_Producto=producto['Nombre Producto'],
-                        Cantidad=producto['Cantidad'],
-                        Descripcion_Producto=producto['Descripción Producto'],
-                    )
-                if table_data is None:
-                    table_data = []
-                else:
-                    for archivo in table_data:
-                        CotizacionRealizada_Archivos.objects.create(
-                            ID_OC=cotizacion_realizada,
-                            File_Number=archivo['File Number'],
-                            File_Name=archivo['File Name'],
-                            File_Type=archivo['File Type'],
-                        )
-                Estado_Solicitudes.objects.create(
-                    ID_OC=cotizacion_realizada,
-                )
-                return save_button2("Valores Cargados Correctamente", df_cotizacion_realizada.to_dict('records'), df_cotizacion_realizada_productos.to_dict('records'), table_data, file_data, user_email) 
-            elif submit_n_clicks == 0:
-                return ''
-        else:
-            return ''
-    
-    elif value == 'Solicitud de Cotización':
-        if submit_n_clicks is not None and submit_n_clicks > 0:
-            if not area_value:
-                return message_alert('Información incompleta - Agregar Valor Área')
-            elif not centro_costo:
-                return message_alert('Información incompleta - Agregar Valor Centro de Costo')
-            elif not nombre_solicitante:
-                return message_alert('Información incompleta - Agregar Valor Nombre Solicitante')
-            elif not nombre_autoriza:
-                return message_alert('Información incompleta - Agregar Valor Nombre de Quién Autoriza')
-            # elif not table_producto or len(table_producto) == 0:
-            #     return message_alert('Información incompleta - Agregar valores en Tabla Productos')
-            elif not table_data or len(table_data) == 0:
-                return message_alert('Información incompleta - Agregar Documentos')
-            elif nombre_proveedor and rut_proveedor and empresa_value and area_value and centro_costo and nombre_solicitante and nombre_autoriza:
-                user = request.user
-                user_id = user.id
-                username = user.username
-                user_email = user.email
-                df_cotizacion_realizada = pd.DataFrame({
-                    "User_Id": [user_id],
-                    "User_Name": [username],
-                    "Formulario": ["Solicitud de Cotización"],
-                    "Nombre Proveedor": [nombre_proveedor],
-                    "Rut_Proveedor": [rut_proveedor],
-                    "Empresa": [empresa_value],
-                    "Area": [area_value],
-                    "Centro Costo": [centro_costo],
-                    "Nombre Solicitante": [nombre_solicitante],
-                    "Nombre de Quién Autoriza": [nombre_autoriza],
-                })
-                df_cotizacion_realizada_productos = pd.DataFrame(table_producto)
-                cotizacion_realizada = CotizacionRealizada.objects.create(
-                    User_Id=user_id,
-                    User_Name=username,
-                    Formulario="Solicitud de Cotización",
-                    Nombre_Proveedor=nombre_proveedor,
-                    Rut_Proveedor=rut_proveedor,
-                    Empresa=empresa_value,
-                    Area=area_value,
-                    Centro_Costo=centro_costo,
-                    Nombre_Solicitante=nombre_solicitante,
-                    Nombre_Autoriza=nombre_autoriza,
-                )
                 if table_producto is None:
                     table_producto = []
                 else:
@@ -344,16 +277,90 @@ def update_output2(submit_n_clicks, table_producto, table_data, value, nombre_pr
                         File_Name=archivo['File Name'],
                         File_Type=archivo['File Type'],
                     )
+                
                 Estado_Solicitudes.objects.create(
                     ID_OC=cotizacion_realizada,
                 )
-                return save_button2("Valores Cargados Correctamente", df_cotizacion_realizada.to_dict('records'), df_cotizacion_realizada_productos.to_dict('records'), table_data, file_data, user_email) 
-            elif submit_n_clicks == 0:
-                return ''
+                    
+            return save_button2(dbc.Alert( [ html.I(className="bi bi-check-circle-fill me-2"), "Solicitud cargada exitosamente", ], color="success", className="d-flex align-items-center", ), df_cotizacion_realizada.to_dict('records'), df_cotizacion_realizada_productos.to_dict('records'), table_data, file_data, user_email), {'display': 'none'}, {'display': 'none'}  # nuevo retorno
+        elif submit_n_clicks == 0:
+            return '', {'display': 'block'}, {'display': 'block'}
         else:
-            return ''
+            return '', {'display': 'block'}, {'display': 'block'}
+    
+    elif value == 'Solicitud de Cotización':
+        if submit_n_clicks is not None and submit_n_clicks > 0:
+            if not area_value:
+                return message_alert('Información incompleta - Agregar Valor Área')
+            elif not centro_costo:
+                return message_alert('Información incompleta - Agregar Valor Centro de Costo')
+            elif not nombre_solicitante:
+                return message_alert('Información incompleta - Agregar Valor Nombre Solicitante')
+            elif not nombre_autoriza:
+                return message_alert('Información incompleta - Agregar Valor Nombre de Quién Autoriza')
+            elif not table_producto or len(table_producto) == 0:
+                return message_alert('Información incompleta - Agregar valores en Tabla Productos')
+            # elif not table_data or len(table_data) == 0:
+            #     return message_alert('Información incompleta - Agregar Documentos')
+            elif nombre_proveedor and rut_proveedor and empresa_value and area_value and centro_costo and nombre_solicitante and nombre_autoriza:
+                user = request.user
+                user_id = user.id
+                username = user.username
+                user_email = user.email
+                df_solicitud_cotizacion = pd.DataFrame({
+                    "User_Id": [user_id],
+                    "User_Name": [username],
+                    "Formulario": ["Solicitud de Cotización"],
+                    "Nombre Proveedor": [nombre_proveedor],
+                    "Rut_Proveedor": [rut_proveedor],
+                    "Empresa": [empresa_value],
+                    "Area": [area_value],
+                    "Centro Costo": [centro_costo],
+                    "Nombre Solicitante": [nombre_solicitante],
+                    "Nombre de Quién Autoriza": [nombre_autoriza],
+                })
+                df_solicitud_cotizacion_productos = pd.DataFrame(table_producto)
+                solicitud_cotizacion = CotizacionRealizada.objects.create(
+                    User_Id=user_id,
+                    User_Name=username,
+                    Formulario="Solicitud de Cotización",
+                    Nombre_Proveedor=nombre_proveedor,
+                    Rut_Proveedor=rut_proveedor,
+                    Empresa=empresa_value,
+                    Area=area_value,
+                    Centro_Costo=centro_costo,
+                    Nombre_Solicitante=nombre_solicitante,
+                    Nombre_Autoriza=nombre_autoriza,
+                )
 
 
+                for producto in table_producto:
+                    CotizacionRealizada_Productos.objects.create(
+                        ID_OC=solicitud_cotizacion,
+                        Nombre_Producto=producto['Nombre Producto'],
+                        Cantidad=producto['Cantidad'],
+                        Descripcion_Producto=producto['Descripción Producto'],
+                    )
+                if table_data is None:
+                    table_data = []
+                else:
+                    for archivo in table_data:
+                        CotizacionRealizada_Archivos.objects.create(
+                            ID_OC=solicitud_cotizacion,
+                            File_Number=archivo['File Number'],
+                            File_Name=archivo['File Name'],
+                            File_Type=archivo['File Type'],
+                        )
+                Estado_Solicitudes.objects.create(
+                    ID_OC=solicitud_cotizacion,
+                )
+
+            return save_button2(dbc.Alert( [ html.I(className="bi bi-check-circle-fill me-2"), "Solicitud cargada exitosamente", ], color="success", className="d-flex align-items-center", ), df_solicitud_cotizacion.to_dict('records'), df_solicitud_cotizacion_productos.to_dict('records'), table_data, file_data, user_email), {'display': 'none'}, {'display': 'none'}  # nuevo retorno
+        elif submit_n_clicks == 0:
+            return '', {'display': 'block'}, {'display': 'block'}
+
+        else:
+            return '', {'display': 'block'}, {'display': 'block'}
 
 
 

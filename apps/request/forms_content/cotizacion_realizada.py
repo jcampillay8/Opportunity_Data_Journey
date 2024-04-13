@@ -27,7 +27,7 @@ def form_cotizacion_realizada(selected_company):
     dbc.Row([
         dbc.Col((),width=1),
         dbc.Col((
-            dcc.Markdown(f''' ## COTIZACIÓN REALIZADA ''', className="text-center"),
+            dcc.Markdown(f''' ##### COTIZACIÓN REALIZADA ''', className="text-center"),
         ),width=10),
         dbc.Col((),width=1),
     ]),
@@ -39,7 +39,7 @@ def form_cotizacion_realizada(selected_company):
             dbc.Row([
             dbc.Col(html.Div([
                 html.Br(),
-                dcc.Markdown(''' ### NOMBRE PROVEEDOR: '''),
+                dcc.Markdown(''' ##### NOMBRE PROVEEDOR: '''),
             ]), md=12, width=3, lg=3),
             dbc.Col(html.Div([
                 html.Br(),
@@ -62,7 +62,7 @@ def form_cotizacion_realizada(selected_company):
                 dbc.Row([
                                 dbc.Col(html.Div([
                 html.Br(),
-                dcc.Markdown(''' ### RUT PROVEEDOR: '''),
+                dcc.Markdown(''' ##### RUT PROVEEDOR: '''),
             ]), md=12, lg=3),
             dbc.Col(html.Div([
                 html.Br(),
@@ -83,15 +83,9 @@ def form_cotizacion_realizada(selected_company):
         dbc.Row([    
         dbc.Col(width=1),
         dbc.Col((html.Div([
-            html.Div(style={'height': '20px'}),  # Add a space
-    
-            # dbc.Row([
-            #     dbc.Col(dcc.Markdown(''' ### EMPRESA: '''), md=12, width=3, lg=3),
-            #     dbc.Col(dcc.Dropdown(id='empresa-dropdown', options=[{'label': i, 'value': i} for i in ['ETICSA', 'DTS']]), md=12, width=9, lg=9),
-            # ]),
-            html.Div(style={'height': '20px'}),  # Add a space between the dropdowns
+            html.Div(style={'height': '40px'}),
             dbc.Row([
-                dbc.Col(dcc.Markdown(''' ### ÁREA: '''), md=12, lg=3),
+                dbc.Col(dcc.Markdown(''' ##### ÁREA: '''), md=12, lg=3),
                 #dbc.Col(dcc.Dropdown(id='area-dropdown'), md=12, width=9, lg=9),
                 dbc.Col(dcc.Dropdown(selected_company, id='area-dropdown'), md=12, lg=9),
             ]),
@@ -104,7 +98,7 @@ def form_cotizacion_realizada(selected_company):
                 dbc.Row([
                                 dbc.Col(html.Div([
                 html.Br(),
-                dcc.Markdown(''' ### CENTRO COSTO: '''),
+                dcc.Markdown(''' ##### CENTRO COSTO: '''),
             ]), md=12, lg=3),
             dbc.Col(html.Div([
                 html.Br(),
@@ -127,7 +121,7 @@ def form_cotizacion_realizada(selected_company):
                 dbc.Row([
                                 dbc.Col(html.Div([
                 html.Br(),
-                dcc.Markdown(''' ### NOMBRE SOLICITANTE: '''),
+                dcc.Markdown(''' ##### NOMBRE SOLICITANTE: '''),
             ]), md=12, lg=3),
             dbc.Col(html.Div([
                 html.Br(),
@@ -150,7 +144,7 @@ def form_cotizacion_realizada(selected_company):
                 dbc.Row([
                                 dbc.Col(html.Div([
                 html.Br(),
-                dcc.Markdown(''' ### NOMBRE DE QUIÉN AUTORIZA: '''),
+                dcc.Markdown(''' ##### NOMBRE DE QUIÉN AUTORIZA: '''),
             ]), md=12,lg=3),
             dbc.Col(html.Div([
                 html.Br(),
@@ -172,7 +166,7 @@ def form_cotizacion_realizada(selected_company):
                     dbc.Row([
         dbc.Col((),width=1),
         dbc.Col((
-            dcc.Markdown(f''' ## DESGLOSE COMPRA ''', className="text-center"),
+            dcc.Markdown(f''' ##### DESGLOSE COMPRA ''', className="text-center"),
         ),width=10),
         dbc.Col((),width=1),
     ]),
@@ -182,7 +176,7 @@ def form_cotizacion_realizada(selected_company):
             dbc.Row([
             dbc.Col(html.Div([
                 html.Br(),
-                dcc.Markdown(''' ### NOMBRE PRODUCTO: '''),
+                dcc.Markdown(''' ##### NOMBRE PRODUCTO: '''),
             ]), md=12, lg=2),
             dbc.Col(html.Div([
                 html.Br(),
@@ -196,7 +190,7 @@ def form_cotizacion_realizada(selected_company):
             ], className='pl-0'), md=12,lg=6),
             dbc.Col(html.Div([
                 html.Br(),
-                dcc.Markdown(''' ### CANTIDAD: '''),
+                dcc.Markdown(''' ##### CANTIDAD: '''),
             ]), md=12,lg=2),
             dbc.Col(html.Div([
                 html.Br(),
@@ -217,7 +211,7 @@ def form_cotizacion_realizada(selected_company):
         dbc.Row([
             dbc.Col(width=1),
             dbc.Col((
-            dcc.Markdown(''' ### DESCRIPCIÓN PRODUCTO: '''),
+            dcc.Markdown(''' ##### DESCRIPCIÓN PRODUCTO: '''),
 
             ),width=10),
             dbc.Col(width=1),
@@ -235,39 +229,68 @@ def form_cotizacion_realizada(selected_company):
             dbc.Col(width=1),
 
         ]),
-            dbc.Row([
-        dbc.Col(width=1),
-        dbc.Col((
-            dash_table.DataTable(
-                id='table_producto',
-                columns=[{"name": i, "id": i} for i in df_cotizacion_realizada_productos.columns],
-                data=df_cotizacion_realizada_productos.to_dict('records'),
-                editable=True,
-                row_deletable=True,
-                style_data={
-                    'if': {'column_id': 'Descripción Producto'},
-                    'whiteSpace': 'normal',
-                     'height': 'auto',
+        dbc.Row([
+    dbc.Col(width=1),
+    dbc.Col((
+        dash_table.DataTable(
+            id='table_producto',
+            columns=[{"name": i, "id": i} for i in df_cotizacion_realizada_productos.columns],
+            data=df_cotizacion_realizada_productos.to_dict('records'),
+            editable=True,
+            row_deletable=True,
+            style_header={
+                    'backgroundColor': 'rgb(230, 230, 230)',
+                    
+                    'textAlign': 'center',
+                    'font-style': 'normal',
+                    'fontWeight': '450',
+                    'font-family': 'Courier',
                 },
-                style_cell_conditional=[
-        {
-            'if': {'column_id': 'Descripción Producto'},
-            'textAlign': 'left',
-        },
-        {
-            'if': {'column_id': 'Nombre Producto'},
-            'textAlign': 'center',
-        },
-        {
-            'if': {'column_id': 'Cantidad'},
-            'textAlign': 'center',
-        }
-    ],
-                
-            ),
-        ), width=10),
-        dbc.Col(width=1),
-    ]),
+            style_data={
+                'if': {'column_id': 'Descripción Producto'},
+                'whiteSpace': 'normal',
+                'height': 'auto',
+            },
+            style_cell_conditional=[
+                {
+                    'if': {'column_id': 'Descripción Producto'},
+                    'textAlign': 'left',
+                },
+                {
+                    'if': {'column_id': 'Nombre Producto'},
+                    'textAlign': 'center',
+                },
+                {
+                    'if': {'column_id': 'Cantidad'},
+                    'textAlign': 'center',
+                }
+            ],
+            style_data_conditional=[
+                {
+                    'if': {'column_id': 'Descripción Producto'},
+                    'textAlign': 'left',
+                    'whiteSpace': 'normal',
+                    'height': 'auto',
+                    'font-family': 'Courier',
+                },
+                {
+                    'if': {'column_id': 'Nombre Producto'},
+                    'textAlign': 'center',
+                    
+                    'font-family': 'Courier',
+                    
+                },
+                {
+                    'if': {'column_id': 'Cantidad'},
+                    'textAlign': 'center',
+                    'font-family': 'Courier',
+                }
+            ]
+        ),
+    ), width=10),
+    dbc.Col(width=1),
+]),
+            
     html.Div(style={'height': '20px'}),  # Add a space
     dbc.Row([
         dbc.Col(width=1),
@@ -280,7 +303,7 @@ def form_cotizacion_realizada(selected_company):
         dbc.Row([
         dbc.Col((),width=1),
         dbc.Col((
-            dcc.Markdown(f''' ## ADJUNTAR DOCUMENTOS (OPCIONAL) ''', className="text-center"),
+            dcc.Markdown(f''' ##### ADJUNTAR DOCUMENTOS (OPCIONAL) ''', className="text-center"),
         ),width=10),
         dbc.Col((),width=1),
     ]),
@@ -342,7 +365,7 @@ def form_cotizacion_realizada(selected_company):
 
 
 def send_email(user_email):
-    subject = "Solicitud 'Cotización Realizada' ha sido correctamente generada y enviada"
+    subject = "Solicitud de Compra ha sido correctamente generada y enviada"
     message = """
     Estimado cliente,
 

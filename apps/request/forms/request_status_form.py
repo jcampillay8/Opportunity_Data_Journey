@@ -92,13 +92,14 @@ dbc.Row([
             ],
             style_header={
                     'backgroundColor': 'rgb(230, 230, 230)',
-                    'fontWeight': 'bold',
                     'textAlign': 'center',
+                    'fontWeight': '450',
+                    'font-family': 'Courier',
                 },
             style_data={
             'whiteSpace': 'normal',
             'height': 'auto',
-
+            'font-family': 'Courier',
             },
         )),width=10),
         dbc.Col(html.Div(style={'height': '20px'}),width=1),

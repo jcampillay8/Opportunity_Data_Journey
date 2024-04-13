@@ -46,49 +46,177 @@ def serve_layout():
                 dbc.Col(html.Div(style={'height': '20px'}), width=12)
             ]),
             dbc.Row([
-                    dbc.Col(width=1),
-                    dbc.Col((
-                    html.Div(id='output_nombre_formulario', style={'fontSize': 30, 'font-weight': 'bold'}),
-                    ),width=10),
-                    dbc.Col(width=1),
-                ]),
-                            dbc.Row([
-                    dbc.Col(width=1),
-                    dbc.Col((
-                    dbc.Row([
-                    dbc.Col(html.Div([
-                        html.Br(),
-                        dcc.Markdown(''' ### NÚMERO ORDEN COMPRA: '''),
-                    ]), md=12, width=2, lg=2),
-                    dbc.Col(html.Div([
-                        html.Br(),
-                        dcc.Input(
-                            id = 'input_numero_orden_compra',
-                            placeholder='Enter a value...',
-                            type='text',
-                            value='',
-                            style={'width': '100%'}
-                        ),
-                    ], className='pl-0'), md=12, width=4, lg=4),
-                    dbc.Col(html.Div([
-                        html.Br(),
-                        dcc.Markdown(''' ### NÚMERO FACTURA: '''),
-                    ]), md=12, width=2, lg=2),
-                    dbc.Col(html.Div([
-                        html.Br(),
-                        dcc.Input(
-                            id = 'input_numero_factura',
-                            placeholder='Enter a value...',
-                            type='text',
-                            value='',
-                            style={'width': '100%'}
-                        ),
-                    ], className='pl-0'), md=12, width=4, lg=4),
-                    
-                        ])
-                    ),width=10),
-                    dbc.Col(width=1),
-                ]),
+        dbc.Col(width=1),
+        dbc.Col((
+            html.Div(id='output_nombre_formulario', style={'fontSize': 30, 'font-weight': 'bold'}),
+        ),width=10),
+        dbc.Col(width=1),
+    ]),
+    dbc.Row([
+        dbc.Col(width=1),
+        dbc.Col((
+            dbc.Row([
+                dbc.Col(html.Div([
+                    html.Br(),
+                    dcc.Markdown(''' ### NÚMERO ORDEN COMPRA: '''),
+                ]), md=12, width=2, lg=2),
+                dbc.Col(html.Div([
+                    html.Br(),
+                    dcc.Input(
+                        id = 'input_numero_orden_compra',
+                        placeholder='Enter a value...',
+                        type='text',
+                        value='',
+                        style={'width': '100%'}
+                    ),
+                ], className='pl-0'), md=12, width=4, lg=4),
+                dbc.Col(html.Div([
+                    html.Br(),
+                    dcc.Markdown(''' ### NÚMERO FACTURA: '''),
+                ]), md=12, width=2, lg=2),
+                dbc.Col(html.Div([
+                    html.Br(),
+                    dcc.Input(
+                        id = 'input_numero_factura',
+                        placeholder='Enter a value...',
+                        type='text',
+                        value='',
+                        style={'width': '100%'}
+                    ),
+                ], className='pl-0'), md=12, width=4, lg=4),
+            ])
+        ),width=10),
+        dbc.Col(width=1),
+    ]),
+    dbc.Row([
+        dbc.Col(width=1),
+        dbc.Col((
+            dbc.Row([
+                dbc.Col(html.Div([
+                    html.Br(),
+                    dcc.Markdown(''' ### NOMBRE PROVEEDOR: '''),
+                ]), md=12, width=3, lg=3),
+                dbc.Col(html.Div([
+                    html.Br(),
+                    dcc.Input(
+                        id = 'input_nombre_proveedor',
+                        placeholder='Enter a value...',
+                        type='text',
+                        value='',
+                        style={'width': '100%'}
+                    ),
+                ], className='pl-0'), md=12, lg=9),
+            ])
+        ),width=10),
+        dbc.Col(width=1),
+    ]),
+    dbc.Row([
+        dbc.Col(width=1),
+        dbc.Col((
+            dbc.Row([
+                dbc.Col(html.Div([
+                    html.Br(),
+                    dcc.Markdown(''' ### RUT PROVEEDOR: '''),
+                ]), md=12, lg=3),
+                dbc.Col(html.Div([
+                    html.Br(),
+                    dcc.Input(
+                        id = 'input_rut_proveedor',
+                        placeholder='Enter a value...',
+                        type='text',
+                        value='',
+                        style={'width': '100%'}
+                    ),
+                ], className='pl-0'), md=12, lg=9),
+            ])
+        ),width=10),
+        dbc.Col(width=1),
+    ]),
+    dbc.Row([
+        dbc.Col(width=1),
+        dbc.Col((
+            dbc.Row([
+                dbc.Col(html.Div([
+                    html.Br(),
+                    dcc.Markdown(''' ### ÁREA: '''),
+                ]), md=12, lg=3),
+                dbc.Col(html.Div([
+                    html.Br(),
+                    dcc.Dropdown(
+                        id = 'area-dropdown',
+                        placeholder='Select...',
+                    ),
+                ], className='pl-0'), md=12, lg=9),
+            ])
+        ),width=10),
+        dbc.Col(width=1),
+    ]),
+    dbc.Row([
+        dbc.Col(width=1),
+        dbc.Col((
+            dbc.Row([
+                dbc.Col(html.Div([
+                    html.Br(),
+                    dcc.Markdown(''' ### CENTRO COSTO: '''),
+                ]), md=12, lg=3),
+                dbc.Col(html.Div([
+                    html.Br(),
+                    dcc.Input(
+                        id = 'input_centro_costo',
+                        placeholder='Enter a value...',
+                        type='text',
+                        value='',
+                        style={'width': '100%'}
+                    ),
+                ], className='pl-0'), md=12, lg=9),
+            ])
+        ),width=10),
+        dbc.Col(width=1),
+    ]),
+    dbc.Row([
+        dbc.Col(width=1),
+        dbc.Col((
+            dbc.Row([
+                dbc.Col(html.Div([
+                    html.Br(),
+                    dcc.Markdown(''' ### NOMBRE SOLICITANTE: '''),
+                ]), md=12, lg=3),
+                dbc.Col(html.Div([
+                    html.Br(),
+                    dcc.Input(
+                        id = 'input_nombre_solicitante',
+                        placeholder='Enter a value...',
+                        type='text',
+                        value='',
+                        style={'width': '100%'}
+                    ),
+                ], className='pl-0'), md=12, lg=9),
+            ])
+        ),width=10),
+        dbc.Col(width=1),
+    ]),
+    dbc.Row([
+        dbc.Col(width=1),
+        dbc.Col((
+            dbc.Row([
+                dbc.Col(html.Div([
+                    html.Br(),
+                    dcc.Markdown(''' ### NOMBRE DE QUIÉN AUTORIZA: '''),
+                ]), md=12,lg=3),
+                dbc.Col(html.Div([
+                    html.Br(),
+                    dcc.Input(
+                        id = 'input_nombre_autoriza',
+                        placeholder='Enter a value...',
+                        type='text',
+                        value='',
+                        style={'width': '100%'}
+                    ),
+                ], className='pl-0'), md=12, lg=9),
+            ])
+        ),width=10),
+        dbc.Col(width=1),
+    ]),
 
             dbc.Row([
                 dbc.Col((html.Div(style={'height': '20px'})),width=1),
@@ -365,7 +493,19 @@ def get_user(n_clicks, user_id, username, request):  # Agrega pathname aquí
 @app.callback(
     [Output('output_nombre_formulario','children'),
      Output('output-table', 'data'),
-     Output('output-table', 'editable')],
+     Output('output-table', 'editable'),
+     Output('input_nombre_proveedor', 'value'),
+     Output('input_nombre_proveedor', 'readOnly'),
+     Output('input_rut_proveedor', 'value'),
+     Output('input_rut_proveedor', 'readOnly'),
+     Output('area-dropdown', 'value'),
+     Output('area-dropdown', 'disabled'),
+     Output('input_centro_costo', 'value'),
+     Output('input_centro_costo', 'readOnly'),
+     Output('input_nombre_solicitante', 'value'),
+     Output('input_nombre_solicitante', 'readOnly'),
+     Output('input_nombre_autoriza', 'value'),
+     Output('input_nombre_autoriza', 'readOnly')],
     [Input('submit', "n_clicks"),
      Input('update-button', 'n_clicks')],
     [State('output-table', 'selected_rows'),
@@ -375,8 +515,6 @@ def get_user(n_clicks, user_id, username, request):  # Agrega pathname aquí
      State('input_descripcion_producto', 'value')]
 )
 def update_output(n_clicks_submit, n_clicks_update, selected_rows, data, nombre_producto, cantidad, descripcion_producto,request):
-
-
     user = request.user
     id = request.session.get('id')  # Obtiene el id de la sesión
     user_id = user.id
@@ -385,7 +523,7 @@ def update_output(n_clicks_submit, n_clicks_update, selected_rows, data, nombre_
         data[selected_rows[0]]['Nombre_Producto'] = nombre_producto
         data[selected_rows[0]]['Cantidad'] = cantidad
         data[selected_rows[0]]['Descripcion_Producto'] = descripcion_producto
-        return dash.no_update, data, dash.no_update
+        return dash.no_update, data, dash.no_update, dash.no_update, dash.no_update, dash.no_update, dash.no_update, dash.no_update, dash.no_update, dash.no_update, dash.no_update, dash.no_update, dash.no_update, dash.no_update, dash.no_update
     
     elif n_clicks_submit is not None:
         data_cotizacion = CotizacionRealizada.objects.filter(id=id).first()
@@ -395,11 +533,13 @@ def update_output(n_clicks_submit, n_clicks_update, selected_rows, data, nombre_
         # Crea una lista de diccionarios con los datos de los productos
         data = [{'ID': product.id, 'Nombre_Producto': product.Nombre_Producto, 'Cantidad': product.Cantidad, 'Descripcion_Producto': product.Descripcion_Producto} for product in products]
         if user.is_superuser or user.is_staff:
-            return data_formulario, data, False
+            return data_formulario, data, False, data_cotizacion.Nombre_Proveedor, False, data_cotizacion.Rut_Proveedor, False, data_cotizacion.Area, False, data_cotizacion.Centro_Costo, False, data_cotizacion.Nombre_Solicitante, False, data_cotizacion.Nombre_Autoriza, False
         else:
-            return data_formulario, data, False
+            return data_formulario, data, False, data_cotizacion.Nombre_Proveedor, True, data_cotizacion.Rut_Proveedor, True, data_cotizacion.Area, True, data_cotizacion.Centro_Costo, True, data_cotizacion.Nombre_Solicitante, True, data_cotizacion.Nombre_Autoriza, True
 
-    return "", [], False
+    return "", [], False, "", True, "", True, "", True, "", True, "", True, "", True
+
+
 
 
 

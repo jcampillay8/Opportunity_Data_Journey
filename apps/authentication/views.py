@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import Group
 from django.views import View
 import json
+from django.db import transaction
 from django.views.generic import (View, TemplateView)
 from django.http import JsonResponse
 from django.contrib.auth.models import User
@@ -80,73 +81,77 @@ class RegistrationView(View):
         context['companies'] = ClientData.objects.all()
         return render(request, 'authentication/register.html', context)
 
+    @transaction.atomic
     def post(self, request):
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
         username = request.POST.get('username')
         email = request.POST.get('email')
         password = request.POST.get('password')
-        company_name = request.POST.get('company_name')  # Obtiene el nombre de la compañía del formulario
+        company_name = request.POST.get('company_name')
 
         request.session['language'] = request.POST.get('language', 'English')
 
         context = get_context(request)
+        context['companies'] = ClientData.objects.all()
 
-        if first_name and last_name and username and email and password and company_name:  # Asegúrate de que también se proporcionó el nombre de la compañía
-            if not User.objects.filter(username=username).exists():
-                if not User.objects.filter(email=email).exists():
-                    if len(password) < 6:
-                        messages.error(request, 'Password too short')
-                        return render(request, 'authentication/register.html', context)
+        if first_name and last_name and username and email and password and company_name:
+            if User.objects.filter(username=username).exists():
+                messages.error(request, 'Username already exists')
+                return render(request, 'authentication/register.html', context)
 
-                    # Crea el usuario e incluye first_name y last_name
-                    user = User.objects.create_user(username=username, email=email, first_name=first_name, last_name=last_name)
-                    user.set_password(password)
-                    user.is_active = False
-                    user.is_staff = False
-                    user.save()
+            if User.objects.filter(email=email).exists():
+                messages.error(request, 'Email already exists')
+                return render(request, 'authentication/register.html', context)
 
-                    # Asignar al usuario al grupo "Empresa_Cliente"
-                    group = Group.objects.get(name='Empresa_Cliente')
-                    group.user_set.add(user)
+            if len(password) < 6:
+                messages.error(request, 'Password too short')
+                return render(request, 'authentication/register.html', context)
 
-                    # Crea una entrada en UserCompany
-                    if ClientData.objects.filter(company_name=company_name).exists():
-                        company = ClientData.objects.get(company_name=company_name)
-                        UserCompany.objects.create(user=user, company=company)
-                    else:
-                        messages.error(request, 'The company does not exist')
-                        return render(request, 'authentication/register.html', context)
+            if not ClientData.objects.filter(company_name=company_name).exists():
+                messages.error(request, 'The company does not exist')
+                return render(request, 'authentication/register.html', context)
 
-                    current_site = get_current_site(request)
-                    email_body = {
-                        'user': user,
-                        'domain': current_site.domain,
-                        'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-                        'token': account_activation_token.make_token(user),
-                    }
+            user = User.objects.create_user(username=username, email=email, first_name=first_name, last_name=last_name)
+            user.set_password(password)
+            user.is_active = False
+            user.is_staff = False
+            user.save()
 
-                    link = reverse('activate', kwargs={
-                                    'uidb64': email_body['uid'], 'token': email_body['token']})
+            group = Group.objects.get(name='Empresa_Cliente')
+            group.user_set.add(user)
 
-                    email_subject = 'Activate your account'
+            company = ClientData.objects.get(company_name=company_name)
+            UserCompany.objects.create(user=user, company=company)
 
-                    activate_url = 'http://'+current_site.domain+link
+            current_site = get_current_site(request)
+            email_body = {
+                'user': user,
+                'domain': current_site.domain,
+                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                'token': account_activation_token.make_token(user),
+            }
 
-                    email = EmailMessage(
-                        email_subject,
-                        'Hi '+user.username + ', Please the link below to activate your account \n'+activate_url,
-                        'noreply@semycolon.com',
-                        [email],
-                    )
-                    EmailThread(email).start()
-                    messages.success(request, 'Account successfully created')
-                    return render(request, 'authentication/register.html',context)
+            link = reverse('activate', kwargs={
+                            'uidb64': email_body['uid'], 'token': email_body['token']})
+
+            email_subject = 'Activate your account'
+
+            activate_url = 'http://'+current_site.domain+link
+
+            email = EmailMessage(
+                email_subject,
+                'Hi '+user.username + ', Please the link below to activate your account \n'+activate_url,
+                'noreply@semycolon.com',
+                [email],
+            )
+            EmailThread(email).start()
+            messages.success(request, 'Account successfully created')
+            return render(request, 'authentication/register.html', context)
 
         else:
             messages.error(request, 'Please fill all fields')
-            return render(request, 'authentication/register.html',context)
-
+            return render(request, 'authentication/register.html', context)
 
 
 
